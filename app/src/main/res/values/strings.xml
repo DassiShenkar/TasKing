@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TasKing</string>
+    <string name="action_settings">Settings</string>
+    <string name="sign_up">Sign up</string>
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="sign_up_msg">Create a\n free account</string>
+    <string name="forgot"><u>Forgot password?</u></string>
+</resources>

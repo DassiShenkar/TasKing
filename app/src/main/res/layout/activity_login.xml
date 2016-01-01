@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tasking.tasking.MainViewActivity"
+    android:background="@color/blue" >
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/logo_img"
+        android:src="@drawable/logo"
+        android:layout_above="@+id/txt_sign_msg"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="318dp"
+        android:layout_height="56dp"
+        android:inputType="textPassword"
+        android:paddingRight="45dp"
+        android:paddingLeft="45dp"
+        android:background="@drawable/rounded_text"
+        android:hint="@string/password"
+        android:textColor="#b3b3b3"
+        android:textSize="24sp"
+        android:id="@+id/txt_password"
+        android:layout_above="@+id/btn_sign"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:layout_width="318dp"
+        android:layout_height="56dp"
+        android:id="@+id/txt_user_name"
+        android:paddingRight="45dp"
+        android:paddingLeft="45dp"
+        android:background="@drawable/rounded_text"
+        android:hint="@string/user_name"
+        android:singleLine="true"
+        android:textColor="#b3b3b3"
+        android:textSize="24sp"
+        android:layout_above="@+id/txt_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:layout_width="318dp"
+        android:layout_height="56dp"
+        android:text="@string/sign_up"
+        android:id="@+id/btn_sign"
+        android:textSize="29sp"
+        android:background="@drawable/rounded_button"
+        android:layout_above="@+id/txt_forgot"
+        android:layout_alignLeft="@+id/txt_password"
+        android:layout_alignStart="@+id/txt_password"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_sign_msg"
+        android:layout_marginBottom="36dp"
+        android:text="@string/sign_up_msg"
+        android:textColor="#ffffff"
+        android:textSize="38sp"
+        android:gravity="center"
+        android:layout_above="@+id/txt_user_name"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot"
+        android:id="@+id/txt_forgot"
+        android:layout_marginBottom="36dp"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/btn_sign"
+        android:layout_alignStart="@+id/btn_sign" />
+
+</RelativeLayout>
