@@ -6,4 +6,6 @@
     <string name="password">Password</string>
     <string name="sign_up_msg">Create a\n free account</string>
     <string name="forgot"><u>Forgot password?</u></string>
+    <string name="team_view">TEAM</string>
+    <string name="create_team">Create a Team\n to go TasKing</string>
 </resources>
