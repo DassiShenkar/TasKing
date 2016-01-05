@@ -2,8 +2,8 @@ package com.tasking.tasking;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +36,12 @@ public class LoginActivity extends AppCompatActivity {
     public void signUp(View view){
         Intent intent = new Intent(this, TeamActivity.class);
         //todo: get team from DB if exists set hasTeam (text + arrow)
-        //todo: intent.putExtra(EXTRA_MESSAGE, boolean hasTeam);
+        //todo: intent.putExtra(EXTRA_MESSAGE, boolean isManager + hasTeam);
+        //todo: check if manager or user
+        //todo: if managerFirstTime => User manger = TaskDAO.getInstance(this).addTeamMember(userName);
+        //todo: check if user not exists!!
+        //todo: if member => User member = TaskDAO.getInstance(this).getTeamMember(userName);
+        //todo: check if exists? login : toast error
         startActivity(intent);
     }
 }

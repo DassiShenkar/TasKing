@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_width="match_parent"
+    android:layout_height="200dp" >
 
     <TextView
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_item_text" />
+        android:id="@+id/list_item_text"
+        android:text="mock_text"
+        android:textSize="30sp"
+        android:layout_alignTop="@+id/list_item_button" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_category"
+        android:textSize="16dp"
+        android:text="mock text"
+        android:layout_alignBottom="@+id/list_item_text"
+        android:layout_toEndOf="@+id/list_item_text" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_item_dueDate"
+        android:text="mock_textz"
+        android:textSize="16dp"
+        android:layout_below="@+id/list_item_text" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_item_button" />
+        android:id="@+id/list_item_button"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
 
-</LinearLayout>
+</RelativeLayout>

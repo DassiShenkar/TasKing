@@ -32,7 +32,6 @@ public class TeamActivity extends AppCompatActivity {
         Typeface regularTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
         title.setTypeface(boldTypeFace);
         createTeam.setTypeface(regularTypeFace);
-        //todo: hide text if team exists
         listItems = new ArrayList<>();
         mAdapter = new MyRecyclerAdapter(listItems);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -40,5 +39,9 @@ public class TeamActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        //todo: ArrayList<Task> userTasks = TaskDAO.getInstance(this).getTasks();
+        //todo: if (userTasks != null){
+        //todo:    createTeam.setVisibility(TextView.GONE);
+        //todo: }
     }
 }
