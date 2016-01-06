@@ -13,7 +13,8 @@
         android:id="@+id/logo_img"
         android:src="@drawable/logo"
         android:layout_above="@+id/txt_sign_msg"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name" />
 
     <EditText
         android:layout_width="318dp"
@@ -48,7 +49,7 @@
     <Button
         android:layout_width="318dp"
         android:layout_height="56dp"
-        android:text="@string/sign_up"
+        android:text="@string/log_in"
         android:id="@+id/btn_sign"
         android:textSize="29sp"
         android:background="@drawable/rounded_button"

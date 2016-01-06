@@ -2,10 +2,13 @@
     <string name="app_name">TasKing</string>
     <string name="action_settings">Settings</string>
     <string name="sign_up">Sign up</string>
+    <string name="log_in">Log In</string>
     <string name="user_name">User name</string>
     <string name="password">Password</string>
     <string name="sign_up_msg">Create a\n free account</string>
     <string name="forgot"><u>Forgot password?</u></string>
     <string name="team_view">TEAM</string>
     <string name="create_team">Create a Team\n to go TasKing</string>
+    <string name="user_not_found">User not found</string>
+    <string name="wrong_password">Wrong password</string>
 </resources>

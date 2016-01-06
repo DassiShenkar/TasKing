@@ -7,11 +7,12 @@ import java.util.ArrayList;
  */
 public interface ITaskDAO {
 
-    void addTeamMember(TeamMember member);
+    void addTeamMember(Employee member);
     void removeTeamMember(String userName);
-    TeamMember getTeamMember(String userName);
-    ArrayList<TeamMember> getTeamMembers();
-    int updateTeamMember(TeamMember member);
+    Employee getTeamMember(String userName);
+    ArrayList<Employee> getTeamMembers();
+    int updateTeamMember(Employee member);
+    int getMemberCount();
     void addTask(Task task, int userId);
     void removeTask(String userName);
     Task getTask(String name);

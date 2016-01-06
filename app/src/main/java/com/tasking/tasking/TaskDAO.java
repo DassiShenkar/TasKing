@@ -30,14 +30,14 @@ public class TaskDAO implements ITaskDAO {
 
 
     @Override
-    public void addTeamMember(TeamMember member) {
+    public void addTeamMember(Employee member) {
         SQLiteDatabase db = null;
         try{
             db = DBHelper.getReadableDatabase();
             ContentValues values = new ContentValues();
-            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_NAME, member.getName());
             values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, member.getUserName());
             values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD, member.getPassword());
+            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER, member.getIsManager());
             db.insert(TasKingDBNames.MemberEntry.TABLE_NAME, null, values);
             db.close();
         } finally {
@@ -63,20 +63,31 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public TeamMember getTeamMember(String userName) {
+    public Employee getTeamMember(String userName) {
         SQLiteDatabase db = null;
-        TeamMember member = null;
+        Employee member = null;
         try {
             db = DBHelper.getReadableDatabase();
             Cursor cursor = db.query(TasKingDBNames.MemberEntry.TABLE_NAME,
-                    new String[]{TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_NAME,
-                            TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME,
-                            TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD},
+                    new String[]{TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME,
+                            TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD,
+                            TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_ID,
+                            TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER},
                     TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + "=?",
                     new String[]{userName}, null, null, null, null);
             if (cursor != null) {
-                cursor.moveToFirst();
-                member = new TeamMember(cursor.getString(0), cursor.getString(1), cursor.getString(2));
+                if(cursor.getString(3).equals("1")) {
+                    member = new Manager(cursor.getString(0),
+                            cursor.getString(1),
+                            Integer.valueOf(cursor.getString(2)),
+                            Integer.valueOf(cursor.getString(3)));
+                }
+                else{
+                    member = new TeamMember(cursor.getString(0),
+                            cursor.getString(1),
+                            Integer.valueOf(cursor.getString(2)),
+                            Integer.valueOf(cursor.getString(3)));
+                }
                 cursor.close();
             }
             return member;
@@ -88,8 +99,8 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public ArrayList<TeamMember> getTeamMembers() {
-        ArrayList<TeamMember> members;
+    public ArrayList<Employee> getTeamMembers() {
+        ArrayList<Employee> members;
         SQLiteDatabase db = null;
         String selectQuery = "SELECT  * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME;
         try {
@@ -116,17 +127,22 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public int updateTeamMember(TeamMember member) {
+    public int getMemberCount(){
+        return 0;
+    }
+
+    @Override
+    public int updateTeamMember(Employee member) {
         SQLiteDatabase db = null;
         try{
             db = DBHelper.getReadableDatabase();
             ContentValues values = new ContentValues();
-            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_NAME, member.getName());
-            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, member.getUserName());
-            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD, member.getPassword());
+            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, member.getName());
+            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD, member.getUserName());
+            values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER, member.getPassword());
             db.update(TasKingDBNames.MemberEntry.TABLE_NAME,
                     values, TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + " = ?",
-                    new String[] { String.valueOf(member.getId()) });
+                    new String[] { member.getUserName() });
             db.close();
         } finally {
             if (db != null) {
