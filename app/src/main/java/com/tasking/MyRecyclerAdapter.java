@@ -1,4 +1,4 @@
-package com.tasking.tasking;
+package com.tasking;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +22,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter
     @Override
     public MyRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(com.tasking.R.layout.list_item, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -43,8 +43,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter
 
         public ViewHolder(View parentView) {
             super(parentView);
-            textView = (TextView) parentView.findViewById(R.id.list_item_text);
-            button = (Button) parentView.findViewById(R.id.list_item_button);
+            textView = (TextView) parentView.findViewById(com.tasking.R.id.list_item_text);
+            button = (Button) parentView.findViewById(com.tasking.R.id.list_item_button);
         }
     }
 }

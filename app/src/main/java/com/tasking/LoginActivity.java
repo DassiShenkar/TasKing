@@ -1,4 +1,4 @@
-package com.tasking.tasking;
+package com.tasking;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,13 +23,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(com.tasking.R.layout.activity_login);
         prefs = getSharedPreferences("com.tasking.tasking.TasKing", MODE_PRIVATE);
-        EditText username  = (EditText)findViewById(R.id.txt_user_name);
-        EditText password  = (EditText)findViewById(R.id.txt_password);
-        TextView forgotMsg = (TextView)findViewById(R.id.txt_forgot);
-        TextView signUpMsg = (TextView)findViewById(R.id.txt_sign_msg);
-        Button button = (Button)findViewById(R.id.btn_sign);
+        EditText username  = (EditText)findViewById(com.tasking.R.id.txt_user_name);
+        EditText password  = (EditText)findViewById(com.tasking.R.id.txt_password);
+        TextView forgotMsg = (TextView)findViewById(com.tasking.R.id.txt_forgot);
+        TextView signUpMsg = (TextView)findViewById(com.tasking.R.id.txt_sign_msg);
+        Button button = (Button)findViewById(com.tasking.R.id.btn_sign);
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         username.setTypeface(typeFace);
@@ -48,10 +48,10 @@ public class LoginActivity extends AppCompatActivity {
             TasKingDBHelper DBHelper = new TasKingDBHelper(this);
             int count = TaskDAO.getInstance(this).getMemberCount();
                 if (count == 0) {
-                    TextView forgotMsg = (TextView) findViewById(R.id.txt_forgot);
+                    TextView forgotMsg = (TextView) findViewById(com.tasking.R.id.txt_forgot);
                     forgotMsg.setVisibility(TextView.GONE);
-                    Button button = (Button) findViewById(R.id.btn_sign);
-                    button.setText(R.string.sign_up);
+                    Button button = (Button) findViewById(com.tasking.R.id.btn_sign);
+                    button.setText(com.tasking.R.string.sign_up);
                     isManager = true;
                 }
             else{
@@ -63,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void signUp(View view){
         Employee employee = null;
-        EditText username  = (EditText)findViewById(R.id.txt_user_name);
-        EditText password  = (EditText)findViewById(R.id.txt_password);
+        EditText username  = (EditText)findViewById(com.tasking.R.id.txt_user_name);
+        EditText password  = (EditText)findViewById(com.tasking.R.id.txt_password);
         String user = username.getText().toString();
         String pass = password.getText().toString();
         if(isManager){
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         else{
             employee = TaskDAO.getInstance(this).getTeamMember(user);
             if(employee == null){
-                Toast.makeText(this, R.string.user_not_found, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, com.tasking.R.string.user_not_found, Toast.LENGTH_LONG).show();
             }
             else if(employee.getPassword().equals(pass)) {
                 Intent intent = new Intent(this, TasksActivity.class);
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else{
-                Toast.makeText(this, R.string.user_not_found, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, com.tasking.R.string.user_not_found, Toast.LENGTH_LONG).show();
             }
         }
         //todo: get team from DB if exists set hasTeam (text + arrow)

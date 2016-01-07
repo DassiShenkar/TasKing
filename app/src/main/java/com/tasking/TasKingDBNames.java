@@ -1,4 +1,4 @@
-package com.tasking.tasking;
+package com.tasking;
 
 import android.provider.BaseColumns;
 

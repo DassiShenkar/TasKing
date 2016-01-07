@@ -1,4 +1,4 @@
-package com.tasking.tasking;
+package com.tasking;
 
 /**
  * Created by Grisha on 1/6/2016.

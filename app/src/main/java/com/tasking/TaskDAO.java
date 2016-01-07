@@ -1,4 +1,4 @@
-package com.tasking.tasking;
+package com.tasking;
 
 import android.content.ContentValues;
 import android.content.Context;

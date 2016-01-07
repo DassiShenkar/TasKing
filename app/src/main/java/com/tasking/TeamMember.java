@@ -1,19 +1,20 @@
-package com.tasking.tasking;
+package com.tasking;
 
 /**
  * Created by Grisha on 1/2/2016.
  */
-public class Manager extends Employee{
+public class TeamMember extends Employee{
     private int id;
 
-    public Manager() {
+
+    public TeamMember() {
     }
 
-    public Manager(String userName, String password, int isManager) {
+    public TeamMember(String userName, String password, int isManager) {
         super(userName, password, isManager);
     }
 
-    public Manager(String userName, String password, int isManager, int id) {
+    public TeamMember(String userName, String password, int isManager, int id) {
         super(userName, password, isManager);
         this.id = id;
     }

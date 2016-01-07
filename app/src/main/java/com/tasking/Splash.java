@@ -1,4 +1,4 @@
-package com.tasking.tasking;
+package com.tasking;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,7 @@ public class Splash extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.splash);
+        setContentView(com.tasking.R.layout.splash);
 
         new Handler().postDelayed(new Runnable(){
             @Override

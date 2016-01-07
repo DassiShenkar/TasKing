@@ -1,4 +1,4 @@
-package com.tasking.tasking;
+package com.tasking;
 
 import java.text.DateFormat;
 import java.text.ParseException;
