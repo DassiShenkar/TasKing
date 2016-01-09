@@ -8,8 +8,10 @@
         android:id="@+id/splash"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:src="@drawable/splash"
+        android:contentDescription="@string/app_name"
         android:layout_gravity="center"/>
-    <!--android:src="@drawable/splash"-->
+
     <RelativeLayout
         android:id="@+id/loading"
         android:layout_width="match_parent"

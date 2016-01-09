@@ -1,8 +1,6 @@
 package com.tasking;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,16 +13,13 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private SharedPreferences prefs = null;
     private boolean isManager;
-
-    public final static String EXTRA_MESSAGE = "com.tasking.taskking.MESSAGE";
+    public final static String EXTRA_MESSAGE = "com.tasking.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.tasking.R.layout.activity_login);
-        prefs = getSharedPreferences("com.tasking.tasking.TasKing", MODE_PRIVATE);
         EditText username  = (EditText)findViewById(com.tasking.R.id.txt_user_name);
         EditText password  = (EditText)findViewById(com.tasking.R.id.txt_password);
         TextView forgotMsg = (TextView)findViewById(com.tasking.R.id.txt_forgot);
@@ -38,27 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         signUpMsg.setTypeface(typeFace);
         button.setTypeface(boldTypeFace);
         button.setTransformationMethod(null);
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        if (prefs.getBoolean("firstrun", true)) {
-            SQLiteDatabase db = null;
-            TasKingDBHelper DBHelper = new TasKingDBHelper(this);
-            int count = TaskDAO.getInstance(this).getMemberCount();
-                if (count == 0) {
-                    TextView forgotMsg = (TextView) findViewById(com.tasking.R.id.txt_forgot);
-                    forgotMsg.setVisibility(TextView.GONE);
-                    Button button = (Button) findViewById(com.tasking.R.id.btn_sign);
-                    button.setText(com.tasking.R.string.sign_up);
-                    isManager = true;
-                }
-            else{
-                    isManager = false;
-                }
-            prefs.edit().putBoolean("firstrun", false).apply();
-        }
     }
 
     public void signUp(View view){
