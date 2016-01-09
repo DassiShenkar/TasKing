@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter
         .ViewHolder> {
 
-    ArrayList<String> listItems;
+    ArrayList<Employee> members;
 
-    public  MyRecyclerAdapter(ArrayList<String> listItems){
-        this.listItems = listItems;
+    public  MyRecyclerAdapter(ArrayList<Employee> members){
+        this.members = members;
     }
 
     @Override
@@ -29,13 +29,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter
 
     @Override
     public void onBindViewHolder(MyRecyclerAdapter.ViewHolder holder, int position) {
-        String item = listItems.get(position);
-        holder.textView.setText(item);
+        Employee member = members.get(position);
+        // TODO: holder.textView.setText(item); assign fields to setters
     }
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return members.size();
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
@@ -45,6 +45,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter
             super(parentView);
             textView = (TextView) parentView.findViewById(com.tasking.R.id.list_item_text);
             button = (Button) parentView.findViewById(com.tasking.R.id.list_item_button);
+            //TODO: add views
         }
     }
 }
