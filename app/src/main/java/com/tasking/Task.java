@@ -11,9 +11,9 @@ import java.util.Locale;
  * Created by Grisha on 1/2/2016.
  */
 public class Task {
-    private static int id;
+    private int id;
     private String name;
-    private Date dueTime;
+    private Date dueDate;
     private String category;
     private String priority;
     private String location;
@@ -22,17 +22,27 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, Date dueTime, String category, String priority, String location, ArrayList<TeamMember> assignees) {
+    public Task(String name, Date dueDate, String category, String priority, String location, ArrayList<TeamMember> assignees) {
         this.name = name;
-        this.dueTime = dueTime;
+        this.dueDate = dueDate;
         this.category = category;
         this.priority = priority;
         this.location = location;
-        this.assignees = assignees;
+        if(assignees == null){
+            this.assignees = new ArrayList<>();
+        }
+        else{
+            this.assignees = assignees;
+        }
+        //TODO: check this!!!
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -43,15 +53,15 @@ public class Task {
         this.name = name;
     }
 
-    public String getDueTime() {
+    public String getDueDate() {
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
-        return df.format(dueTime);
+        return df.format(dueDate);
     }
 
-    public void setDueTime(String dateString) {
+    public void setDueDate(String dateString) {
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         try {
-            this.dueTime = format.parse(dateString);
+            this.dueDate = format.parse(dateString);
         } catch (ParseException e) {
             // todo: throw our Exception
         }
@@ -89,11 +99,15 @@ public class Task {
         this.assignees = assignees;
     }
 
+    public void addAssignee(TeamMember member){
+
+    }
+
     @Override
     public String toString() {
         return "Task{" +
                 "name='" + name + '\'' +
-                ", dueTime=" + dueTime +
+                ", dueTime=" + getDueDate() +
                 ", category='" + category + '\'' +
                 ", priority='" + priority + '\'' +
                 ", location='" + location + '\'' +

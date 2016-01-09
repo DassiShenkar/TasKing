@@ -4,6 +4,7 @@ package com.tasking;
  * Created by Grisha on 1/6/2016.
  */
 public class Employee {
+    private int id;
     private String name;
     private String userName;
     private String password;
@@ -17,6 +18,14 @@ public class Employee {
         this.userName = userName;
         this.password = password;
         this.isManager = isManager;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

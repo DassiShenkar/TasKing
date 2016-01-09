@@ -7,13 +7,13 @@ import android.os.Handler;
 
 public class Splash extends Activity {
 
-    private final int SPLASH_TIMEOUT = 3000;
+    private static final int SPLASH_TIMEOUT = 3000;
     // TODO: 1/7/2016 handle data while splash screen is on 
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(com.tasking.R.layout.splash);
+        setContentView(R.layout.splash);
 
         new Handler().postDelayed(new Runnable(){
             @Override

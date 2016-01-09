@@ -8,6 +8,6 @@ public class TasksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.tasking.R.layout.activity_tasks);
+        setContentView(R.layout.activity_tasks);
     }
 }
