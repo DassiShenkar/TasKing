@@ -24,6 +24,30 @@
             android:text="@string/team_view" />
         </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/team_text"
+        android:layout_marginTop="96dp"
+        android:textSize="34sp"
+        android:textColor="@color/darkBlue"
+        android:text="@string/create_team"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/long_arrow"
+        android:gravity="center_horizontal"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_centerHorizontal="true"
+        android:layout_toStartOf="@+id/add_btn"
+        android:layout_below="@+id/team_text" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_btn"
         android:layout_height="wrap_content"
@@ -41,14 +65,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/team_text"
-        android:layout_below="@+id/my_toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="58dp"
-        android:textSize="34sp"
-        android:textColor="@color/darkBlue"
-        android:text="@string/create_team"/>
 </RelativeLayout>
