@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity {
 
-    private ArrayList<String> listItems;
+    private ArrayList<Employee> listItems;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -35,11 +35,11 @@ public class TeamActivity extends AppCompatActivity {
         ArrayList<Employee> team = TaskDAO.getInstance(this).getTeamMembers();
         if (team != null){
             createTeam.setVisibility(TextView.GONE);
-            //TODO: remove arrow
+            //TODO: remove greg's arrow
             mAdapter = new MyRecyclerAdapter(team);
             mRecyclerView = (RecyclerView) findViewById(com.tasking.R.id.my_recycler_view);
             mRecyclerView.setHasFixedSize(true);
-            mLayoutManager = new LinearLayoutManager(this);
+            mLayoutManager = new LinearLayoutManager(this);//TODO: check relative
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mAdapter);
         }

@@ -1,11 +1,6 @@
 package com.tasking;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Grisha on 1/2/2016.
@@ -13,7 +8,7 @@ import java.util.Locale;
 public class Task {
     private int id;
     private String name;
-    private Date dueDate;
+    private String dueDate;
     private String category;
     private String priority;
     private String location;
@@ -22,7 +17,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, Date dueDate, String category, String priority, String location, ArrayList<TeamMember> assignees) {
+    public Task(String name, String dueDate, String category, String priority, String location, ArrayList<TeamMember> assignees) {
         this.name = name;
         this.dueDate = dueDate;
         this.category = category;
@@ -54,17 +49,11 @@ public class Task {
     }
 
     public String getDueDate() {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
-        return df.format(dueDate);
+        return this.dueDate;
     }
 
-    public void setDueDate(String dateString) {
-        DateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
-        try {
-            this.dueDate = format.parse(dateString);
-        } catch (ParseException e) {
-            // todo: throw our Exception
-        }
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getCategory() {
@@ -97,10 +86,6 @@ public class Task {
 
     public void setAssignees(ArrayList<TeamMember> assignees) {
         this.assignees = assignees;
-    }
-
-    public void addAssignee(TeamMember member){
-
     }
 
     @Override
