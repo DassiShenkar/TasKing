@@ -40,9 +40,9 @@ public class Splash extends Activity {
         if (prefs.getBoolean("firstrun", true)) {
             int count = TaskDAO.getInstance(this).getMemberCount();
             if (count == 0) {
-                TextView forgotMsg = (TextView) findViewById(com.tasking.R.id.txt_forgot);
+                TextView forgotMsg = (TextView) findViewById(R.id.txt_forgot);
                 forgotMsg.setVisibility(TextView.GONE);
-                Button button = (Button) findViewById(com.tasking.R.id.btn_sign);
+                Button button = (Button) findViewById(R.id.btn_sign);
                 button.setText(com.tasking.R.string.sign_up);
                 isManager = true;
             }
