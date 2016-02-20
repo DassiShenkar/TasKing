@@ -1,6 +1,7 @@
 package com.tasking;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isManager;
     public final static String EXTRA_MESSAGE = "com.tasking.MESSAGE";
+    private SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.tasking.R.layout.activity_login);
+        prefs = getSharedPreferences("com.tasking.TasKing", MODE_PRIVATE);
         EditText username  = (EditText)findViewById(com.tasking.R.id.txt_user_name);
         EditText password  = (EditText)findViewById(com.tasking.R.id.txt_password);
         TextView forgotMsg = (TextView)findViewById(com.tasking.R.id.txt_forgot);
@@ -35,33 +38,50 @@ public class LoginActivity extends AppCompatActivity {
         button.setTransformationMethod(null);
     }
 
-    public void signUp(View view){
+    public void signUp(View view) {
         Employee employee = null;
-        EditText username  = (EditText)findViewById(com.tasking.R.id.txt_user_name);
-        EditText password  = (EditText)findViewById(com.tasking.R.id.txt_password);
+        EditText username = (EditText) findViewById(com.tasking.R.id.txt_user_name);
+        EditText password = (EditText) findViewById(com.tasking.R.id.txt_password);
         String user = username.getText().toString();
         String pass = password.getText().toString();
-        if(isManager){
+        if (isManager) {
             Manager manager = new Manager(user, pass, 1);
             TaskDAO.getInstance(this).addTeamMember(manager);
             Intent intent = new Intent(this, TeamActivity.class);
             intent.putExtra(EXTRA_MESSAGE, isManager);
             startActivity(intent);
-        }
-        else{
+        } else {
             employee = TaskDAO.getInstance(this).getTeamMember(user);
-            if(employee == null){
+            if (employee == null) {
                 Toast.makeText(this, com.tasking.R.string.user_not_found, Toast.LENGTH_LONG).show();
-            }
-            else if(employee.getPassword().equals(pass)) {
+            } else if (employee.getPassword().equals(pass)) {
                 Intent intent = new Intent(this, TasksActivity.class);
                 intent.putExtra(EXTRA_MESSAGE, isManager);
                 startActivity(intent);
-            }
-            else{
+            } else {
                 Toast.makeText(this, com.tasking.R.string.user_not_found, Toast.LENGTH_LONG).show();
             }
         }
+    }
+        @Override
+        protected void onResume() {
+            super.onResume();
+            int count = 0;// TODO: get from splash
+            if (prefs.getBoolean("firstrun", true)) {
+                if (count == 0) {
+                    TextView forgotMsg = (TextView) findViewById(com.tasking.R.id.txt_forgot);
+                    forgotMsg.setVisibility(TextView.GONE);
+                    Button button = (Button) findViewById(com.tasking.R.id.btn_sign);
+                    button.setText(com.tasking.R.string.sign_up);
+                    isManager = true;
+                }
+                else{
+                    isManager = false;//TODO: check is_manager
+                }
+                prefs.edit().putBoolean("firstrun", false).apply();
+            }
+        }
+        // TODO: authenticate
         //todo: get team from DB if exists set hasTeam (text + arrow)
         //todo: intent.putExtra(EXTRA_MESSAGE, boolean isManager);
         //todo: check if manager or user
@@ -69,5 +89,4 @@ public class LoginActivity extends AppCompatActivity {
         //todo: check if user not exists!!
         //todo: if member => User member = TaskDAO.getInstance(this).getTeamMember(userName);
         //todo: check if exists? login : toast error
-    }
 }

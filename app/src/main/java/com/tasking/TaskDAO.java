@@ -17,8 +17,8 @@ public class TaskDAO implements ITaskDAO {
     private Context context;
 
     private TaskDAO(Context context) {
-        DBHelper = null;
         this.context = context;
+        DBHelper = new TasKingDBHelper(this.context);
     }
 
     public static TaskDAO getInstance(Context context) {
@@ -70,9 +70,10 @@ public class TaskDAO implements ITaskDAO {
     public Employee getTeamMember(String userName) {
         SQLiteDatabase db = null;
         Employee member = null;
+        Cursor cursor = null;
         try {
             db = DBHelper.getReadableDatabase();
-            Cursor cursor = db.query(TasKingDBNames.MemberEntry.TABLE_NAME,
+            cursor = db.query(TasKingDBNames.MemberEntry.TABLE_NAME,
                     new String[]{TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_ID,
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME,
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD,
@@ -91,12 +92,14 @@ public class TaskDAO implements ITaskDAO {
                             Integer.parseInt(cursor.getString(3)),
                             Integer.parseInt(cursor.getString(0)));
                 }
-                cursor.close();
             }
             return member;
         } finally {
             if (db != null) {
                 db.close();
+            }
+            if (cursor != null){
+                cursor.close();
             }
         }
     }
@@ -105,10 +108,11 @@ public class TaskDAO implements ITaskDAO {
     public ArrayList<Employee> getTeamMembers() {
         ArrayList<Employee> members;
         SQLiteDatabase db = null;
+        Cursor cursor = null;
         String selectQuery = "SELECT  * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME;
         try {
             db = DBHelper.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
+            cursor = db.rawQuery(selectQuery, null);
             members = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
@@ -120,11 +124,13 @@ public class TaskDAO implements ITaskDAO {
                     members.add(member);
                 } while (cursor.moveToNext());
             }
-            cursor.close();
             return members;
         } finally {
             if (db != null) {
                 db.close();
+            }
+            if (cursor != null){
+                cursor.close();
             }
         }
     }
@@ -137,16 +143,19 @@ public class TaskDAO implements ITaskDAO {
         try{
             db = DBHelper.getReadableDatabase();
             cursor = db.rawQuery(countQuery, null);
-            cursor.close();
+            return cursor.getCount();
         } finally {
             if (db != null) {
                 db.close();
             }
+            if (cursor != null){
+                cursor.close();
+            }
         }
-        return cursor.getCount();    }
+    }
 
     @Override
-    public int updateTeamMember(Employee member) {
+    public void updateTeamMember(Employee member) {
         SQLiteDatabase db = null;
     try {
         db = DBHelper.getReadableDatabase();
@@ -163,7 +172,6 @@ public class TaskDAO implements ITaskDAO {
             db.close();
         }
     }
-    return 0;
 }
 
     @Override
@@ -261,10 +269,12 @@ public class TaskDAO implements ITaskDAO {
     public ArrayList<Task> getTasks(String name) {
         ArrayList<Task> tasks;
         SQLiteDatabase db = null;
+        Cursor cursor = null;
+        Cursor cursor2 = null;
         String selectQuery = "SELECT  * FROM " + TasKingDBNames.TaskEntry.TABLE_NAME;
         try {
             db = DBHelper.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
+            cursor = db.rawQuery(selectQuery, null);
             tasks = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
@@ -275,7 +285,7 @@ public class TaskDAO implements ITaskDAO {
                     task.setCategory(cursor.getString(3));
                     task.setPriority(cursor.getString(4));
                     task.setLocation(cursor.getString(5));
-                    Cursor cursor2 = db.query(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME,
+                    cursor2 = db.query(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME,
                             new String[]{TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_NAME},
                             TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_NAME + " = ?",
                             new String[]{String.valueOf(task.getId())}, null, null, null, null);
@@ -292,11 +302,16 @@ public class TaskDAO implements ITaskDAO {
                     tasks.add(task);
                 } while (cursor.moveToNext());
             }
-            cursor.close();
             return tasks;
         } finally {
             if (db != null) {
                 db.close();
+            }
+            if (cursor != null){
+                cursor.close();
+            }
+            if (cursor2 != null){
+                cursor2.close();
             }
         }
     }
@@ -309,17 +324,19 @@ public class TaskDAO implements ITaskDAO {
         try{
             db = DBHelper.getReadableDatabase();
             cursor = db.rawQuery(countQuery, null);
-            cursor.close();
+            return cursor.getCount();
         } finally {
             if (db != null) {
                 db.close();
             }
+            if (cursor != null){
+                cursor.close();
+            }
         }
-        return cursor.getCount();
     }
 
     @Override
-    public int updateTask(Task task) {
+    public void updateTask(Task task) {
         SQLiteDatabase db = null;
         try {
             db = DBHelper.getReadableDatabase();
@@ -347,6 +364,5 @@ public class TaskDAO implements ITaskDAO {
                 db.close();
             }
         }
-        return 0;
     }
 }

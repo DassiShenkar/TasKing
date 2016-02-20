@@ -30,7 +30,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter
     @Override
     public void onBindViewHolder(MyRecyclerAdapter.ViewHolder holder, int position) {
         Employee member = members.get(position);
-        // TODO: holder.textView.setText(item); assign fields to setters
+        // TODO: holder.textView.setText(item); assign fields to getters
     }
 
     @Override

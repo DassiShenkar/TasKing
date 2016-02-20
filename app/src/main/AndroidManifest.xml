@@ -28,8 +28,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
-        <!--<activity android:name=".TeamActivity" >-->
-        <!--</activity>-->
+        <activity
+            android:name=".TeamActivity"
+            android:label="@string/team_view"
+            android:theme="@style/AppTheme" >
+        </activity>
         <!--<activity android:name=".TasksActivity" >-->
         <!--</activity>-->
     </application>

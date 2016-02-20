@@ -52,7 +52,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
             + " TEXT," + KEY_LOCATION + " TEXT" + ")";
     private static final String CREATE_TASKS_ASSIGNEES_TABLE = "CREATE TABLE " + TABLE_TASK_ASSIGNEES + "("
             + KEY_ASSIGNEES_ID + " INTEGER PRIMARY KEY," + KEY_TASK_A_NAME + " TEXT," + KEY_EMPLOYEE_A_NAME
-            + " TEXT," + ")";
+            + " TEXT" + ")";
 
     public TasKingDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
