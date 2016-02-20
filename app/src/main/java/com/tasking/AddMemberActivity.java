@@ -3,11 +3,11 @@ package com.tasking;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class TasksActivity extends Activity {
+public class AddMemberActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasks);
+        setContentView(R.layout.activity_add_member);
     }
 }

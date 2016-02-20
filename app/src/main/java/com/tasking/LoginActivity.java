@@ -45,37 +45,57 @@ public class LoginActivity extends Activity {
         EditText password = (EditText) findViewById(com.tasking.R.id.txt_password);
         String user = username.getText().toString();
         String pass = password.getText().toString();//TODO: encrypt using MD5
-        if (isManager) {
-            Manager manager = new Manager(user, pass, 1);
-            TaskDAO.getInstance(this).addTeamMember(manager);
-            Intent intent = new Intent(this, TeamActivity.class);
+        if (isManager){
+            Intent intent;
+            employee = TaskDAO.getInstance(this).getTeamMember(user);
+            if(employee == null) {
+                Manager manager = new Manager(user, pass, 1);
+                TaskDAO.getInstance(this).addTeamMember(manager);
+                intent = new Intent(this, TeamActivity.class);
+                intent.putExtra(EXTRA_MESSAGE, isManager);
+                startActivity(intent);
+            }
+            else{
+                if (employee.getPassword().equals(pass)){
+                    if (TaskDAO.getInstance(this).getTeamMembers() == null) {
+                        intent = new Intent(this, TeamActivity.class);
+                    } else {
+                        intent = new Intent(this, TasksActivity.class);
+                    }
+                    intent.putExtra(EXTRA_MESSAGE, isManager);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_LONG).show();
+                }
+            }
+            if (TaskDAO.getInstance(this).getTeamMembers() == null) {
+                intent = new Intent(this, TeamActivity.class);
+            } else {
+                intent = new Intent(this, TasksActivity.class);
+            }
             intent.putExtra(EXTRA_MESSAGE, isManager);
             startActivity(intent);
         } else {
             employee = TaskDAO.getInstance(this).getTeamMember(user);
-            if (employee == null) {
-                Toast.makeText(this, com.tasking.R.string.user_not_found, Toast.LENGTH_LONG).show();
-            } else if (employee.getPassword().equals(pass)) {
-                Intent intent;
-                if(TaskDAO.getInstance(this).getTeamMembers() == null) {
-                    intent = new Intent(this, TeamActivity.class);
-                }
-                else{
+            if (employee != null) {
+                if (employee.getPassword().equals(pass)) {
+                    Intent intent;
                     intent = new Intent(this, TasksActivity.class);
+                    intent.putExtra(EXTRA_MESSAGE, isManager);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_LONG).show();
                 }
-                intent.putExtra(EXTRA_MESSAGE, isManager);
-                startActivity(intent);
             } else {
-                Toast.makeText(this, com.tasking.R.string.user_not_found, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.user_not_found, Toast.LENGTH_LONG).show();
             }
         }
     }
         @Override
-        protected void onResume() {
+        protected void onResume() { //TODO: this is wrong!!
             super.onResume();
-            int count = 0;// TODO: get from splash
             if (prefs.getBoolean("firstrun", true)) {
-                if (count == 0) {
+                if (TaskDAO.getInstance(this).getTeamMembers() == null) {
                     TextView forgotMsg = (TextView) findViewById(com.tasking.R.id.txt_forgot);
                     forgotMsg.setTextColor(Color.parseColor("#0e2635"));
                     Button button = (Button) findViewById(com.tasking.R.id.btn_sign);
@@ -83,17 +103,9 @@ public class LoginActivity extends Activity {
                     isManager = true;
                 }
                 else{
-                    isManager = false;//TODO: check is_manager
+                    isManager = false;
                 }
                 prefs.edit().putBoolean("firstrun", false).apply();
             }
         }
-        // TODO: authenticate
-        //todo: get team from DB if exists set hasTeam (text + arrow)
-        //todo: intent.putExtra(EXTRA_MESSAGE, boolean isManager);
-        //todo: check if manager or user
-        //todo: if managerFirstTime => User manger = TaskDAO.getInstance(this).addTeamMember(userName);
-        //todo: check if user not exists!!
-        //todo: if member => User member = TaskDAO.getInstance(this).getTeamMember(userName);
-        //todo: check if exists? login : toast error
 }

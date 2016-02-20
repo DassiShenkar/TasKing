@@ -11,4 +11,5 @@
     <string name="create_team">Create a Team\n to go TasKing</string>
     <string name="user_not_found">User not found</string>
     <string name="wrong_password">Wrong password</string>
+    <string name="arrow">Arrow</string>
 </resources>

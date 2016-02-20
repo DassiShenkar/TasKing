@@ -11,7 +11,7 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/blue">
+        android:background="@color/blue"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -47,6 +47,7 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
+        android:contentDescription="@string/arrow"
         android:layout_toStartOf="@+id/add_btn"
         android:layout_below="@+id/team_text" />
 
@@ -60,11 +61,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         app:backgroundTint="@color/yellow"
-        android:tint="@color/white"/>
+        android:tint="@color/white"
+        android:onClick="addMember" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/my_toolbar" />
 </RelativeLayout>

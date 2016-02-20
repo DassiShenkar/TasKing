@@ -70,7 +70,7 @@ public class TaskDAO implements ITaskDAO {
     public Employee getTeamMember(String userName) {
         SQLiteDatabase db = null;
         Employee member = null;
-        Cursor cursor = null;
+        Cursor cursor;
         try {
             db = DBHelper.getReadableDatabase();
             cursor = db.query(TasKingDBNames.MemberEntry.TABLE_NAME,
@@ -78,7 +78,7 @@ public class TaskDAO implements ITaskDAO {
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME,
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD,
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER},
-                    TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + "= ?",
+                    TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + " = ?",
                     new String[]{userName}, null, null, null, null);
             if (cursor.moveToFirst()) {
                 if (cursor.getString(3).equals("1")) {
@@ -242,21 +242,24 @@ public class TaskDAO implements ITaskDAO {
                 task.setCategory(cursor.getString(3));
                 task.setPriority(cursor.getString(4));
                 task.setLocation(cursor.getString(5));
+                cursor.close();
             }
-            Cursor cursor2 = db.query(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME,
-                    new String[]{TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_NAME},
-                    TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_NAME + " = ?",
-                    new String[]{String.valueOf(task.getId())}, null, null, null, null);
+            Cursor cursor2 = null;
+            if(task != null) {
+                cursor2 = db.query(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME,
+                        new String[]{TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_NAME},
+                        TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_NAME + " = ?",
+                        new String[]{String.valueOf(task.getName())}, null, null, null, null);
+            }
             ArrayList<TeamMember> assignees = new ArrayList<>();
-            try {
+            if(cursor2 != null) {
                 while (cursor2.moveToNext()) {
                     TeamMember employee = (TeamMember) this.getTeamMember(cursor2.getString(0));
                     assignees.add(employee);
                 }
-            } finally {
+                task.setAssignees(assignees);
                 cursor2.close();
             }
-            task.setAssignees(assignees);
             return task;
         } finally {
             if (db != null) {
@@ -269,8 +272,8 @@ public class TaskDAO implements ITaskDAO {
     public ArrayList<Task> getTasks(String name) {
         ArrayList<Task> tasks;
         SQLiteDatabase db = null;
-        Cursor cursor = null;
-        Cursor cursor2 = null;
+        Cursor cursor;
+        Cursor cursor2;
         String selectQuery = "SELECT  * FROM " + TasKingDBNames.TaskEntry.TABLE_NAME;
         try {
             db = DBHelper.getWritableDatabase();
