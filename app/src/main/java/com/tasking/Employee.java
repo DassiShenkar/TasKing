@@ -20,6 +20,13 @@ public class Employee {
         this.isManager = isManager;
     }
 
+    public Employee(String userName, String password, int isManager, int id) {
+        this.userName = userName;
+        this.password = password;
+        this.isManager = isManager;
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

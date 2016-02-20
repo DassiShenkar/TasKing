@@ -1,10 +1,11 @@
 package com.tasking;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     private boolean isManager;
     public final static String EXTRA_MESSAGE = "com.tasking.MESSAGE";
@@ -39,11 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signUp(View view) {
-        Employee employee = null;
+        Employee employee;
         EditText username = (EditText) findViewById(com.tasking.R.id.txt_user_name);
         EditText password = (EditText) findViewById(com.tasking.R.id.txt_password);
         String user = username.getText().toString();
-        String pass = password.getText().toString();
+        String pass = password.getText().toString();//TODO: encrypt using MD5
         if (isManager) {
             Manager manager = new Manager(user, pass, 1);
             TaskDAO.getInstance(this).addTeamMember(manager);
@@ -55,7 +56,13 @@ public class LoginActivity extends AppCompatActivity {
             if (employee == null) {
                 Toast.makeText(this, com.tasking.R.string.user_not_found, Toast.LENGTH_LONG).show();
             } else if (employee.getPassword().equals(pass)) {
-                Intent intent = new Intent(this, TasksActivity.class);
+                Intent intent;
+                if(TaskDAO.getInstance(this).getTeamMembers() == null) {
+                    intent = new Intent(this, TeamActivity.class);
+                }
+                else{
+                    intent = new Intent(this, TasksActivity.class);
+                }
                 intent.putExtra(EXTRA_MESSAGE, isManager);
                 startActivity(intent);
             } else {
@@ -70,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             if (prefs.getBoolean("firstrun", true)) {
                 if (count == 0) {
                     TextView forgotMsg = (TextView) findViewById(com.tasking.R.id.txt_forgot);
-                    forgotMsg.setVisibility(TextView.GONE);
+                    forgotMsg.setTextColor(Color.parseColor("#0e2635"));
                     Button button = (Button) findViewById(com.tasking.R.id.btn_sign);
                     button.setText(com.tasking.R.string.sign_up);
                     isManager = true;

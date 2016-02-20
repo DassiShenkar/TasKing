@@ -78,9 +78,9 @@ public class TaskDAO implements ITaskDAO {
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME,
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD,
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER},
-                    TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + "=?",
+                    TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + "= ?",
                     new String[]{userName}, null, null, null, null);
-            if (cursor != null) {
+            if (cursor.moveToFirst()) {
                 if (cursor.getString(3).equals("1")) {
                     member = new Manager(cursor.getString(1),
                             cursor.getString(2),
@@ -92,14 +92,12 @@ public class TaskDAO implements ITaskDAO {
                             Integer.parseInt(cursor.getString(3)),
                             Integer.parseInt(cursor.getString(0)));
                 }
+                cursor.close();
             }
             return member;
         } finally {
             if (db != null) {
                 db.close();
-            }
-            if (cursor != null){
-                cursor.close();
             }
         }
     }
@@ -109,7 +107,8 @@ public class TaskDAO implements ITaskDAO {
         ArrayList<Employee> members;
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        String selectQuery = "SELECT  * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME;
+        String selectQuery = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME
+                             + " WHERE is_manager = 0";
         try {
             db = DBHelper.getWritableDatabase();
             cursor = db.rawQuery(selectQuery, null);
@@ -123,14 +122,15 @@ public class TaskDAO implements ITaskDAO {
                     member.setIsManager((Integer.parseInt(cursor.getString(3))));
                     members.add(member);
                 } while (cursor.moveToNext());
+                return members;
             }
-            return members;
+            return null;
         } finally {
-            if (db != null) {
-                db.close();
-            }
             if (cursor != null){
                 cursor.close();
+            }
+            if (db != null) {
+                db.close();
             }
         }
     }
@@ -301,17 +301,12 @@ public class TaskDAO implements ITaskDAO {
                     task.setAssignees(assignees);
                     tasks.add(task);
                 } while (cursor.moveToNext());
+                cursor.close();
             }
             return tasks;
         } finally {
             if (db != null) {
                 db.close();
-            }
-            if (cursor != null){
-                cursor.close();
-            }
-            if (cursor2 != null){
-                cursor2.close();
             }
         }
     }
@@ -326,11 +321,11 @@ public class TaskDAO implements ITaskDAO {
             cursor = db.rawQuery(countQuery, null);
             return cursor.getCount();
         } finally {
-            if (db != null) {
-                db.close();
-            }
             if (cursor != null){
                 cursor.close();
+            }
+            if (db != null) {
+                db.close();
             }
         }
     }

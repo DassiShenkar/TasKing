@@ -4,7 +4,6 @@ package com.tasking;
  * Created by Grisha on 1/2/2016.
  */
 public class TeamMember extends Employee{
-    private int id;
 
 
     public TeamMember() {
@@ -15,16 +14,9 @@ public class TeamMember extends Employee{
     }
 
     public TeamMember(String userName, String password, int isManager, int id) {
-        super(userName, password, isManager);
-        this.id = id;
+        super(userName, password, isManager, id);
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
 }

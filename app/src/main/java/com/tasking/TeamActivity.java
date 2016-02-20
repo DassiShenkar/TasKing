@@ -1,5 +1,6 @@
 package com.tasking;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class TeamActivity extends AppCompatActivity {
         createTeam.setTypeface(regularTypeFace);
         ArrayList<Employee> team = TaskDAO.getInstance(this).getTeamMembers();
         if (team != null){
-            createTeam.setVisibility(TextView.GONE);
+            createTeam.setTextColor(Color.parseColor("#ffffff"));
             //TODO: remove greg's arrow
             mAdapter = new MyRecyclerAdapter(team);
             mRecyclerView = (RecyclerView) findViewById(com.tasking.R.id.my_recycler_view);
