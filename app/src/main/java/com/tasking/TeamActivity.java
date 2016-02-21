@@ -1,5 +1,6 @@
 package com.tasking;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class TeamActivity extends AppCompatActivity {
         }
     }
     public void addMember(View view){
-        
+        Intent intent = new Intent(this, AddMemberActivity.class);
+        startActivity(intent);
     }
 }

@@ -57,14 +57,14 @@
         android:layout_alignLeft="@+id/txt_password"
         android:layout_alignStart="@+id/txt_password"
         android:layout_marginBottom="12dp"
-        android:onClick="signUp" />
+        android:onClick="submit" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txt_sign_msg"
         android:layout_marginBottom="36dp"
-        android:text="@string/sign_up_msg"
+        android:text="@string/log_in_msg"
         android:textColor="#ffffff"
         android:textSize="38sp"
         android:gravity="center"
@@ -82,5 +82,16 @@
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/btn_sign"
         android:layout_alignStart="@+id/btn_sign" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        android:id="@+id/txt_toggle_sign"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_alignTop="@+id/txt_forgot"
+        android:layout_alignEnd="@+id/btn_sign"
+        android:onClick="signUp" />
 
 </RelativeLayout>

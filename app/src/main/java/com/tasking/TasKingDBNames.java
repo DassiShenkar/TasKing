@@ -28,4 +28,9 @@ public class TasKingDBNames {
         public static final String COLUMN_TASK_A_NAME = "task id";
         public static final String COLUMN_EMPLOYEE_A_NAME = "employee_id";
     }
+    public static final class TeamsEntry implements BaseColumns{
+        public static final String TABLE_NAME = "teams";
+        public static final String COLUMN_MANAGER_ID = "manager_id";
+        public static final String COLUMN_MEMBER_ID = "member_id";
+    }
 }

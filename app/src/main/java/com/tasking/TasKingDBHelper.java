@@ -19,6 +19,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_EMPLOYEES = "employees";
     private static final String TABLE_TASKS = "tasks";
     private static final String TABLE_TASK_ASSIGNEES = "task_assignees";
+    private static final String TABLE_TEAMS = "teams";
 
     //Employee Table Column names
     private static final String KEY_EMPLOYEE_ID = "id";
@@ -40,6 +41,9 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String KEY_TASK_A_NAME = "task_name";
     private static final String KEY_EMPLOYEE_A_NAME = "employee_name";
 
+    //Teams Column names
+    private static final String KEY_TEAMS_MANAGER_ID = "manager_id";
+    private static final String KEY_TEAMS_MEMBER_ID = "member_id";
 
     // Tables create statement
     private static final String CREATE_EMPLOYEES_TABLE = "CREATE TABLE " + TABLE_EMPLOYEES
@@ -52,6 +56,9 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TASKS_ASSIGNEES_TABLE = "CREATE TABLE " +
             TABLE_TASK_ASSIGNEES + "(" + KEY_ASSIGNEES_ID + " INTEGER PRIMARY KEY,"
             + KEY_TASK_A_NAME + " TEXT," + KEY_EMPLOYEE_A_NAME + " TEXT);";
+    private static final String CREATE_TEAMS_TABLE = "CREATE TABLE " +
+            TABLE_TEAMS + "(" + KEY_TEAMS_MANAGER_ID + " INTEGER,"
+            + KEY_TEAMS_MEMBER_ID + " INTEGER);";
 
     public TasKingDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,6 +69,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_EMPLOYEES_TABLE);
         db.execSQL(CREATE_TASKS_TABLE);
         db.execSQL(CREATE_TASKS_ASSIGNEES_TABLE);
+        db.execSQL(CREATE_TEAMS_TABLE);
     }
 
     @Override
@@ -69,6 +77,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EMPLOYEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASK_ASSIGNEES);
+        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TEAMS_TABLE);
         onCreate(db);
     }
 }
