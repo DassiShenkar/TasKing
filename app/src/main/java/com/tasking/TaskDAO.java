@@ -103,12 +103,20 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public ArrayList<Employee> getTeamMembers() {
+    public ArrayList<Employee> getTeamMembers(String userName) {
         ArrayList<Employee> members;
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME
-                             + " WHERE is_manager = 0";
+        String selectQuery = "SELECT * FROM " + TasKingDBNames.TeamsEntry.TABLE_NAME
+                             + " INNER JOIN " + TasKingDBNames.MemberEntry.TABLE_NAME
+                             + " ON " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
+                             + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + "="
+                             + TasKingDBNames.MemberEntry.TABLE_NAME + "."
+                             + TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME
+                             + " WHERE " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
+                             + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + " = '" + userName
+                             + "' AND " + TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER
+                             + "= 0";
         try {
             db = DBHelper.getWritableDatabase();
             cursor = db.rawQuery(selectQuery, null);

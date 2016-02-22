@@ -53,7 +53,6 @@ public class LoginActivity extends Activity {
         }
     }
 
-
     public void submit(View view) {
         Button signUp = (Button) findViewById(R.id.btn_sign);
         EditText username = (EditText) findViewById(R.id.txt_user_name);
@@ -61,13 +60,16 @@ public class LoginActivity extends Activity {
         String user = username.getText().toString();
         String pass = password.getText().toString();
         Intent intent;
+        Bundle userParams = new Bundle();
         if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){
             if(!user.equals("")) {
                 if (!pass.equals("")) {
                     Employee employee = new Manager(user, pass, 1);
                     TaskDAO.getInstance(this).addTeamMember(employee);
                     intent = new Intent(this, TeamActivity.class);
-                    intent.putExtra("isManager", true);
+                    userParams.putString("userName", employee.getUserName());
+                    userParams.putBoolean("isManager", true);
+                    intent.putExtras(userParams);
                     startActivity(intent);
                 }
                 else{
@@ -87,16 +89,22 @@ public class LoginActivity extends Activity {
                             if(member.getIsManager() == 1){
                                 if(TaskDAO.getInstance(this).hasMembers(member.getName())){
                                     intent = new Intent(this, TasksActivity.class);
-                                    intent.putExtra("isManager", true);
+                                    userParams.putString("userName", member.getUserName());
+                                    userParams.putBoolean("isManager", true);
+                                    intent.putExtras(userParams);
                                 }
                                 else{
                                     intent = new Intent(this, TeamActivity.class);
-                                    intent.putExtra("isManager", true);
+                                    userParams.putString("userName", member.getUserName());
+                                    userParams.putBoolean("isManager", true);
+                                    intent.putExtras(userParams);
                                 }
                             }
                             else{
                                 intent = new Intent(this, TasksActivity.class);
-                                intent.putExtra("isManager", false);
+                                userParams.putString("userName", member.getUserName());
+                                userParams.putBoolean("isManager", false);
+                                intent.putExtras(userParams);
                             }
                             startActivity(intent);
                         }

@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_item_text"
+        android:id="@+id/list_item_description"
         android:text="mock_text"
         android:textSize="30sp"
         android:layout_alignTop="@+id/list_item_button" />
@@ -17,20 +17,20 @@
         android:id="@+id/list_item_category"
         android:textSize="16dp"
         android:text="mock text"
-        android:layout_alignBottom="@+id/list_item_text"
-        android:layout_toEndOf="@+id/list_item_text" />
+        android:layout_alignBottom="@+id/list_item_description"
+        android:layout_toEndOf="@+id/list_item_description" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_dueDate"
-        android:text="mock_textz"
+        android:text="mock_text"
         android:textSize="16dp"
-        android:layout_below="@+id/list_item_text" />
+        android:layout_below="@+id/list_item_description" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_item_button"
+        android:id="@+id/list_item_view_edit"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true" />
 
