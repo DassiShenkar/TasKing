@@ -2,9 +2,7 @@ package com.tasking;
 
 import java.util.ArrayList;
 
-/**
- * Created by Grisha on 1/2/2016.
- */
+
 public interface ITaskDAO {
 
     void addTeamMember(Employee member);

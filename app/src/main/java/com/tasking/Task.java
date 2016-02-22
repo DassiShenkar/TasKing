@@ -2,9 +2,7 @@ package com.tasking;
 
 import java.util.ArrayList;
 
-/**
- * Created by Grisha on 1/2/2016.
- */
+
 public class Task {
     private int id;
     private String name;

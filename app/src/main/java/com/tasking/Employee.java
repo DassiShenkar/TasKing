@@ -1,8 +1,6 @@
 package com.tasking;
 
-/**
- * Created by Grisha on 1/6/2016.
- */
+
 public class Employee {
     private int id;
     private String name;

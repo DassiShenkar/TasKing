@@ -2,9 +2,7 @@ package com.tasking;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by Grisha on 1/5/2016.
- */
+
 public class TasKingDBNames {
     public static final class MemberEntry implements BaseColumns {
         public static final String TABLE_NAME = "employees";

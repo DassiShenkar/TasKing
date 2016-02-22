@@ -1,8 +1,6 @@
 package com.tasking;
 
-/**
- * Created by Grisha on 1/2/2016.
- */
+
 public class Manager extends Employee{
 
     public Manager() {

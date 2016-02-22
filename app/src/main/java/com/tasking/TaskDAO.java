@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
-/**
- * Created by Grisha on 1/2/2016.
- */
+
 public class TaskDAO implements ITaskDAO {
 
     private static TaskDAO taskDAO;
@@ -106,7 +104,7 @@ public class TaskDAO implements ITaskDAO {
         Employee member = null;
         Cursor cursor;
         String selectQuery = "SELECT * FROM " + TasKingDBNames.TeamsEntry.TABLE_NAME
-                + " INNER JOIN " + TasKingDBNames.MemberEntry.TABLE_NAME
+                + " JOIN " + TasKingDBNames.MemberEntry.TABLE_NAME
                 + " ON " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
                 + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + "="
                 + TasKingDBNames.MemberEntry.TABLE_NAME + "."
@@ -147,7 +145,7 @@ public class TaskDAO implements ITaskDAO {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         String selectQuery = "SELECT * FROM " + TasKingDBNames.TeamsEntry.TABLE_NAME
-                             + " INNER JOIN " + TasKingDBNames.MemberEntry.TABLE_NAME
+                             + " JOIN " + TasKingDBNames.MemberEntry.TABLE_NAME
                              + " ON " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
                              + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + "="
                              + TasKingDBNames.MemberEntry.TABLE_NAME + "."
