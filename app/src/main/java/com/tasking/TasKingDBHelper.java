@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class TasKingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7;
 
     // Database Name
     private static final String DATABASE_NAME = "TasKingDB";
@@ -42,8 +42,8 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String KEY_EMPLOYEE_A_NAME = "employee_name";
 
     //Teams Column names
-    private static final String KEY_TEAMS_MANAGER_ID = "manager_id";
-    private static final String KEY_TEAMS_MEMBER_ID = "member_id";
+    private static final String KEY_TEAMS_MANAGER_NAME = "manager_name";
+    private static final String KEY_TEAMS_MEMBER_NAME = "member_name";
 
     // Tables create statement
     private static final String CREATE_EMPLOYEES_TABLE = "CREATE TABLE " + TABLE_EMPLOYEES
@@ -57,8 +57,8 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
             TABLE_TASK_ASSIGNEES + "(" + KEY_ASSIGNEES_ID + " INTEGER PRIMARY KEY,"
             + KEY_TASK_A_NAME + " TEXT," + KEY_EMPLOYEE_A_NAME + " TEXT);";
     private static final String CREATE_TEAMS_TABLE = "CREATE TABLE " +
-            TABLE_TEAMS + "(" + KEY_TEAMS_MANAGER_ID + " INTEGER,"
-            + KEY_TEAMS_MEMBER_ID + " INTEGER);";
+            TABLE_TEAMS + "(" + KEY_TEAMS_MANAGER_NAME + " TEXT,"
+            + KEY_TEAMS_MEMBER_NAME + " TEXT);";
 
     public TasKingDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -77,7 +77,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EMPLOYEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASK_ASSIGNEES);
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TEAMS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEAMS);
         onCreate(db);
     }
 }

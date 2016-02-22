@@ -363,4 +363,24 @@ public class TaskDAO implements ITaskDAO {
             }
         }
     }
+
+    @Override
+    public boolean hasMembers(String name){
+        String countQuery = "SELECT * FROM " + TasKingDBNames.TeamsEntry.TABLE_NAME
+                            + " WHERE manager_name = '" + name + "'";
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try{
+            db = DBHelper.getReadableDatabase();
+            cursor = db.rawQuery(countQuery, null);
+            return cursor.getCount() > 0;
+        } finally {
+            if (cursor != null){
+                cursor.close();
+            }
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
 }

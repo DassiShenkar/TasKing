@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class LoginActivity extends Activity {
@@ -59,14 +60,61 @@ public class LoginActivity extends Activity {
         EditText password = (EditText) findViewById(R.id.txt_password);
         String user = username.getText().toString();
         String pass = password.getText().toString();
+        Intent intent;
         if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){
-            Employee employee = new Manager(user, pass, 1);
-            TaskDAO.getInstance(this).addTeamMember(employee);
-            Intent intent = new Intent(this, TeamActivity.class);
-            startActivity(intent);
+            if(!user.equals("")) {
+                if (!pass.equals("")) {
+                    Employee employee = new Manager(user, pass, 1);
+                    TaskDAO.getInstance(this).addTeamMember(employee);
+                    intent = new Intent(this, TeamActivity.class);
+                    intent.putExtra("isManager", true);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
-
+            if(!user.equals("")){
+                if(!pass.equals("")){
+                    Employee member = TaskDAO.getInstance(this).getTeamMember(user);
+                    if(member != null){
+                        if(pass.equals(member.getPassword())){
+                            if(member.getIsManager() == 1){
+                                if(TaskDAO.getInstance(this).hasMembers(member.getName())){
+                                    intent = new Intent(this, TasksActivity.class);
+                                    intent.putExtra("isManager", true);
+                                }
+                                else{
+                                    intent = new Intent(this, TeamActivity.class);
+                                    intent.putExtra("isManager", true);
+                                }
+                            }
+                            else{
+                                intent = new Intent(this, TasksActivity.class);
+                                intent.putExtra("isManager", false);
+                            }
+                            startActivity(intent);
+                        }
+                        else{
+                            Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

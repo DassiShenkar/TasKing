@@ -30,7 +30,7 @@ public class TasKingDBNames {
     }
     public static final class TeamsEntry implements BaseColumns{
         public static final String TABLE_NAME = "teams";
-        public static final String COLUMN_MANAGER_ID = "manager_id";
-        public static final String COLUMN_MEMBER_ID = "member_id";
+        public static final String COLUMN_MANAGER_NAME = "manager_name";
+        public static final String COLUMN_MEMBER_NAME = "member_name";
     }
 }
