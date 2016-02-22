@@ -59,14 +59,13 @@ public class LoginActivity extends Activity {
         EditText password = (EditText) findViewById(R.id.txt_password);
         String user = username.getText().toString();
         String pass = password.getText().toString();
-        Intent intent;
         Bundle userParams = new Bundle();
         if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){
             if(!user.equals("")) {
                 if (!pass.equals("")) {
                     Employee employee = new Manager(user, pass, 1);
                     TaskDAO.getInstance(this).addTeamMember(employee);
-                    intent = new Intent(this, TeamActivity.class);
+                    Intent intent = new Intent(this, TeamActivity.class);
                     userParams.putString("userName", employee.getUserName());
                     userParams.putBoolean("isManager", true);
                     intent.putExtras(userParams);
@@ -88,25 +87,27 @@ public class LoginActivity extends Activity {
                         if(pass.equals(member.getPassword())){
                             if(member.getIsManager() == 1){
                                 if(TaskDAO.getInstance(this).hasMembers(member.getName())){
-                                    intent = new Intent(this, TasksActivity.class);
+                                    Intent intent = new Intent(this, TasksActivity.class);
                                     userParams.putString("userName", member.getUserName());
                                     userParams.putBoolean("isManager", true);
                                     intent.putExtras(userParams);
+                                    startActivity(intent);
                                 }
                                 else{
-                                    intent = new Intent(this, TeamActivity.class);
+                                    Intent intent = new Intent(this, TeamActivity.class);
                                     userParams.putString("userName", member.getUserName());
                                     userParams.putBoolean("isManager", true);
                                     intent.putExtras(userParams);
+                                    startActivity(intent);
                                 }
                             }
                             else{
-                                intent = new Intent(this, TasksActivity.class);
+                                Intent intent = new Intent(this, TasksActivity.class);
                                 userParams.putString("userName", member.getUserName());
                                 userParams.putBoolean("isManager", false);
                                 intent.putExtras(userParams);
+                                startActivity(intent);
                             }
-                            startActivity(intent);
                         }
                         else{
                             Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();

@@ -10,6 +10,7 @@ public interface ITaskDAO {
     void addTeamMember(Employee member);
     void removeTeamMember(String userName);
     Employee getTeamMember(String userName);
+    Employee getTeamMember(String userName, String managerName);
     ArrayList<Employee> getTeamMembers(String userName);
     void updateTeamMember(Employee member);
     int getMemberCount();

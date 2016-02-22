@@ -45,13 +45,20 @@ public class AddMemberActivity extends Activity {
                     EditText email = (EditText) findViewById(R.id.edit_member_email);
                     EditText phone = (EditText) findViewById(R.id.edit_member_phone);
                     if (!name.getText().toString().equals("") || !email.getText().toString().equals("") || !phone.getText().toString().equals("")){
-                        Employee employee = new TeamMember(email.getText().toString(), phone.getText().toString(), 0);
-                        TaskDAO.getInstance(getApplicationContext()).addTeamMember(employee);
-                        Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
-                        name.setText("");
-                        email.setText("");
-                        phone.setText("");
-                        teamMembers.add(employee);
+                        Bundle userParams = getIntent().getExtras();
+                        Employee employee = TaskDAO.getInstance(getApplicationContext()).getTeamMember(name.getText().toString(), userParams.getString("userName"));
+                        if(employee == null) {
+                            employee = new TeamMember(email.getText().toString(), phone.getText().toString(), 0);
+                            TaskDAO.getInstance(getApplicationContext()).addTeamMember(employee);
+                            Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
+                            name.setText("");
+                            email.setText("");
+                            phone.setText("");
+                            teamMembers.add(employee);
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Member already exists", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -65,39 +72,41 @@ public class AddMemberActivity extends Activity {
         }
     }
 
-    public void done(View view){
-        Intent intent = new Intent(this, TasksActivity.class);
+    public void back(View view){
+        Intent intent = new Intent(this, TeamActivity.class);
         Bundle userParams = getIntent().getExtras();
         intent.putExtras(userParams);
-        Intent sendMail = new Intent(Intent.ACTION_SEND);
-        String[] to = new String[teamMembers.size()];
-        Employee manager = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
-        int i = 0;
-        for(Employee member: teamMembers){
-            to[i] = member.getUserName();
-        }
-        String subject = "Let's go TasKing Together";
-        String body = "Hello\n" + manager.getUserName() + " welcomes you to download the TasKing app\nand join the " +
-                       teamName + " team\nYou can get the app at http://someplace.com";
-        sendMail.setType("plain/text");
-        sendMail.putExtra(Intent.EXTRA_EMAIL, to);
-        sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
-        sendMail.putExtra(Intent.EXTRA_TEXT, body);
-        startActivity(Intent.createChooser(intent, ""));
-       /* new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Closing Activity")
-                .setMessage("Are you sure you want to close this activity?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
-                .setNegativeButton("No", null)
-                .show();*/
         startActivity(intent);
+    }
+
+    public void done(View view){
+        if(teamMembers != null) {
+            Intent intent = new Intent(this, TasksActivity.class);
+            Bundle userParams = getIntent().getExtras();
+            intent.putExtras(userParams);
+            Intent sendMail = new Intent(Intent.ACTION_SEND);
+            String[] to = new String[teamMembers.size()];
+            Employee manager = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
+            int i = 0;
+            for (Employee member : teamMembers) {
+                to[i] = member.getUserName();
+            }
+            String subject = "Let's go TasKing Together";
+            String body = "Hello\n" + manager.getUserName() + " welcomes you to download the TasKing app\nand join the " +
+                    teamName + " team\nYou can get the app at http://someplace.com";
+            sendMail.setType("message/rfc822");
+            sendMail.putExtra(Intent.EXTRA_EMAIL, to);
+            sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
+            sendMail.putExtra(Intent.EXTRA_TEXT, body);
+            try {
+                startActivity(Intent.createChooser(sendMail, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(this, "There are no email clients installed", Toast.LENGTH_SHORT).show();
+            }
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(this, "No new members were added", Toast.LENGTH_SHORT).show();
+        }
     }
 }

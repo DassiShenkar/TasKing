@@ -14,11 +14,9 @@ public class TaskDAO implements ITaskDAO {
 
     private static TaskDAO taskDAO;
     private TasKingDBHelper DBHelper;
-    private Context context;
 
     private TaskDAO(Context context) {
-        this.context = context;
-        DBHelper = new TasKingDBHelper(this.context);
+        DBHelper = new TasKingDBHelper(context);
     }
 
     public static TaskDAO getInstance(Context context) {
@@ -80,6 +78,47 @@ public class TaskDAO implements ITaskDAO {
                             TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER},
                     TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + " = ?",
                     new String[]{userName}, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                if (cursor.getString(3).equals("1")) {
+                    member = new Manager(cursor.getString(1),
+                            cursor.getString(2),
+                            Integer.parseInt(cursor.getString(3)),
+                            Integer.parseInt(cursor.getString(0)));
+                } else {
+                    member = new TeamMember(cursor.getString(1),
+                            cursor.getString(2),
+                            Integer.parseInt(cursor.getString(3)),
+                            Integer.parseInt(cursor.getString(0)));
+                }
+                cursor.close();
+            }
+            return member;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    @Override
+    public Employee getTeamMember(String userName, String managerName) {
+        SQLiteDatabase db = null;
+        Employee member = null;
+        Cursor cursor;
+        String selectQuery = "SELECT * FROM " + TasKingDBNames.TeamsEntry.TABLE_NAME
+                + " INNER JOIN " + TasKingDBNames.MemberEntry.TABLE_NAME
+                + " ON " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
+                + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + "="
+                + TasKingDBNames.MemberEntry.TABLE_NAME + "."
+                + TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME
+                + " WHERE " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
+                + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + " = '" + managerName
+                + "' AND " + TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER
+                + " = 0 AND " + TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME +
+                " = '" + userName + "'";
+        try {
+            db = DBHelper.getReadableDatabase();
+            cursor = db.rawQuery(selectQuery, null);
             if (cursor.moveToFirst()) {
                 if (cursor.getString(3).equals("1")) {
                     member = new Manager(cursor.getString(1),

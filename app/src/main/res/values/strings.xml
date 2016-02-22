@@ -49,5 +49,6 @@
     <string name="email">E-mail</string>
     <string name="Add">Add</string>
     <string name="phone">Phone number</string>
+    <string name="back">BACK</string>
 
 </resources>

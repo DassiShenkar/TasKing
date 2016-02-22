@@ -44,5 +44,7 @@
         <!-- </activity> -->
         <activity android:name=".AddMemberActivity" >
         </activity>
+        <activity android:name=".TasksActivity" >
+        </activity>
     </application>
 </manifest>
