@@ -24,7 +24,6 @@ public class AddMemberActivity extends Activity {
         setContentView(R.layout.activity_add_member);
         RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
         wrapper.setVisibility(View.GONE);
-        ArrayList<Employee> members = new ArrayList<>();
         TextView title = (TextView)findViewById(R.id.title);
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         title.setTypeface(boldTypeFace);
@@ -44,11 +43,14 @@ public class AddMemberActivity extends Activity {
                     EditText name = (EditText) findViewById(R.id.edit_member_name);
                     EditText email = (EditText) findViewById(R.id.edit_member_email);
                     EditText phone = (EditText) findViewById(R.id.edit_member_phone);
-                    if (!name.getText().toString().equals("") || !email.getText().toString().equals("") || !phone.getText().toString().equals("")){
+                    String nameStr = name.getText().toString();
+                    String emailStr = email.getText().toString();
+                    String phoneStr = phone.getText().toString();
+                    if (!nameStr.equals("") || !emailStr.equals("") || !phoneStr.equals("")){
                         Bundle userParams = getIntent().getExtras();
-                        Employee employee = TaskDAO.getInstance(getApplicationContext()).getTeamMember(name.getText().toString(), userParams.getString("userName"));
+                        Employee employee = TaskDAO.getInstance(getApplicationContext()).getTeamMember(nameStr, userParams.getString("userName"));
                         if(employee == null) {
-                            employee = new TeamMember(email.getText().toString(), phone.getText().toString(), 0);
+                            employee = new TeamMember(emailStr, phoneStr, 0);
                             TaskDAO.getInstance(getApplicationContext()).addTeamMember(employee);
                             Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
                             name.setText("");
@@ -80,16 +82,20 @@ public class AddMemberActivity extends Activity {
     }
 
     public void done(View view){
-        if(teamMembers != null) {
-            Intent intent = new Intent(this, TasksActivity.class);
+        for (Employee member : teamMembers) {
+            if(member.getUserName().equals("")){
+                teamMembers.remove(member);
+            }
+        }
+        if(teamMembers.size() > 0) {
             Bundle userParams = getIntent().getExtras();
-            intent.putExtras(userParams);
             Intent sendMail = new Intent(Intent.ACTION_SEND);
             String[] to = new String[teamMembers.size()];
             Employee manager = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
             int i = 0;
             for (Employee member : teamMembers) {
                 to[i] = member.getUserName();
+                teamMembers.remove(member);
             }
             String subject = "Let's go TasKing Together";
             String body = "Hello\n" + manager.getUserName() + " welcomes you to download the TasKing app\nand join the " +
@@ -99,14 +105,25 @@ public class AddMemberActivity extends Activity {
             sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
             sendMail.putExtra(Intent.EXTRA_TEXT, body);
             try {
-                startActivity(Intent.createChooser(sendMail, "Send mail..."));
+                startActivityForResult(Intent.createChooser(sendMail, "Send mail..."), 1);
             } catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(this, "There are no email clients installed", Toast.LENGTH_SHORT).show();
             }
-            startActivity(intent);
+
         }
         else{
             Toast.makeText(this, "No new members were added", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode==1)
+        {
+            Intent intent = new Intent(this, TasksActivity.class);
+            Bundle userParams = getIntent().getExtras();
+            intent.putExtras(userParams);
+            startActivity(intent);
         }
     }
 }
