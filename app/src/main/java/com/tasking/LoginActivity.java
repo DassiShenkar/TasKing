@@ -86,7 +86,7 @@ public class LoginActivity extends Activity {
                     if(member != null){
                         if(pass.equals(member.getPassword())){
                             if(member.getIsManager() == 1){
-                                if(TaskDAO.getInstance(this).hasMembers(member.getName())){
+                                if(TaskDAO.getInstance(this).hasMembers(member.getUserName())){
                                     Intent intent = new Intent(this, TasksActivity.class);
                                     userParams.putString("userName", member.getUserName());
                                     userParams.putBoolean("isManager", true);

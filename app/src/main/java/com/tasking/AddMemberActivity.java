@@ -52,6 +52,7 @@ public class AddMemberActivity extends Activity {
                         if(employee == null) {
                             employee = new TeamMember(emailStr, phoneStr, 0);
                             TaskDAO.getInstance(getApplicationContext()).addTeamMember(employee);
+                            TaskDAO.getInstance(getApplicationContext()).addMemberManager(employee.getUserName(), userParams.getString("userName"));
                             Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
                             name.setText("");
                             email.setText("");
@@ -94,9 +95,9 @@ public class AddMemberActivity extends Activity {
             Employee manager = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
             int i = 0;
             for (Employee member : teamMembers) {
-                to[i] = member.getUserName();
-                teamMembers.remove(member);
+                to[i++] = member.getUserName();
             }
+            teamMembers = null;
             String subject = "Let's go TasKing Together";
             String body = "Hello\n" + manager.getUserName() + " welcomes you to download the TasKing app\nand join the " +
                     teamName + " team\nYou can get the app at http://someplace.com";

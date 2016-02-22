@@ -428,4 +428,19 @@ public class TaskDAO implements ITaskDAO {
             }
         }
     }
+
+    public void addMemberManager(String member, String manager){
+        SQLiteDatabase db = null;
+        try {
+            db = DBHelper.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TasKingDBNames.TeamsEntry.COLUMN_MEMBER_NAME, member);
+            values.put(TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME, manager);
+            db.insert(TasKingDBNames.TeamsEntry.TABLE_NAME, null, values);
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
 }
