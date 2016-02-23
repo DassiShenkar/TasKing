@@ -14,12 +14,4 @@ public class AllTasksTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_all_tasks_tab, container, false);
     }
-
-    public void addTask(View view){
-
-    }
-
-    public void refresh(View view){
-
-    }
 }

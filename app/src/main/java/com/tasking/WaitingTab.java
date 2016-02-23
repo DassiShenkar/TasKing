@@ -14,11 +14,4 @@ public class WaitingTab extends Fragment {
         return inflater.inflate(R.layout.fragment_waiting_tab, container, false);
     }
 
-    public void addTask(View view){
-
-    }
-
-    public void refresh(View view){
-
-    }
 }

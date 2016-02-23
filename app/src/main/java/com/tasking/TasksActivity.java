@@ -1,10 +1,12 @@
 package com.tasking;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 public class TasksActivity extends AppCompatActivity {
 
@@ -41,20 +43,14 @@ public class TasksActivity extends AppCompatActivity {
             }
         });
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void addTask(View view){
+        Bundle userParams = getIntent().getExtras();
+        Intent intent = new Intent(this, AddTaskActivity.class);
+        intent.putExtras(userParams);
+        startActivity(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
+    public void refresh(View view){
+        //TODO: after BackEnd support
+    }
 }
