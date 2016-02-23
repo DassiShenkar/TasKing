@@ -2,40 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.tasking.WaitingTab">
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/waiting_add_btn"
-        android:layout_height="wrap_content"
-        android:scaleType="centerInside"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_plus"
-        app:layout_anchorGravity="bottom|right|end"
-        android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        app:backgroundTint="@color/yellow"
-        android:tint="@color/white"
-        android:clickable="true"
-        android:onClick="addTask" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/wating_refresh_btn"
-        android:layout_height="wrap_content"
-        android:scaleType="centerInside"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_plus"
-        app:layout_anchorGravity="bottom|right|end"
-        app:backgroundTint="@color/blue"
-        android:tint="@color/white"
-        android:clickable="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignBottom="@+id/waiting_add_btn"
-        android:layout_alignParentStart="true"
-        android:nestedScrollingEnabled="false"
-        android:onClick="refresh" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tasks_recycler_view"
@@ -44,6 +11,5 @@
         android:layout_gravity="start|top"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true" />
-
 
 </RelativeLayout>
