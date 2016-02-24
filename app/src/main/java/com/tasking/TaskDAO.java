@@ -314,7 +314,7 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public ArrayList<Task> getTasks(String name) {
+    public ArrayList<Task> getTasks(String username) {
         ArrayList<Task> tasks;
         SQLiteDatabase db = null;
         Cursor cursor;

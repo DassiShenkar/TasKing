@@ -42,6 +42,31 @@
         android:layout_below="@id/tab_layout"
         android:layout_alignParentBottom="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/task_text"
+        android:layout_marginTop="96dp"
+        android:textSize="34sp"
+        android:textColor="@color/darkBlue"
+        android:text="@string/create_task"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/task_img_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/long_arrow"
+        android:gravity="center_horizontal"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/arrow"
+        android:layout_above="@+id/tab_refresh_btn"
+        android:layout_toStartOf="@+id/tab_add_btn"
+        android:layout_below="@+id/task_text" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/tab_add_btn"
         android:layout_height="wrap_content"

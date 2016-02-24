@@ -2,9 +2,13 @@ package com.tasking;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -24,6 +28,11 @@ public class AddMemberActivity extends Activity {
         setContentView(R.layout.activity_add_member);
         RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
         wrapper.setVisibility(View.GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.BLACK);
+        }
         TextView title = (TextView)findViewById(R.id.title);
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         title.setTypeface(boldTypeFace);

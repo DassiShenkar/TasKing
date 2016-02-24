@@ -30,7 +30,7 @@ public class TeamActivity extends Activity {
         if (team != null){
             createTeam.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
-
+            //TODO: insert team member list
         }
     }
     public void addMember(View view){
