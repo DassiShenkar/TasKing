@@ -10,8 +10,4 @@ public class Manager extends Employee{
         super(userName, password, isManager);
     }
 
-    public Manager(String userName, String password, int isManager, int id) {
-        super(userName, password, isManager, id);
-    }
-
 }

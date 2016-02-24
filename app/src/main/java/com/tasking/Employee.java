@@ -2,7 +2,6 @@ package com.tasking;
 
 
 public class Employee {
-    private int id;
     private String name;
     private String userName;
     private String password;
@@ -16,21 +15,6 @@ public class Employee {
         this.userName = userName;
         this.password = password;
         this.isManager = isManager;
-    }
-
-    public Employee(String userName, String password, int isManager, int id) {
-        this.userName = userName;
-        this.password = password;
-        this.isManager = isManager;
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

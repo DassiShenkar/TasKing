@@ -5,12 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-/**
- * Created by Grisha on 1/5/2016.
- */
+
 public class TasKingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     // Database Name
     private static final String DATABASE_NAME = "TasKingDB";
@@ -22,7 +20,6 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_TEAMS = "teams";
 
     //Employee Table Column names
-    private static final String KEY_EMPLOYEE_ID = "id";
     private static final String KEY_EMPLOYEE_NAME = "name";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
@@ -35,10 +32,10 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String KEY_CATEGORY = "category";
     private static final String KEY_PRIORITY = "priority";
     private static final String KEY_LOCATION = "location";
+    private static final String KEY_DONE = "done";
 
     //Task Assignees Column names
-    private static final String KEY_ASSIGNEES_ID = "id";
-    private static final String KEY_TASK_A_NAME = "task_name";
+    private static final String KEY_TASK_A_ID = "task_id";
     private static final String KEY_EMPLOYEE_A_NAME = "employee_name";
 
     //Teams Column names
@@ -47,15 +44,15 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
 
     // Tables create statement
     private static final String CREATE_EMPLOYEES_TABLE = "CREATE TABLE " + TABLE_EMPLOYEES
-            + "(" + KEY_EMPLOYEE_ID + " INTEGER PRIMARY KEY," + KEY_EMPLOYEE_NAME + " TEXT,"
-            + KEY_USERNAME + " TEXT," + KEY_PASSWORD + " TEXT," + KEY_IS_MANAGER + " INTEGER);";
+            + "(" + KEY_EMPLOYEE_NAME + " TEXT," + KEY_USERNAME
+            + " TEXT PRIMARY KEY," + KEY_PASSWORD + " TEXT," + KEY_IS_MANAGER + " INTEGER);";
     private static final String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS + "("
             + KEY_TASK_ID + " INTEGER PRIMARY KEY," + KEY_TASK_NAME + " TEXT," + KEY_DUE_DATE
             + " TEXT," + KEY_CATEGORY + " TEXT," + KEY_PRIORITY
-            + " TEXT," + KEY_LOCATION + " TEXT);";
-    private static final String CREATE_TASKS_ASSIGNEES_TABLE = "CREATE TABLE " +
-            TABLE_TASK_ASSIGNEES + "(" + KEY_ASSIGNEES_ID + " INTEGER PRIMARY KEY,"
-            + KEY_TASK_A_NAME + " TEXT," + KEY_EMPLOYEE_A_NAME + " TEXT);";
+            + " TEXT," + KEY_DONE + " INTEGER," + KEY_LOCATION + " TEXT);";
+    private static final String CREATE_TASKS_ASSIGNEES_TABLE = "CREATE TABLE "
+            + TABLE_TASK_ASSIGNEES + "(" + KEY_TASK_A_ID
+            + " INTEGER," + KEY_EMPLOYEE_A_NAME + " TEXT);";
     private static final String CREATE_TEAMS_TABLE = "CREATE TABLE " +
             TABLE_TEAMS + "(" + KEY_TEAMS_MANAGER_NAME + " TEXT,"
             + KEY_TEAMS_MEMBER_NAME + " TEXT);";
