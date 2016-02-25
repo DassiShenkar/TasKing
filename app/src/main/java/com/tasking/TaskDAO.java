@@ -227,6 +227,7 @@ public class TaskDAO implements ITaskDAO {
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
+            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS, task.getStatus());
             db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, values);
             int taskId = this.getTask(task.getId()).getId();
             for (String userName : userNames) {
@@ -271,7 +272,8 @@ public class TaskDAO implements ITaskDAO {
                             TasKingDBNames.TaskEntry.COLUMN_TASK_DUE_DATE,
                             TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY,
                             TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY,
-                            TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION},
+                            TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION,
+                            TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS},
                     TasKingDBNames.TaskEntry.COLUMN_TASK_ID + " = ?",
                     new String[]{String.valueOf(taskId)}, null, null, null, null);
             if (cursor != null) {
@@ -282,6 +284,7 @@ public class TaskDAO implements ITaskDAO {
                 task.setCategory(cursor.getString(3));
                 task.setPriority(cursor.getString(4));
                 task.setLocation(cursor.getString(5));
+                task.setStatus(cursor.getString(6));
                 cursor.close();
             }
             Cursor cursor2 = null;
@@ -299,8 +302,9 @@ public class TaskDAO implements ITaskDAO {
                 }
                 task.setAssignees(assignees);
                 cursor2.close();
+                return task;
             }
-            return task;
+            return null;
         } finally {
             if (db != null) {
                 db.close();
@@ -336,6 +340,7 @@ public class TaskDAO implements ITaskDAO {
                     task.setCategory(cursor.getString(3));
                     task.setPriority(cursor.getString(4));
                     task.setLocation(cursor.getString(5));
+                    task.setStatus(cursor.getString(6));
                     cursor2 = db.query(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME,
                             new String[]{TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID},
                             TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID + " = ?",
@@ -383,7 +388,7 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task, ArrayList<Employee> employees) {
         SQLiteDatabase db = null;
         try {
             db = DBHelper.getReadableDatabase();
@@ -394,11 +399,14 @@ public class TaskDAO implements ITaskDAO {
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
+            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS, task.getStatus());
             db.update(TasKingDBNames.TaskEntry.TABLE_NAME,
                     values, TasKingDBNames.TaskEntry.COLUMN_TASK_NAME + " = ?",
-                    new String[]{task.getName()});
-            ArrayList<TeamMember> assignees = task.getAssignees();
-            for(TeamMember assignee : assignees){
+                    new String[]{String.valueOf(task.getId())});
+            db.delete(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME,
+                    TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID + " = ?",
+                    new String[]{String.valueOf(task.getId())});
+            for(Employee assignee : employees){
                 ContentValues values2 = new ContentValues();
                 values2.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, task.getName());
                 values2.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, assignee.getUserName());
