@@ -28,56 +28,5 @@
         android:layout_below="@id/tab_layout"
         android:layout_alignParentBottom="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/task_text"
-        android:textSize="34sp"
-        android:layout_marginTop="15dp"
-        android:textColor="@color/darkBlue"
-        android:text="@string/create_task"
-        android:textAlignment="center"
-        android:layout_below="@+id/tab_layout"
-        android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:id="@+id/task_img_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/long_arrow"
-        android:contentDescription="@string/arrow"
-        android:layout_below="@+id/task_text"
-        android:layout_centerHorizontal="true" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/tab_add_btn"
-        android:layout_height="wrap_content"
-        android:scaleType="centerInside"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_plus"
-        app:layout_anchorGravity="bottom|right|end"
-        android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        app:backgroundTint="@color/yellow"
-        android:tint="@color/white"
-        android:clickable="true"
-        android:onClick="addTask" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/tab_refresh_btn"
-        android:layout_height="wrap_content"
-        android:scaleType="centerInside"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_plus"
-        app:layout_anchorGravity="bottom|right|end"
-        app:backgroundTint="@color/blue"
-        android:tint="@color/white"
-        android:clickable="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignBottom="@+id/tab_add_btn"
-        android:layout_alignParentStart="true"
-        android:nestedScrollingEnabled="false"
-        android:onClick="refresh" />
 </RelativeLayout>

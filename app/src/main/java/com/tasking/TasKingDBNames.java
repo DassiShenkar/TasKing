@@ -7,7 +7,6 @@ public class TasKingDBNames {
     public static final class MemberEntry implements BaseColumns {
         public static final String TABLE_NAME = "employees";
         public static final String COLUMN_EMPLOYEE_USERNAME = "username";
-        public static final String COLUMN_EMPLOYEE_NAME = "name";
         public static final String COLUMN_EMPLOYEE_PASSWORD = "password";
         public static final String COLUMN_EMPLOYEE_IS_MANAGER = "is_manager";
     }
@@ -19,6 +18,7 @@ public class TasKingDBNames {
         public static final String COLUMN_TASK_CATEGORY = "category";
         public static final String COLUMN_TASK_PRIORITY = "priority";
         public static final String COLUMN_TASK_LOCATION = "location";
+        public static final String COLUMN_TASK_STATUS = "status";
     }
     public static final class TaskAssigneesEntry implements BaseColumns{
         public static final String TABLE_NAME = "task_assignees";

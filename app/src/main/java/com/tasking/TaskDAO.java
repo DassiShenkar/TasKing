@@ -78,14 +78,14 @@ public class TaskDAO implements ITaskDAO {
                     TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + " = ?",
                     new String[]{userName}, null, null, null, null);
             if (cursor.moveToFirst()) {
-                if (cursor.getString(3).equals("1")) {
-                    member = new Manager(cursor.getString(1),
-                            cursor.getString(2),
-                            Integer.parseInt(cursor.getString(3)));
+                if (cursor.getString(2).equals("1")) {
+                    member = new Manager(cursor.getString(0),
+                            cursor.getString(1),
+                            Integer.parseInt(cursor.getString(2)));
                 } else {
-                    member = new TeamMember(cursor.getString(1),
-                            cursor.getString(2),
-                            Integer.parseInt(cursor.getString(3)));
+                    member = new TeamMember(cursor.getString(0),
+                            cursor.getString(1),
+                            Integer.parseInt(cursor.getString(2)));
                 }
                 cursor.close();
                 return member;

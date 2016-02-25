@@ -10,6 +10,7 @@ public class Task {
     private String category;
     private String priority;
     private String location;
+    private String status;
     private ArrayList<TeamMember> assignees;
 
     public Task() {
@@ -76,6 +77,14 @@ public class Task {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public ArrayList<TeamMember> getAssignees() {

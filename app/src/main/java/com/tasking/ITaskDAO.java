@@ -17,7 +17,7 @@ public interface ITaskDAO {
     Task getTask(int taskId);
     ArrayList<Task> getTasks(String name);
     int getTaskCount(int userID);
-    void updateTask(Task task);
+    void updateTask(Task task, ArrayList<Employee> employees);
     boolean hasMembers(String name);
     void addMemberManager(String member, String manager);
 
