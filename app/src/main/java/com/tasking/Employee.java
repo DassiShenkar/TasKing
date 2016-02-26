@@ -2,7 +2,6 @@ package com.tasking;
 
 
 public class Employee {
-    private String name;
     private String userName;
     private String password;
     private int isManager;
@@ -15,14 +14,6 @@ public class Employee {
         this.userName = userName;
         this.password = password;
         this.isManager = isManager;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUserName() {
@@ -52,7 +43,6 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "name='" + name + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", isManager=" + isManager +
