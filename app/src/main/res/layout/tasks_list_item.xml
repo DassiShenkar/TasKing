@@ -8,23 +8,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_description"
-        android:text="mock_text"
-        android:textSize="30sp"
-        android:layout_alignTop="@+id/list_item_button" />
+        android:text=""
+        android:textSize="30sp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_category"
-        android:textSize="16dp"
-        android:text="mock text"
-        android:layout_alignBottom="@+id/list_item_description"
-        android:layout_toEndOf="@+id/list_item_description" />
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/list_item_view_edit" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_dueDate"
-        android:text="mock_text"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:layout_below="@+id/list_item_description" />
 
     <Button

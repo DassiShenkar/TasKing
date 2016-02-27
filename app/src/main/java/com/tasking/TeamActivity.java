@@ -14,10 +14,6 @@ import java.util.ArrayList;
 
 public class TeamActivity extends Activity {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +31,12 @@ public class TeamActivity extends Activity {
         if (team != null){
             createTeam.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
-            mRecyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
-            mRecyclerView.setHasFixedSize(true);
-            mLayoutManager = new LinearLayoutManager(this);
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            mAdapter = new TeamRecyclerAdapter(team);
-            mRecyclerView.setAdapter(mAdapter);
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
+            recyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(team);
+            recyclerView.setAdapter(adapter);
         }
     }
     public void addMember(View view){

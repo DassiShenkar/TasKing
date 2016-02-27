@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TasKingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     // Database Name
     private static final String DATABASE_NAME = "TasKingDB";
@@ -20,7 +20,6 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_TEAMS = "teams";
 
     //Employee Table Column names
-    private static final String KEY_EMPLOYEE_NAME = "name";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_IS_MANAGER = "is_manager";
@@ -47,7 +46,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
             + TABLE_EMPLOYEES + "(" + KEY_USERNAME + " TEXT PRIMARY KEY,"
             + KEY_PASSWORD + " TEXT," + KEY_IS_MANAGER + " INTEGER);";
     private static final String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS + "("
-            + KEY_TASK_ID + " INTEGER PRIMARY KEY," + KEY_TASK_NAME + " TEXT," + KEY_DUE_DATE
+            + KEY_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_TASK_NAME + " TEXT," + KEY_DUE_DATE
             + " TEXT," + KEY_CATEGORY + " TEXT," + KEY_PRIORITY
             + " TEXT," + KEY_STATUS + " TEXT," + KEY_LOCATION + " TEXT);";
     private static final String CREATE_TASKS_ASSIGNEES_TABLE = "CREATE TABLE "

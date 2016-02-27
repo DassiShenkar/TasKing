@@ -202,7 +202,7 @@ public class TaskDAO implements ITaskDAO {
     try {
         db = DBHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, member.getName());
+        values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, member.getUserName());
         values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_PASSWORD, member.getUserName());
         values.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER, member.getPassword());
         db.update(TasKingDBNames.MemberEntry.TABLE_NAME,
@@ -228,11 +228,10 @@ public class TaskDAO implements ITaskDAO {
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
             values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS, task.getStatus());
-            db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, values);
-            int taskId = this.getTask(task.getId()).getId();
+            long id = db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, values);
             for (String userName : userNames) {
                 values.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, userName);
-                values.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, taskId);
+                values.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, id);
                 db.insert(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME, null, values);
             }
         } finally {
@@ -276,7 +275,7 @@ public class TaskDAO implements ITaskDAO {
                             TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS},
                     TasKingDBNames.TaskEntry.COLUMN_TASK_ID + " = ?",
                     new String[]{String.valueOf(taskId)}, null, null, null, null);
-            if (cursor != null) {
+            if (cursor.moveToFirst()) {
                 task = new Task();
                 task.setId(Integer.parseInt(cursor.getString(0)));
                 task.setName(cursor.getString(1));
@@ -325,7 +324,7 @@ public class TaskDAO implements ITaskDAO {
                 + TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID
                 + "=" + TasKingDBNames.TaskEntry.TABLE_NAME + "."
                 + TasKingDBNames.TaskEntry.COLUMN_TASK_ID
-                + " WHERE " + TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME + "=" + username;
+                + " WHERE " + TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME + "='" + username + "'";
 
         try {
             db = DBHelper.getWritableDatabase();

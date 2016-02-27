@@ -87,5 +87,60 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/txt_assign_member" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_category"
+        android:text="@string/category"
+        android:layout_alignTop="@+id/txt_category"
+        android:layout_alignStart="@+id/edit_priority" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_priority"
+        android:text="@string/priority"
+        android:layout_alignTop="@+id/txt_priority"
+        android:layout_alignStart="@+id/edit_location" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_location"
+        android:text="@string/location"
+        android:layout_below="@+id/txt_priority"
+        android:layout_alignStart="@+id/edit_date" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/edit_date"
+        android:text="@string/date"
+        android:layout_alignBottom="@+id/txt_date"
+        android:layout_alignStart="@+id/edit_time" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/edit_time"
+        android:text="@string/time"
+        android:layout_below="@+id/edit_date"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/done"
+        android:id="@+id/txt_add_task"
+        android:textSize="30sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/edit_task_name"
+        android:layout_marginBottom="48dp"
+        android:onClick="done" />
+
+<!--TODO: add assignees https://asnehal.wordpress.com/2012/04/03/multi-select-drop-down-list-in-android/ -->
 </RelativeLayout>

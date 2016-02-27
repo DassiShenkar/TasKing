@@ -16,12 +16,13 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, String dueDate, String category, String priority, String location, ArrayList<TeamMember> assignees) {
+    public Task(String name, String dueDate, String category, String priority, String location, String status, ArrayList<TeamMember> assignees) {
         this.name = name;
         this.dueDate = dueDate;
         this.category = category;
         this.priority = priority;
         this.location = location;
+        this.status = status;
         if(assignees == null){
             this.assignees = new ArrayList<>();
         }
