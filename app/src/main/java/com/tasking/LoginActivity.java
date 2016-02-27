@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-
 
 public class LoginActivity extends Activity {
 
@@ -25,7 +23,7 @@ public class LoginActivity extends Activity {
 
 
       /*  Firebase.setAndroidContext(this);
-        fireBaseDB db = fireBaseDB.getInstance();
+        FireBaseDB db = FireBaseDB.getInstance();
         Employee e  = new Employee("arel@gmail.com","1234",0);
         db.createNewEmployee(e);
 

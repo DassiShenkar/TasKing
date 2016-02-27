@@ -21,7 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class TasksActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -90,6 +93,13 @@ public class TasksActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         TextView createTask = (TextView) findViewById(R.id.task_text);
         createTask.setTypeface(typeFace);
+        ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
+        Bundle userParams = getIntent().getExtras();
+        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("userName"));
+        if (tasks != null) {
+            createTask.setVisibility(View.GONE);
+            arrow.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -217,22 +217,27 @@ public class TaskDAO implements ITaskDAO {
 }
 
     @Override
-    public void addTask(Task task, ArrayList<String> userNames) {
+    public void addTask(Task task, String managerName, ArrayList<String> userNames) {
         SQLiteDatabase db = null;
         try {
             db = DBHelper.getReadableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_NAME, task.getName());
-            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DUE_DATE, task.getDueDate());
-            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
-            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
-            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
-            values.put(TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS, task.getStatus());
-            long id = db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, values);
+            ContentValues taskValues = new ContentValues();
+            ContentValues managerValues = new ContentValues();
+            ContentValues memberValues = new ContentValues();
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_NAME, task.getName());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DUE_DATE, task.getDueDate());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS, task.getStatus());
+            long id = db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, taskValues);
+            managerValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, managerName);
+            managerValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, id);
+            db.insert(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME, null, managerValues);
             for (String userName : userNames) {
-                values.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, userName);
-                values.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, id);
-                db.insert(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME, null, values);
+                memberValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, userName);
+                memberValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, id);
+                db.insert(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME, null, memberValues);
             }
         } finally {
             if (db != null) {
@@ -317,7 +322,6 @@ public class TaskDAO implements ITaskDAO {
         SQLiteDatabase db = null;
         Cursor cursor;
         Cursor cursor2;
-        //                String selectQuery = "SELECT  * FROM " + TasKingDBNames.TaskEntry.TABLE_NAME;
         String selectQuery = "SELECT * FROM " + TasKingDBNames.TaskAssigneesEntry.TABLE_NAME
                 + " JOIN " + TasKingDBNames.TaskEntry.TABLE_NAME
                 + " ON " + TasKingDBNames.TaskAssigneesEntry.TABLE_NAME + "."

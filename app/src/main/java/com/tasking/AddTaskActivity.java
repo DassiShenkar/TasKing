@@ -43,7 +43,7 @@ public class AddTaskActivity extends AppCompatActivity {
         // TODO: get assignees
         if(!taskName.equals("") && !taskCategory.equals("") && !taskPriority.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
             Task task = new Task(taskName, taskDate + " " + taskTime, taskCategory, taskPriority, taskLocation, "Waiting", new ArrayList<TeamMember>());
-            TaskDAO.getInstance(this).addTask(task, new ArrayList<String>());
+            TaskDAO.getInstance(this).addTask(task, userParams.getString("userName"), new ArrayList<String>());
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);
             startActivity(intent);

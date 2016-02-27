@@ -12,7 +12,7 @@ public interface ITaskDAO {
     ArrayList<Employee> getTeamMembers(String userName);
     void updateTeamMember(Employee member);
     int getMemberCount();
-    void addTask(Task task, ArrayList<String> userNames);
+    void addTask(Task task, String managerName, ArrayList<String> userNames);
     void removeTask(int taskId);
     Task getTask(int taskId);
     ArrayList<Task> getTasks(String name);
