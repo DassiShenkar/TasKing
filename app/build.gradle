@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.dsl.PackagingOptions
+
 apply plugin: 'com.android.application'
 
 android {
@@ -16,7 +18,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
 }
 
 dependencies {
@@ -25,4 +34,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.firebase:firebase-client-android:2.5.2+'
 }

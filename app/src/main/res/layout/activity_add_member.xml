@@ -7,7 +7,7 @@
     tools:context="com.tasking.AddMemberActivity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
+       android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/blue"
         android:elevation="4dp"
@@ -21,6 +21,9 @@
             android:layout_marginStart="10dp"
             android:textColor="@color/white"
             android:text="@string/team_view" />
+
+
+
 
     </android.support.v7.widget.Toolbar>
 

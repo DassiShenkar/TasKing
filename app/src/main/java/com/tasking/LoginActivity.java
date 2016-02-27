@@ -14,12 +14,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 
 public class LoginActivity extends Activity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+      /*  Firebase.setAndroidContext(this);
+        fireBaseDB db = fireBaseDB.getInstance();
+        Employee e  = new Employee("arel@gmail.com","1234",0);
+        db.createNewEmployee(e);
+
+        */
         super.onCreate(savedInstanceState);
         setContentView(com.tasking.R.layout.activity_login);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
