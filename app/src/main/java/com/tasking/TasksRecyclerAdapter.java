@@ -29,6 +29,9 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
     @Override
     public void onBindViewHolder(TasksRecyclerAdapter.ViewHolder holder, int position) {
         Task task = tasks.get(position);
+        //TODO: parse date and check it
+        //TODO: check which fragment is it
+        holder.title.setText(R.string.today);
         holder.description.setText(task.getName());
         holder.category.setText(task.getCategory());
         holder.date.setText(task.getDueDate());
@@ -40,6 +43,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView title;
         private TextView description;
         private TextView category;
         private TextView date;
@@ -47,10 +51,11 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
 
         public ViewHolder(View parentView) {
             super(parentView);
-            description = (TextView) parentView.findViewById(com.tasking.R.id.list_item_description);
-            category = (TextView) parentView.findViewById(com.tasking.R.id.list_item_category);
-            date = (TextView) parentView.findViewById(com.tasking.R.id.list_item_dueDate);
-            viewEdit = (Button) parentView.findViewById(com.tasking.R.id.list_item_view_edit);
+            title = (TextView) parentView.findViewById(R.id.list_item_title);
+            description = (TextView) parentView.findViewById(R.id.list_item_description);
+            category = (TextView) parentView.findViewById(R.id.list_item_category);
+            date = (TextView) parentView.findViewById(R.id.list_item_dueDate);
+            viewEdit = (Button) parentView.findViewById(R.id.list_item_view_edit);
         }
     }
 }

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="@layout/app_bar_main"
     tools:context="com.tasking.TasksActivity">
 
@@ -27,6 +26,8 @@
         android:layout_height="fill_parent"
         android:layout_below="@id/tab_layout"
         android:layout_alignParentBottom="true" />
+
+    <include layout="@layout/task_views"></include>
 
 
 </RelativeLayout>
