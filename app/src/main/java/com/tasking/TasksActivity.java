@@ -139,11 +139,16 @@ public class TasksActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Bundle userParams = getIntent().getExtras();
         if (id == R.id.nav_members_list) {
-            // Handle the camera action
-        } else if (id == R.id.nav_add_member) {
+            Intent intent = new Intent(this, TeamActivity.class);
+            intent.putExtras(userParams);
+            startActivity(intent);
 
+        } else if (id == R.id.nav_add_member) {
+            Intent intent = new Intent(this, AddMemberActivity.class);
+            intent.putExtras(userParams);
+            startActivity(intent);
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {

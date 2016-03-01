@@ -138,30 +138,22 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public ArrayList<Employee> getTeamMembers(String userName) {
-        ArrayList<Employee> members;
+    public ArrayList<String> getTeamMembers(String userName) {
+        ArrayList<String> members;
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        String selectQuery = "SELECT * FROM " + TasKingDBNames.TeamsEntry.TABLE_NAME
-                             + " JOIN " + TasKingDBNames.MemberEntry.TABLE_NAME
-                             + " ON " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
-                             + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + "="
-                             + TasKingDBNames.MemberEntry.TABLE_NAME + "."
-                             + TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME
+        String selectQuery = "SELECT " + TasKingDBNames.TeamsEntry.COLUMN_MEMBER_NAME
+                             + " FROM " + TasKingDBNames.TeamsEntry.TABLE_NAME
                              + " WHERE " + TasKingDBNames.TeamsEntry.TABLE_NAME + "."
-                             + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + " = '" + userName
-                             + "' AND " + TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_IS_MANAGER
-                             + "= 0";
+                             + TasKingDBNames.TeamsEntry.COLUMN_MANAGER_NAME + " = '"
+                             + userName + "'";
         try {
             db = DBHelper.getWritableDatabase();
             cursor = db.rawQuery(selectQuery, null);
             members = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
-                    TeamMember member = new TeamMember();
-                    member.setUserName(cursor.getString(1));
-                    member.setPassword(cursor.getString(2));
-                    member.setIsManager((Integer.parseInt(cursor.getString(3))));
+                    String member = cursor.getString(0);
                     members.add(member);
                 } while (cursor.moveToNext());
                 return members;

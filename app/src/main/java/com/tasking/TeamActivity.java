@@ -27,7 +27,7 @@ public class TeamActivity extends Activity {
         title.setTypeface(boldTypeFace);
         createTeam.setTypeface(regularTypeFace);
         String userName = userParams.getString("userName");
-        ArrayList<Employee> team = TaskDAO.getInstance(this).getTeamMembers(userName);
+        ArrayList<String> team = TaskDAO.getInstance(this).getTeamMembers(userName);
         if (team != null){
             createTeam.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);

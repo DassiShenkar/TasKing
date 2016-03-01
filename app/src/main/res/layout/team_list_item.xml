@@ -16,7 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txt_team_list_name"
-        android:layout_below="@+id/txt_team_list_title"
+        android:text=""
+        android:textSize="20sp"
+        android:layout_alignBottom="@+id/btn_team_delete"
         android:layout_alignParentStart="true" />
 
 
@@ -24,8 +26,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="delete"
+        android:text="@string/delete"
         android:id="@+id/btn_team_delete"
-        android:layout_alignBottom="@+id/txt_team_list_name"
+        android:layout_below="@+id/txt_team_list_title"
         android:layout_alignParentEnd="true" />
 </RelativeLayout>
