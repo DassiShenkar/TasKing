@@ -92,37 +92,41 @@ public class AddMemberActivity extends Activity {
     }
 
     public void done(View view){
-        for (Employee member : teamMembers) {
-            if(member.getUserName().equals("")){
-                teamMembers.remove(member);
-            }
-        }
-        if(teamMembers.size() > 0) {
-            Bundle userParams = getIntent().getExtras();
-            Intent sendMail = new Intent(Intent.ACTION_SEND);
-            String[] to = new String[teamMembers.size()];
-            Employee manager = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
-            int i = 0;
+        if(teamMembers != null){
             for (Employee member : teamMembers) {
-                to[i++] = member.getUserName();
+                if(member.getUserName().equals("")){
+                    teamMembers.remove(member);
+                }
             }
-            teamMembers = null;
-            String subject = "Let's go TasKing Together";
-            String body = "Hello\n" + manager.getUserName() + " welcomes you to download the TasKing app\nand join the " +
-                    teamName + " team\nYou can get the app at http://someplace.com";
-            sendMail.setType("message/rfc822");
-            sendMail.putExtra(Intent.EXTRA_EMAIL, to);
-            sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
-            sendMail.putExtra(Intent.EXTRA_TEXT, body);
-            try {
-                startActivityForResult(Intent.createChooser(sendMail, "Send mail..."), 1);
-            } catch (android.content.ActivityNotFoundException ex) {
+            if(teamMembers.size() > 0) {
+                Bundle userParams = getIntent().getExtras();
+                Intent sendMail = new Intent(Intent.ACTION_SEND);
+                String[] to = new String[teamMembers.size()];
+                Employee manager = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
+                int i = 0;
+                for (Employee member : teamMembers) {
+                    to[i++] = member.getUserName();
+                }
+                teamMembers = null;
+                String subject = "Let's go TasKing Together";
+                String body = "Hello\n" + manager.getUserName() + " welcomes you to download the TasKing app\nand join the " +
+                        teamName + " team\nYou can get the app at http://someplace.com";
+                sendMail.setType("message/rfc822");
+                sendMail.putExtra(Intent.EXTRA_EMAIL, to);
+                sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
+                sendMail.putExtra(Intent.EXTRA_TEXT, body);
+                try {
+                    startActivityForResult(Intent.createChooser(sendMail, "Send mail..."), 1);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(this, "There are no email clients installed", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
                 Toast.makeText(this, "There are no email clients installed", Toast.LENGTH_SHORT).show();
             }
-
         }
         else{
-            Toast.makeText(this, "No new members were added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please add memebers or press BACK to return", Toast.LENGTH_LONG).show();
         }
     }
 
