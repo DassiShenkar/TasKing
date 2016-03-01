@@ -19,7 +19,8 @@
         android:text=""
         android:textSize="20sp"
         android:layout_alignBottom="@+id/btn_team_delete"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/txt_team_list_title" />
 
 
     <Button

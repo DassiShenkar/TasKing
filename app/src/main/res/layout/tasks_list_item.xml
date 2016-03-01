@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_item_description"
         android:text=""
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:layout_below="@id/list_item_title"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,8 +31,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_item_dueDate"
         android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toStartOf="@id/list_item_category"/>
 
     <Button
         android:layout_width="wrap_content"
