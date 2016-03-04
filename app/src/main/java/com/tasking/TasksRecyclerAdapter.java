@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter
         .ViewHolder> {
 
-    ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
 
     public TasksRecyclerAdapter(ArrayList<Task> tasks){
         this.tasks = tasks;

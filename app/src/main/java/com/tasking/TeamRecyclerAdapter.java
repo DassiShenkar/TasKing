@@ -1,5 +1,6 @@
 package com.tasking;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(TeamRecyclerAdapter.ViewHolder holder, int position) {
         String employee = employees.get(position);
         holder.userName.setText(employee);
     }
@@ -41,6 +42,8 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
         public ViewHolder(View parentView) {
             super(parentView);
             userName = (TextView) parentView.findViewById(R.id.txt_team_list_name);
+            Typeface regularTypeFace = Typeface.createFromAsset(parentView.getContext().getAssets(), "fonts/Raleway-Regular.ttf");
+            userName.setTypeface(regularTypeFace);
         }
     }
 }

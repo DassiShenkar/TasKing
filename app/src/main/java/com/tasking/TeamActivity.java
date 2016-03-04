@@ -20,15 +20,19 @@ public class TeamActivity extends Activity {
         setContentView(com.tasking.R.layout.activity_team);
         Bundle userParams = getIntent().getExtras();
         TextView title = (TextView)findViewById(R.id.title);
+        TextView membersTitle = (TextView)findViewById(R.id.members_title);
         TextView createTeam = (TextView)findViewById(R.id.team_text);
         ImageView arrow = (ImageView) findViewById(R.id.img_arrow);
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         Typeface regularTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
         title.setTypeface(boldTypeFace);
+        membersTitle.setTypeface(regularTypeFace);
+        membersTitle.setVisibility(View.GONE);
         createTeam.setTypeface(regularTypeFace);
         String userName = userParams.getString("userName");
         ArrayList<String> team = TaskDAO.getInstance(this).getTeamMembers(userName);
         if (team != null){
+            membersTitle.setVisibility(View.VISIBLE);
             createTeam.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);

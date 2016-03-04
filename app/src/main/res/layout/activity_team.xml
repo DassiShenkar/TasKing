@@ -68,6 +68,18 @@
         android:clickable="true"
         android:onClick="addMember" />
 
+    <TextView
+        android:id = "@+id/members_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/lightBlue"
+        android:text="@string/members"
+        android:layout_below="@+id/my_toolbar"
+        android:background="@drawable/border"
+        android:layout_alignParentStart="true"
+        android:padding="30dp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/team_recycler_view"
         android:layout_width="match_parent"
@@ -75,5 +87,5 @@
         android:layout_gravity="start|top"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/my_toolbar" />
+        android:layout_below="@+id/members_title" />
 </RelativeLayout>
