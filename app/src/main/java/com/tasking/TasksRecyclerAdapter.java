@@ -10,43 +10,70 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter
-        .ViewHolder> {
+public class TasksRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Task> tasks;
+    private String headerTitle;
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
 
-    public TasksRecyclerAdapter(ArrayList<Task> tasks){
+    public TasksRecyclerAdapter(ArrayList<Task> tasks, String headerTitle){
         this.tasks = tasks;
+        this.headerTitle = headerTitle;
     }
 
     @Override
-    public TasksRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.tasks_list_item, parent, false);
-        return new ViewHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == TYPE_HEADER){
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.tasks_list_header, parent, false);
+            return new HeaderViewHolder(v);
+        }
+        else {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.tasks_list_item, parent, false);
+            return new ItemViewHolder(v);
+        }
     }
 
     @Override
-    public void onBindViewHolder(TasksRecyclerAdapter.ViewHolder holder, int position) {
-        Task task = tasks.get(position);
+    public int getItemViewType(int position){
+        if(position == 0){
+            return TYPE_HEADER;
+        }
+        else{
+            return TYPE_ITEM;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //TODO: parse date and check it
         //TODO: check which fragment is it
-        holder.description.setText(task.getName());
-        holder.category.setText(task.getCategory());
-        holder.date.setText(task.getDueDate());
+        if(holder instanceof ItemViewHolder) {
+            Task task = tasks.get(position - 1);
+            ItemViewHolder itemHolder = (ItemViewHolder) holder;
+            itemHolder.description.setText(task.getName());
+            itemHolder.category.setText(task.getCategory());
+            itemHolder.date.setText(task.getDueDate());
+        }
+        else{
+            HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
+            headerHolder.title.setText(headerTitle);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return tasks.size();
+        return tasks.size() + 1;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView description;
         private TextView category;
         private TextView date;
 
-        public ViewHolder(View parentView) {
+        public ItemViewHolder(View parentView) {
             super(parentView);
             description = (TextView) parentView.findViewById(R.id.list_item_description);
             category = (TextView) parentView.findViewById(R.id.list_item_category);
@@ -56,6 +83,16 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
             category.setTypeface(regularTypeFace);
             date.setTypeface(regularTypeFace);
 
+        }
+    }
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        private TextView title;
+
+        public HeaderViewHolder(View parentView) {
+            super(parentView);
+            title = (TextView) parentView.findViewById(R.id.tasks_title);
+            Typeface regularTypeFace = Typeface.createFromAsset(parentView.getContext().getAssets(), "fonts/Raleway-Regular.ttf");
+            title.setTypeface(regularTypeFace);
         }
     }
 }

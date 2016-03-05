@@ -25,7 +25,7 @@ public class AllTasksTab extends Fragment {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks);
+            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks, "TODAY");
             recyclerView.setAdapter(adapter);
             return recyclerView;
         }
