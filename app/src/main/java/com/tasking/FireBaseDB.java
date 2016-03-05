@@ -7,6 +7,9 @@ package com.tasking;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.AuthData;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -132,6 +135,33 @@ public class FireBaseDB {
     public void updateTaskDetails(Task task){
 
     }
+    public void setTaskAssignees(Task task, Employee employee){
+        Firebase temp = fireBaseConnection.child("tasks_assignees").child(task.getName());
+      //  temp.setValue(task.getId());
+        temp.setValue(employee.getUserName());
 
+
+    }
+    public void setManagerEmployees(Employee manager,ArrayList<TeamMember> tms){
+      //  String str = manager.getUserName();
+       // str.replace("@","A");
+        Firebase temp = fireBaseConnection.child("manager_employees");
+        Map<String, String> members = new HashMap<String, String>();
+        Map<String, Map<String, String>> users = new HashMap<String, Map<String, String>>();
+        for (TeamMember tm : tms) {
+            members.put("name",tm.getUserName());
+        }
+        users.put("new manager",members);
+        temp.setValue(users);
+/*
+           // Firebase usersRef = ref.child("users");
+            Map<String, String> alanisawesomeMap = new HashMap<String, String>();
+            alanisawesomeMap.put("birthYear", "1912");
+            alanisawesomeMap.put("fullName", "Alan Turing");
+            Map<String, Map<String, String>> users = new HashMap<String, Map<String, String>>();
+            users.put("alanisawesome", alanisawesomeMap);
+            usersRef.setValue(users);*/
+
+    }
 
 }

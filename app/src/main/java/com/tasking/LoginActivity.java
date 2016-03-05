@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
+import java.util.ArrayList;
+
 
 public class LoginActivity extends Activity {
 
@@ -22,12 +26,24 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
-      /*  Firebase.setAndroidContext(this);
+    //  Gindos DB CHECK - DO NOT TOUCH
+        Firebase.setAndroidContext(this);
         FireBaseDB db = FireBaseDB.getInstance();
-        Employee e  = new Employee("arel@gmail.com","1234",0);
-        db.createNewEmployee(e);
+        TeamMember e4  = new TeamMember("arel10@gmail.com","1232214w345",1);
+        TeamMember e5  = new TeamMember("arel11@gmail.com","12322454514w345",0);
+        TeamMember e6  = new TeamMember("arel12@gmail.com","12322454514ew345",0);
+      //  db.createNewEmployee(e);
+        ArrayList<TeamMember> teamMember = new ArrayList<>();
+        teamMember.add(e5);
+        teamMember.add(e6);
+        Task task = new Task("Endroid1","11/09/1990","homework","urgent","room 247","waiting",teamMember);
+        db.addNewTask(task);
+      //  db.setTaskAssignees(task,e4);
+        db.setManagerEmployees(e4,teamMember);
 
-        */
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(com.tasking.R.layout.activity_login);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
