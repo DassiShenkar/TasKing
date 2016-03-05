@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -15,13 +16,20 @@
     <RelativeLayout
         android:id="@+id/loading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:gravity="center"
+        android:layout_gravity="right|bottom">
 
-        <ProgressBar
+        <com.github.lzyzsd.circleprogress.DonutProgress
+            android:layout_marginBottom="50dp"
+            android:id="@+id/donut_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"/>
+            custom:donut_progress="30"
+            custom:donut_text_color="@color/white"
+            custom:donut_finished_color="@color/yellow"
+            custom:donut_unfinished_color="@color/white"/>
     </RelativeLayout>
 
-</LinearLayout>
+</FrameLayout>
