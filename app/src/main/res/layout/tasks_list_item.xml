@@ -2,42 +2,49 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="34dp" >
+    android:layout_height="wrap_content"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/border">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_item_title"
-        android:text=""
-        android:textSize="40sp" />
+        android:id="@+id/list_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_description"
+            android:text="@string/task_name"
+            android:textSize="30sp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_item_description"
-        android:text=""
-        android:textSize="30sp"
-        android:layout_below="@id/list_item_title"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_category"
+            android:textSize="16sp"
+            android:layout_below="@id/list_item_description"
+            android:text="@string/category" />
+    </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_item_category"
-        android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/list_item_view_edit" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_dueDate"
         android:textSize="16sp"
-        android:layout_toStartOf="@id/list_item_category"/>
+        android:text="@string/due_time"
+        android:layout_alignBottom="@+id/list_content"
+        android:layout_toEndOf="@+id/list_content" />
 
-    <Button
+    <ImageView
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_item_view_edit"
-        android:layout_centerVertical="true"
+        android:layout_height="16dp"
+        android:src="@android:drawable/ic_delete"
+        android:id="@+id/btn_team_delete"
+        android:layout_above="@+id/list_item_dueDate"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
