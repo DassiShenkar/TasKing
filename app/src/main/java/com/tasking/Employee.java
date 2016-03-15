@@ -5,6 +5,7 @@ public class Employee {
     private String userName;
     private String password;
     private int isManager;
+    private String uid;
 
     public Employee() {
 
@@ -14,6 +15,13 @@ public class Employee {
         this.userName = userName;
         this.password = password;
         this.isManager = isManager;
+        this.uid = null;
+    }
+    public Employee(String userName, String password, int isManager,String uid) {
+        this.userName = userName;
+        this.password = password;
+        this.isManager = isManager;
+        this.uid = uid;
     }
 
     public String getUserName() {
@@ -38,6 +46,14 @@ public class Employee {
 
     public void setIsManager(int iSmanager) {
         this.isManager = iSmanager;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @Override

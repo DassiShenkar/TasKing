@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ public class LoginActivity extends Activity {
     //  Gindos DB CHECK - DO NOT TOUCH
         Firebase.setAndroidContext(this);
         FireBaseDB db = FireBaseDB.getInstance();
+
+
+        Manager manager = new Manager("new13anager@gmail.com","15243w",1);
         TeamMember e4  = new TeamMember("arel10@gmail.com","1232214w345",1);
         TeamMember e5  = new TeamMember("arel11@gmail.com","12322454514w345",0);
         TeamMember e6  = new TeamMember("arel12@gmail.com","12322454514ew345",0);
@@ -37,9 +41,14 @@ public class LoginActivity extends Activity {
         teamMember.add(e5);
         teamMember.add(e6);
         Task task = new Task("Endroid1","11/09/1990","homework","urgent","room 247","waiting",teamMember);
-        db.addNewTask(task);
+       // String mangerUid = db.createNewManager("new12anager@gmail.com","15243w");
+       // AuthData ad = db.ge
+        db.createNewManager(manager);
+        db.authenticationEmployee(manager);
+        System.out.println("login="+db.getManagerUid());
+       // db.addNewTask(task);
       //  db.setTaskAssignees(task,e4);
-        db.setManagerEmployees(e4,teamMember);
+      //  db.setManagerEmployees(e4,teamMember);
 
 
 
