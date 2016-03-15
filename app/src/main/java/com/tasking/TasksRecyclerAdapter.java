@@ -13,13 +13,13 @@ import java.util.ArrayList;
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Task> tasks;
-    private String headerTitle;
+    ArrayList<String> headers = new ArrayList<>();
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    public TasksRecyclerAdapter(ArrayList<Task> tasks, String headerTitle){
+    public TasksRecyclerAdapter(ArrayList<Task> tasks, ArrayList<String> headers){
         this.tasks = tasks;
-        this.headerTitle = headerTitle;
+        this.headers = headers;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(int position){
-        if(position == 0){
+        if(position < headers.size()){
             return TYPE_HEADER;
         }
         else{
@@ -51,21 +51,23 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         //TODO: parse date and check it
         //TODO: check which fragment is it
         if(holder instanceof ItemViewHolder) {
-            Task task = tasks.get(position - 1);
+            Task task = tasks.get(position);
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
+            itemHolder.description.setTag(task.getId());
             itemHolder.description.setText(task.getName());
             itemHolder.category.setText(task.getCategory());
             itemHolder.date.setText(task.getDueDate());
         }
         else{
+            String header = headers.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.title.setText(headerTitle);
+            headerHolder.title.setText(header);
         }
     }
 
     @Override
     public int getItemCount() {
-        return tasks.size() + 1;
+        return tasks.size() + headers.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {

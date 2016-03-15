@@ -1,4 +1,9 @@
 <resources>
+    <string-array name="tasks_array">
+        <item>STATUS</item>
+        <item>TIME</item>
+        <item>PRIORITY</item>
+    </string-array>
     <string name="app_name">TasKing</string>
     <string name="action_settings">Settings</string>
     <string name="sign_up">Sign up</string>

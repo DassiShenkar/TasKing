@@ -22,9 +22,7 @@ public class Splash extends Activity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.BLACK);
         }
-        //String appVersion = "v1"; // TODO: 1/7/2016 handle data while splash screen is on
-        //Backendless.initApp(this, "D7BF45EE-A9D1-E36C-FF67-2A98F5D50400", "CABFEA4F-DD79-9153-FF91-C25BB6A26400", appVersion);
-        //Backendless.Persistence.of("Employee").find();
+        // TODO: 1/7/2016 handle data while splash screen is on
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
