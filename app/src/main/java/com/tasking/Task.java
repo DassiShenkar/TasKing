@@ -1,26 +1,58 @@
 package com.tasking;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Task {
     private int id;
     private String name;
-    private String dueDate;
+    private Date date;
     private String category;
     private String priority;
     private String location;
     private String status;
-    private TeamMember assignee;
+    private String firebaseId;
+    private String assignee;
+    private String picture;
 
     public Task() {
     }
 
-    public Task(String name, String dueDate, String category, String priority, String location, String status, TeamMember assignee) {
+    public Task(int id, String name, Date date, String category, String priority, String location, String status, String firebaseId, String assignee) {
+        this.id = id;
         this.name = name;
-        this.dueDate = dueDate;
+        this.date = date;
         this.category = category;
         this.priority = priority;
         this.location = location;
         this.status = status;
+        this.firebaseId = firebaseId;
         this.assignee = assignee;
+    }
+
+    public String getTimeString(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        String strTime = simpleDateFormat.format(date);
+        return strTime;
+    }
+
+    public String getDateString(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String strDate = simpleDateFormat.format(date);
+        return strDate;
+    }
+
+    public void setDateFromString(String time, String date){
+        String fullDate = date + " " + time;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        try{
+            this.date = dateFormat.parse(fullDate);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     public int getId() {
@@ -39,12 +71,12 @@ public class Task {
         this.name = name;
     }
 
-    public String getDueDate() {
-        return this.dueDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getCategory() {
@@ -79,23 +111,19 @@ public class Task {
         this.status = status;
     }
 
-    public TeamMember getAssignees() {
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
+
+    public String getAssignee() {
         return assignee;
     }
 
-    public void setAssignees(TeamMember assignee) {
+    public void setAssignee(String assignee) {
         this.assignee = assignee;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", dueTime=" + getDueDate() +
-                ", category='" + category + '\'' +
-                ", priority='" + priority + '\'' +
-                ", location='" + location + '\'' +
-                ", assignee=" + assignee +
-                '}';
     }
 }

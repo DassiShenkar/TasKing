@@ -9,7 +9,200 @@ import java.util.ArrayList;
 
 
 public class TaskDAO implements ITaskDAO {
+    private static TaskDAO taskDAO;
+    private TasKingDBHelper DBHelper;
 
+    private TaskDAO(Context context) {
+        DBHelper = new TasKingDBHelper(context);
+    }
+
+    public static TaskDAO getInstance(Context context) {
+        if (taskDAO == null) {
+            taskDAO = new TaskDAO(context);
+        }
+        return taskDAO;
+    }
+
+
+    @Override
+    public void addTask(Task task) {
+        SQLiteDatabase db = null;
+        try {
+            db = DBHelper.getReadableDatabase();
+            ContentValues taskValues = new ContentValues();
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_NAME, task.getName());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DATE, task.getDateString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, task.getTimeString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS, task.getStatus());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, task.getAssignee());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
+            db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, taskValues);
+        }
+        finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        SQLiteDatabase db = null;
+        try {
+            db = DBHelper.getReadableDatabase();
+            ContentValues taskValues = new ContentValues();
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_NAME, task.getName());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DATE, task.getDateString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, task.getTimeString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS, task.getStatus());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, task.getAssignee());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
+            db.update(TasKingDBNames.TaskEntry.TABLE_NAME,
+                    taskValues, TasKingDBNames.TaskEntry.COLUMN_TASK_NAME + " = ?",
+                    new String[]{String.valueOf(task.getId())});
+
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    @Override
+    public Task getTask(int id) {
+        SQLiteDatabase db = null;
+        try {
+            db = DBHelper.getReadableDatabase();
+            Cursor cursor = db.query(TasKingDBNames.TaskEntry.TABLE_NAME,
+                                new String[]{TasKingDBNames.TaskEntry.COLUMN_TASK_ID, TasKingDBNames.TaskEntry.COLUMN_TASK_NAME,
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, TasKingDBNames.TaskEntry.COLUMN_TASK_DATE,
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY,
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS,
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID,},
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_ID + "=?",
+                                        new String[]{ String.valueOf(id) }, null, null, null, null);
+            if(cursor != null){
+                cursor.moveToFirst();
+            }
+            Task task = new Task();
+            if(cursor != null) {
+                task.setId(Integer.parseInt(cursor.getString(0)));
+                task.setName(cursor.getString(1));
+                task.setDateFromString(cursor.getString(2), cursor.getString(3));
+                task.setCategory(cursor.getString(4));
+                task.setPriority(cursor.getString(5));
+                task.setLocation(cursor.getString(6));
+                task.setStatus(cursor.getString(7));
+                task.setAssignee(cursor.getString(8));
+                task.setFirebaseId(cursor.getString(9));
+            }
+            if(cursor != null) {
+                cursor.close();
+            }
+            return task;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<Task> getTasks() {
+        SQLiteDatabase db = null;
+        ArrayList<Task> tasks = new ArrayList<>();
+        String query = "SELECT * FROM " + TasKingDBNames.TaskEntry.TABLE_NAME;
+        try {
+            db = DBHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor.moveToFirst()){
+                do{
+                    Task task = new Task();
+                    task.setId(Integer.parseInt(cursor.getString(0)));
+                    task.setName(cursor.getString(1));
+                    task.setDateFromString(cursor.getString(2), cursor.getString(3));
+                    task.setCategory(cursor.getString(4));
+                    task.setPriority(cursor.getString(5));
+                    task.setStatus(cursor.getString(6));
+                    task.setAssignee(cursor.getString(7));
+                    task.setFirebaseId(cursor.getString(8));
+                    task.setLocation(cursor.getString(9));
+                    tasks.add(task);
+                } while(cursor.moveToNext());
+                cursor.close();
+            }
+            return tasks;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    @Override
+    public void addMember(Employee employee) {
+        SQLiteDatabase db = null;
+        try {
+            db = DBHelper.getReadableDatabase();
+            ContentValues teamValues = new ContentValues();
+            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, employee.getUserName());
+            db.insert(TasKingDBNames.MemberEntry.TABLE_NAME, null, teamValues);
+        }
+        finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    @Override
+    public void removeMember(Employee employee) {
+        SQLiteDatabase db = null;
+        try {
+            db = DBHelper.getReadableDatabase();
+            db.delete(TasKingDBNames.MemberEntry.TABLE_NAME, TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + " = ?",
+                        new String[]{ employee.getUserName() });
+        }
+        finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<Employee> getMembers() {
+        SQLiteDatabase db = null;
+        ArrayList<Employee> employees = new ArrayList<>();
+        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME;
+        try {
+            db = DBHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor.moveToFirst()){
+                do{
+                    Employee employee = new Employee();
+                    employee.setUserName(cursor.getString(0));
+                    employees.add(employee);
+                } while(cursor.moveToNext());
+                cursor.close();
+            }
+            return employees;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+
+
+    /*
     private static TaskDAO taskDAO;
     private TasKingDBHelper DBHelper;
 
@@ -455,5 +648,5 @@ public class TaskDAO implements ITaskDAO {
     }
     public void addMemberTask(Employee employee, int taskId){
 
-    }
+    }*/
 }

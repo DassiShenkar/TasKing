@@ -33,7 +33,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         holder.description.setTag(task.getId());
         holder.description.setText(task.getName());
         holder.category.setText(task.getCategory());
-        holder.date.setText(task.getDueDate());
+        holder.date.setText(task.getDateString() + " " + task.getTimeString());
     }
 
     @Override

@@ -56,25 +56,33 @@ public class AddMemberActivity extends Activity {
                     String emailStr = email.getText().toString();
                     String phoneStr = phone.getText().toString();
                     if (!nameStr.equals("") || !emailStr.equals("") || !phoneStr.equals("")){
-                        Bundle userParams = getIntent().getExtras();
-                        Employee employee = TaskDAO.getInstance(getApplicationContext()).getTeamMember(nameStr, userParams.getString("userName"));
-                        if(employee == null) {
+                        Employee employee;
+                        ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers();
+                        if(employees.size() > 0) {
                             employee = new TeamMember(emailStr, phoneStr, 0);
-                            TaskDAO.getInstance(getApplicationContext()).addTeamMember(employee);
-                            TaskDAO.getInstance(getApplicationContext()).addMemberManager(employee.getUserName(), userParams.getString("userName"));
-                            Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
-                            name.setText("");
-                            email.setText("");
-                            phone.setText("");
-                            teamMembers.add(employee);
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Member already exists", Toast.LENGTH_SHORT).show();
+                            TaskDAO.getInstance(getApplicationContext()).addMember(employee);
+                            //TODO: send member details to firebaseDB
+                            boolean exists = false;
+                            for(Employee employeeName: employees){
+                                if(employeeName.getUserName().equals(nameStr)){
+                                    exists = true;
+                                    break;
+                                }
+                            }
+                            if(!exists) {
+                                Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
+                                name.setText("");
+                                email.setText("");
+                                phone.setText("");
+                                teamMembers.add(employee);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "Member already exists", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });
@@ -102,14 +110,13 @@ public class AddMemberActivity extends Activity {
                 Bundle userParams = getIntent().getExtras();
                 Intent sendMail = new Intent(Intent.ACTION_SEND);
                 String[] to = new String[teamMembers.size()];
-                Employee manager = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
                 int i = 0;
                 for (Employee member : teamMembers) {
                     to[i++] = member.getUserName();
                 }
                 teamMembers = null;
                 String subject = "Let's go TasKing Together";
-                String body = "Hello\n" + manager.getUserName() + " welcomes you to download the TasKing app\nand join the " +
+                String body = "Hello\n" + userParams.getString("userName") + " welcomes you to download the TasKing app\nand join the " +
                         teamName + " team\nYou can get the app at http://someplace.com";
                 sendMail.setType("message/rfc822");
                 sendMail.putExtra(Intent.EXTRA_EMAIL, to);

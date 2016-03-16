@@ -39,8 +39,8 @@ public class AddTaskActivity extends AppCompatActivity {
             name.setText(task.getName());
             category.setText(task.getCategory());
             priority.setText(task.getPriority());
-            date.setText(task.getDueDate());
-            time.setText(task.getDueDate());
+            date.setText(task.getDateString());
+            time.setText(task.getTimeString());
             location.setText(task.getLocation());
         }
     }
@@ -60,15 +60,27 @@ public class AddTaskActivity extends AppCompatActivity {
         String taskTime = time.getText().toString();
         Bundle userParams = getIntent().getExtras();
         final Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
-        ArrayList<String> employees = TaskDAO.getInstance(this).getTeamMembers(userParams.getString("userName"));
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employees);
+        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
+        ArrayList<String> employeeNames = new ArrayList<>();
+        for(Employee e: employees){
+            employeeNames.add(e.getUserName());
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         String employeeName = spinner.getSelectedItem().toString();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskPriority.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
-            TeamMember employee = (TeamMember)TaskDAO.getInstance(this).getTeamMember(employeeName);
-            Task task = new Task(taskName, taskDate + " " + taskTime, taskCategory, taskPriority, taskLocation, "Waiting", employee);
-            TaskDAO.getInstance(this).addTask(task, userParams.getString("userName"), employeeName);
+            Task task = new Task(/*taskName, taskDate + " " + taskTime, taskCategory, taskPriority, taskLocation, "Waiting", employeeName*/);
+            task.setName(taskName);
+            task.setDateFromString(taskTime, taskDate);
+            task.setCategory(taskCategory);
+            task.setPriority(taskPriority);
+            task.setStatus("WAITING");
+            task.setAssignee(employeeName);
+            task.setLocation(taskLocation);
+            TaskDAO.getInstance(this).addTask(task);
+            //TODO setId(); from return value from addTask(task)(not implemented)
+            //TODO: add task to firebaseDB & setFirebaseDBId();
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);
             startActivity(intent);

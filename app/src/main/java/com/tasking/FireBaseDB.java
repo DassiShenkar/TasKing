@@ -58,8 +58,6 @@ public class FireBaseDB {
                 System.out.println(firebaseError.getMessage());//TODO: if create is failed need to toast a msg
             }
         });
-
-
         mng.setUid(manager.getUid());
 
     }

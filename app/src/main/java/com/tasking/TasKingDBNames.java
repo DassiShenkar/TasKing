@@ -4,6 +4,27 @@ import android.provider.BaseColumns;
 
 
 public class TasKingDBNames {
+
+    public static final class MemberEntry implements BaseColumns {
+        public static final String TABLE_NAME = "employees";
+        public static final String COLUMN_EMPLOYEE_USERNAME = "username";
+    }
+    public static final class TaskEntry implements BaseColumns{
+        public static final String TABLE_NAME = "tasks";
+        public static final String COLUMN_TASK_ID = "id";
+        public static final String COLUMN_TASK_NAME = "name";
+        public static final String COLUMN_TASK_TIME = "time";
+        public static final String COLUMN_TASK_DATE = "date";
+        public static final String COLUMN_TASK_CATEGORY = "category";
+        public static final String COLUMN_TASK_PRIORITY = "priority";
+        public static final String COLUMN_TASK_LOCATION = "location";
+        public static final String COLUMN_TASK_STATUS = "status";
+        public static final String COLUMN_TASK_ASSIGNEE = "assignee";
+        public static final String COLUMN_TASK_FIREBASE_ID = "firebase_id";
+
+    }
+
+    /*
     public static final class MemberEntry implements BaseColumns {
         public static final String TABLE_NAME = "employees";
         public static final String COLUMN_EMPLOYEE_USERNAME = "username";
@@ -29,5 +50,5 @@ public class TasKingDBNames {
         public static final String TABLE_NAME = "teams";
         public static final String COLUMN_MANAGER_NAME = "manager_name";
         public static final String COLUMN_MEMBER_NAME = "member_name";
-    }
+    }*/
 }

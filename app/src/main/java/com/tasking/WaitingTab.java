@@ -19,7 +19,7 @@ public class WaitingTab extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_waiting_tab, container,
                 false);
         final Bundle userParams = getActivity().getIntent().getExtras();
-        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("userName"));
+        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
         if (tasks != null) {
             //TODO: compare two dates for sorting
             /*Collections.sort(tasks, new Comparator<Task>() {
@@ -42,6 +42,7 @@ public class WaitingTab extends Fragment{
                             new RecyclerItemClickListener.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
+                                    //TODO: get isManager from Bundle DASSI
                                     Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
                                     if (employee.getIsManager() == 1) {
                                         int taskId = tasks.get(position).getId();

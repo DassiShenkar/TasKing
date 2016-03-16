@@ -34,6 +34,7 @@ public class TasksActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         Bundle userParams = getIntent().getExtras();
+        //TODO: get isManger from Bundle DASSI ROZEN!!!!!!!!!!
         Employee employee = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
         if(employee.getIsManager() == 0){
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.tab_add_btn);
@@ -101,7 +102,7 @@ public class TasksActivity extends AppCompatActivity
         TextView createTask = (TextView) findViewById(R.id.task_text);
         createTask.setTypeface(typeFace);
         ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
-        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("userName"));
+        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks();
         if (tasks != null) {
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);

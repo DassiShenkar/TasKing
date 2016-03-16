@@ -2,14 +2,17 @@ package com.tasking;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageButton;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,12 +33,21 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //TODO: get Relevant task
         ImageButton imageButton = (ImageButton) findViewById(R.id.btn_img_save);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageButton.setImageBitmap(imageBitmap);
             imageButton.setClickable(false);
+            ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
+            if (imageBitmap != null){
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
+                imageBitmap.recycle();
+            }
+            byte[] byteArray = bYtE.toByteArray();
+            String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            //TODO: setPicture(imageFile);
             galleryAddPic();
         }
     }

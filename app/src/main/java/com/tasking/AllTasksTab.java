@@ -30,18 +30,11 @@ public class AllTasksTab extends Fragment {
                 R.array.tasks_array, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
-        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("userName"));
+        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
         if (tasks != null) {
             Collections.sort(tasks, new Comparator<Task>() {
                 public int compare(Task task1, Task task2) {
-                    //TODO: compare two dates for sorting
-                    /*SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
-                    Date date1 = format.parse(task1.getDueDate());
-                    Date date2 = format.parse(task2.getDueDate());
-                    if (date1.getTime() == date2.getTime())
-                        return 0;
-                    return date1.getTime() < date2.getTime() ? -1 : 1;*/
-                    return task1.getDueDate().compareTo(task2.getDueDate());
+                    return task1.getDate().compareTo(task2.getDate());
                 }
             });
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.all_recycler_view);
@@ -54,20 +47,21 @@ public class AllTasksTab extends Fragment {
                             new RecyclerItemClickListener.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
-                                    if (employee.getIsManager() == 1) {
-                                        int taskId = tasks.get(position).getId();
-                                        userParams.putInt("taskId", taskId);
-                                        Intent intent = new Intent(getContext(), AddTaskActivity.class);
-                                        intent.putExtras(userParams);
-                                        startActivityForResult(intent, 1);
-                                    } else {
-                                        int taskId = tasks.get(position).getId();
-                                        userParams.putInt("taskId", taskId);
-                                        Intent intent = new Intent(getContext(), ViewTaskActivity.class);
-                                        intent.putExtras(userParams);
-                                        startActivityForResult(intent, 2);
-                                    }
+                                    //TODO: get isManager from Bundle
+//                                    Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
+//                                    if (employee.getIsManager() == 1) {
+//                                        int taskId = tasks.get(position).getId();
+//                                        userParams.putInt("taskId", taskId);
+//                                        Intent intent = new Intent(getContext(), AddTaskActivity.class);
+//                                        intent.putExtras(userParams);
+//                                        startActivityForResult(intent, 1);
+//                                    } else {
+//                                        int taskId = tasks.get(position).getId();
+//                                        userParams.putInt("taskId", taskId);
+//                                        Intent intent = new Intent(getContext(), ViewTaskActivity.class);
+//                                        intent.putExtras(userParams);
+//                                        startActivityForResult(intent, 2);
+//                                    }
                                 }
                             })
             );
@@ -88,7 +82,7 @@ public class AllTasksTab extends Fragment {
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
-                                    return lhs.getDueDate().compareTo(rhs.getDueDate());
+                                    return lhs.getDate().compareTo(rhs.getDate());
                                 }
                             });
                             break;
