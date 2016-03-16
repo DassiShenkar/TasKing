@@ -10,72 +10,44 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class TasksRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.ViewHolder> {
 
     private ArrayList<Task> tasks;
-    ArrayList<String> headers = new ArrayList<>();
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
 
-    public TasksRecyclerAdapter(ArrayList<Task> tasks, ArrayList<String> headers){
+    public TasksRecyclerAdapter(ArrayList<Task> tasks){
         this.tasks = tasks;
-        this.headers = headers;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == TYPE_HEADER){
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.tasks_list_header, parent, false);
-            return new HeaderViewHolder(v);
-        }
-        else {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.tasks_list_item, parent, false);
-            return new ItemViewHolder(v);
-        }
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.tasks_list_item, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public int getItemViewType(int position){
-        if(position < headers.size()){
-            return TYPE_HEADER;
-        }
-        else{
-            return TYPE_ITEM;
-        }
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(TasksRecyclerAdapter.ViewHolder holder, int position) {
         //TODO: parse date and check it
         //TODO: check which fragment is it
-        if(holder instanceof ItemViewHolder) {
-            Task task = tasks.get(position);
-            ItemViewHolder itemHolder = (ItemViewHolder) holder;
-            itemHolder.description.setTag(task.getId());
-            itemHolder.description.setText(task.getName());
-            itemHolder.category.setText(task.getCategory());
-            itemHolder.date.setText(task.getDueDate());
-        }
-        else{
-            String header = headers.get(position);
-            HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.title.setText(header);
-        }
+        Task task = tasks.get(position);
+        holder.description.setTag(task.getId());
+        holder.description.setText(task.getName());
+        holder.category.setText(task.getCategory());
+        holder.date.setText(task.getDueDate());
     }
 
     @Override
     public int getItemCount() {
-        return tasks.size() + headers.size();
+        return tasks.size();
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
         private TextView description;
         private TextView category;
         private TextView date;
 
-        public ItemViewHolder(View parentView) {
+        public ViewHolder(View parentView) {
             super(parentView);
             description = (TextView) parentView.findViewById(R.id.list_item_description);
             category = (TextView) parentView.findViewById(R.id.list_item_category);
@@ -84,17 +56,6 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             description.setTypeface(regularTypeFace);
             category.setTypeface(regularTypeFace);
             date.setTypeface(regularTypeFace);
-
-        }
-    }
-    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        private TextView title;
-
-        public HeaderViewHolder(View parentView) {
-            super(parentView);
-            title = (TextView) parentView.findViewById(R.id.tasks_title);
-            Typeface regularTypeFace = Typeface.createFromAsset(parentView.getContext().getAssets(), "fonts/Raleway-Regular.ttf");
-            title.setTypeface(regularTypeFace);
         }
     }
 }

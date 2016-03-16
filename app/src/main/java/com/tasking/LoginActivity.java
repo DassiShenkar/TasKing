@@ -14,10 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-
-import java.util.ArrayList;
 
 
 public class LoginActivity extends Activity {
@@ -37,10 +34,7 @@ public class LoginActivity extends Activity {
         TeamMember e5  = new TeamMember("arel11@gmail.com","12322454514w345",0);
         TeamMember e6  = new TeamMember("arel12@gmail.com","12322454514ew345",0);
       //  db.createNewEmployee(e);
-        ArrayList<TeamMember> teamMember = new ArrayList<>();
-        teamMember.add(e5);
-        teamMember.add(e6);
-        Task task = new Task("Endroid1","11/09/1990","homework","urgent","room 247","waiting",teamMember);
+        Task task = new Task("Endroid1","11/09/1990","homework","urgent","room 247","waiting",e6);
        // String mangerUid = db.createNewManager("new12anager@gmail.com","15243w");
        // AuthData ad = db.ge
         db.createNewManager(manager);

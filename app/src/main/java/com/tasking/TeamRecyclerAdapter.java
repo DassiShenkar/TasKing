@@ -18,6 +18,7 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     public  TeamRecyclerAdapter(ArrayList<String> employees){
         this.employees = employees;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view

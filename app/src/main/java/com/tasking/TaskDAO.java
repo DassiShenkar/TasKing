@@ -209,7 +209,7 @@ public class TaskDAO implements ITaskDAO {
 }
 
     @Override
-    public void addTask(Task task, String managerName, ArrayList<String> userNames) {
+    public void addTask(Task task, String managerName, String userName) {
         SQLiteDatabase db = null;
         try {
             db = DBHelper.getReadableDatabase();
@@ -226,11 +226,9 @@ public class TaskDAO implements ITaskDAO {
             managerValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, managerName);
             managerValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, id);
             db.insert(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME, null, managerValues);
-            for (String userName : userNames) {
-                memberValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, userName);
-                memberValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, id);
-                db.insert(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME, null, memberValues);
-            }
+            memberValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_EMPLOYEE_A_NAME, userName);
+            memberValues.put(TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID, id);
+            db.insert(TasKingDBNames.TaskAssigneesEntry.TABLE_NAME, null, memberValues);
         } finally {
             if (db != null) {
                 db.close();
@@ -290,13 +288,12 @@ public class TaskDAO implements ITaskDAO {
                         TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID + " = ?",
                         new String[]{String.valueOf(task.getId())}, null, null, null, null);
             }
-            ArrayList<TeamMember> assignees = new ArrayList<>();
+            TeamMember assignee = null;
             if(cursor2 != null) {
-                while (cursor2.moveToNext()) {
-                    TeamMember employee = (TeamMember) this.getTeamMember(cursor2.getString(0));
-                    assignees.add(employee);
+                if (cursor2.moveToFirst()) {
+                    assignee = (TeamMember) this.getTeamMember(cursor2.getString(0));
                 }
-                task.setAssignees(assignees);
+                task.setAssignees(assignee);
                 cursor2.close();
                 return task;
             }
@@ -347,18 +344,15 @@ public class TaskDAO implements ITaskDAO {
                             new String[]{TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID},
                             TasKingDBNames.TaskAssigneesEntry.COLUMN_TASK_A_ID + " = ?",
                             new String[]{String.valueOf(task.getId())}, null, null, null, null);
-                    ArrayList<TeamMember> assignees = new ArrayList<>();
+                    TeamMember assignee = null;
                     try {
                         if(cursor2.moveToFirst()) {
-                            while (cursor2.moveToNext()) {
-                                TeamMember employee = (TeamMember) this.getTeamMember(cursor2.getString(0));
-                                assignees.add(employee);
-                            }
+                            assignee = (TeamMember) this.getTeamMember(cursor2.getString(0));
                         }
                     } finally {
                         cursor2.close();
                     }
-                    task.setAssignees(assignees);
+                    task.setAssignees(assignee);
                     tasks.add(task);
                 } while (cursor.moveToNext());
                 cursor.close();
@@ -458,5 +452,8 @@ public class TaskDAO implements ITaskDAO {
                 db.close();
             }
         }
+    }
+    public void addMemberTask(Employee employee, int taskId){
+
     }
 }

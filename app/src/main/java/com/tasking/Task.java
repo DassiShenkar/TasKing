@@ -1,8 +1,5 @@
 package com.tasking;
 
-import java.util.ArrayList;
-
-
 public class Task {
     private int id;
     private String name;
@@ -11,25 +8,19 @@ public class Task {
     private String priority;
     private String location;
     private String status;
-    private ArrayList<TeamMember> assignees;
+    private TeamMember assignee;
 
     public Task() {
     }
 
-    public Task(String name, String dueDate, String category, String priority, String location, String status, ArrayList<TeamMember> assignees) {
+    public Task(String name, String dueDate, String category, String priority, String location, String status, TeamMember assignee) {
         this.name = name;
         this.dueDate = dueDate;
         this.category = category;
         this.priority = priority;
         this.location = location;
         this.status = status;
-        if(assignees == null){
-            this.assignees = new ArrayList<>();
-        }
-        else{
-            this.assignees = assignees;
-        }
-        //TODO: check this!!!
+        this.assignee = assignee;
     }
 
     public int getId() {
@@ -88,12 +79,12 @@ public class Task {
         this.status = status;
     }
 
-    public ArrayList<TeamMember> getAssignees() {
-        return assignees;
+    public TeamMember getAssignees() {
+        return assignee;
     }
 
-    public void setAssignees(ArrayList<TeamMember> assignees) {
-        this.assignees = assignees;
+    public void setAssignees(TeamMember assignee) {
+        this.assignee = assignee;
     }
 
     @Override
@@ -104,7 +95,7 @@ public class Task {
                 ", category='" + category + '\'' +
                 ", priority='" + priority + '\'' +
                 ", location='" + location + '\'' +
-                ", assignees=" + assignees +
+                ", assignee=" + assignee +
                 '}';
     }
 }

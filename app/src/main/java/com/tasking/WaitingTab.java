@@ -1,5 +1,6 @@
 package com.tasking;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,19 +12,14 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 
-public class WaitingTab extends Fragment {
+public class WaitingTab extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_waiting_tab, container,
                 false);
-        Bundle userParams = getActivity().getIntent().getExtras();
-        ArrayList<String> headers = new ArrayList<>();
-        headers.add("TODAY");
-        headers.add("TOMORROW");
-        headers.add("THIS WEEK");
-        //TODO: separate task list to 4 lists by headers and send to the adapter
-        ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("userName"));
+        final Bundle userParams = getActivity().getIntent().getExtras();
+        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("userName"));
         if (tasks != null) {
             //TODO: compare two dates for sorting
             /*Collections.sort(tasks, new Comparator<Task>() {
@@ -40,10 +36,36 @@ public class WaitingTab extends Fragment {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks, headers);
+            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks);
             recyclerView.setAdapter(adapter);
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                            new RecyclerItemClickListener.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, int position) {
+                                    Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
+                                    if (employee.getIsManager() == 1) {
+                                        int taskId = tasks.get(position).getId();
+                                        userParams.putInt("taskId", taskId);
+                                        Intent intent = new Intent(getContext(), AddTaskActivity.class);
+                                        intent.putExtras(userParams);
+                                        startActivityForResult(intent, 2);
+                                    } else {
+                                        int taskId = tasks.get(position).getId();
+                                        userParams.putInt("taskId", taskId);
+                                        Intent intent = new Intent(getContext(), ViewTaskActivity.class);
+                                        intent.putExtras(userParams);
+                                        startActivityForResult(intent, 2);
+                                    }
+                                }
+                            })
+            );
+            adapter.notifyDataSetChanged();
         }
         return rootView;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
 }

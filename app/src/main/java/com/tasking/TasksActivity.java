@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -32,6 +33,12 @@ public class TasksActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
+        Bundle userParams = getIntent().getExtras();
+        Employee employee = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
+        if(employee.getIsManager() == 0){
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.tab_add_btn);
+            fab.setVisibility(View.GONE);
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
@@ -94,7 +101,6 @@ public class TasksActivity extends AppCompatActivity
         TextView createTask = (TextView) findViewById(R.id.task_text);
         createTask.setTypeface(typeFace);
         ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
-        Bundle userParams = getIntent().getExtras();
         ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("userName"));
         if (tasks != null) {
             createTask.setVisibility(View.GONE);
