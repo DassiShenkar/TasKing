@@ -43,8 +43,8 @@ public class WaitingTab extends Fragment{
                                 @Override
                                 public void onItemClick(View view, int position) {
                                     //TODO: get isManager from Bundle DASSI
-                                    Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
-                                    if (employee.getIsManager() == 1) {
+                                    //Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
+                                    if (userParams.getBoolean("isManager")) {
                                         int taskId = tasks.get(position).getId();
                                         userParams.putInt("taskId", taskId);
                                         Intent intent = new Intent(getContext(), AddTaskActivity.class);

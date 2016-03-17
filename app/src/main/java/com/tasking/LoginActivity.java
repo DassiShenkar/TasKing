@@ -96,70 +96,74 @@ public class LoginActivity extends Activity {
         String user = username.getText().toString();
         String pass = password.getText().toString();
         Bundle userParams = new Bundle();
-        if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){
-            if(!user.equals("")) {
-                if (!pass.equals("")) {
-                    Employee employee = new Manager(user, pass, 1);
-                    TaskDAO.getInstance(this).addTeamMember(employee);
-                    Intent intent = new Intent(this, TeamActivity.class);
-                    userParams.putString("userName", employee.getUserName());
-                    userParams.putBoolean("isManager", true);
-                    intent.putExtras(userParams);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else{
-                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else{
-            if(!user.equals("")){
-                if(!pass.equals("")){
-                    Employee member = TaskDAO.getInstance(this).getTeamMember(user);
-                    if(member != null){
-                        if(pass.equals(member.getPassword())){
-                            if(member.getIsManager() == 1){
-                                if(TaskDAO.getInstance(this).hasMembers(member.getUserName())){
-                                    Intent intent = new Intent(this, TasksActivity.class);
-                                    userParams.putString("userName", member.getUserName());
-                                    userParams.putBoolean("isManager", true);
-                                    intent.putExtras(userParams);
-                                    startActivity(intent);
-                                }
-                                else{
-                                    Intent intent = new Intent(this, TeamActivity.class);
-                                    userParams.putString("userName", member.getUserName());
-                                    userParams.putBoolean("isManager", true);
-                                    intent.putExtras(userParams);
-                                    startActivity(intent);
-                                }
-                            }
-                            else{
-                                Intent intent = new Intent(this, TasksActivity.class);
-                                userParams.putString("userName", member.getUserName());
-                                userParams.putBoolean("isManager", false);
-                                intent.putExtras(userParams);
-                                startActivity(intent);
-                            }
-                        }
-                        else{
-                            Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else{
-                        Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else{
-                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
-            }
-        }
+        Intent intent = new Intent(this, TeamActivity.class);
+        userParams.putBoolean("isManager", false);
+        intent.putExtras(userParams);
+        startActivity(intent);
+//        if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){
+//            if(!user.equals("")) {
+//                if (!pass.equals("")) {
+//                    Employee employee = new Manager(user, pass, 1);
+//                    TaskDAO.getInstance(this).addTeamMember(employee);
+//                    Intent intent = new Intent(this, TeamActivity.class);
+//                    userParams.putString("userName", employee.getUserName());
+//                    userParams.putBoolean("isManager", true);
+//                    intent.putExtras(userParams);
+//                    startActivity(intent);
+//                }
+//                else{
+//                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//            else{
+//                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        else{
+//            if(!user.equals("")){
+//                if(!pass.equals("")){
+//                    Employee member = TaskDAO.getInstance(this).getTeamMember(user);
+//                    if(member != null){
+//                        if(pass.equals(member.getPassword())){
+//                            if(member.getIsManager() == 1){
+//                                if(TaskDAO.getInstance(this).hasMembers(member.getUserName())){
+//                                    Intent intent = new Intent(this, TasksActivity.class);
+//                                    userParams.putString("userName", member.getUserName());
+//                                    userParams.putBoolean("isManager", true);
+//                                    intent.putExtras(userParams);
+//                                    startActivity(intent);
+//                                }
+//                                else{
+//                                    Intent intent = new Intent(this, TeamActivity.class);
+//                                    userParams.putString("userName", member.getUserName());
+//                                    userParams.putBoolean("isManager", true);
+//                                    intent.putExtras(userParams);
+//                                    startActivity(intent);
+//                                }
+//                            }
+//                            else{
+//                                Intent intent = new Intent(this, TasksActivity.class);
+//                                userParams.putString("userName", member.getUserName());
+//                                userParams.putBoolean("isManager", false);
+//                                intent.putExtras(userParams);
+//                                startActivity(intent);
+//                            }
+//                        }
+//                        else{
+//                            Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                    else{
+//                        Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                else{
+//                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//            else{
+//                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
+//            }
+//        }
     }
 }

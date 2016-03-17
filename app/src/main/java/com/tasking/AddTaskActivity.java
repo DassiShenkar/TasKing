@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public class AddTaskActivity extends AppCompatActivity {
 
+    private boolean isUpdate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +30,17 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         Bundle userParams = getIntent().getExtras();
         int taskId = userParams.getInt("taskId");
+        final Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
+        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
+        ArrayList<String> employeeNames = new ArrayList<>();
+        for(Employee e: employees){
+            employeeNames.add(e.getUserName());
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
         if(taskId != 0){
+            isUpdate = true;
             Task task = TaskDAO.getInstance(this).getTask(taskId);
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             EditText category = (EditText) findViewById(R.id.edit_category);
@@ -59,18 +71,10 @@ public class AddTaskActivity extends AppCompatActivity {
         String taskDate = date.getText().toString();
         String taskTime = time.getText().toString();
         Bundle userParams = getIntent().getExtras();
-        final Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
-        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
-        ArrayList<String> employeeNames = new ArrayList<>();
-        for(Employee e: employees){
-            employeeNames.add(e.getUserName());
-        }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
+        Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
         String employeeName = spinner.getSelectedItem().toString();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskPriority.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
-            Task task = new Task(/*taskName, taskDate + " " + taskTime, taskCategory, taskPriority, taskLocation, "Waiting", employeeName*/);
+            Task task = new Task();
             task.setName(taskName);
             task.setDateFromString(taskTime, taskDate);
             task.setCategory(taskCategory);
@@ -78,7 +82,14 @@ public class AddTaskActivity extends AppCompatActivity {
             task.setStatus("WAITING");
             task.setAssignee(employeeName);
             task.setLocation(taskLocation);
-            TaskDAO.getInstance(this).addTask(task);
+            if(isUpdate){
+                TaskDAO.getInstance(this).updateTask(task);
+                isUpdate = false;
+                userParams.remove("taskId");
+            }
+            else {
+                TaskDAO.getInstance(this).addTask(task);
+            }
             //TODO setId(); from return value from addTask(task)(not implemented)
             //TODO: add task to firebaseDB & setFirebaseDBId();
             Intent intent = new Intent(this, TasksActivity.class);

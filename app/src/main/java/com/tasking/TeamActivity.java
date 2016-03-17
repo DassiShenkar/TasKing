@@ -35,7 +35,7 @@ public class TeamActivity extends Activity {
         for(Employee e: employees){
             employeeNames.add(e.getUserName());
         }
-        if (employees != null){
+        if (employees.size() > 0){
             membersTitle.setVisibility(View.VISIBLE);
             createTeam.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);

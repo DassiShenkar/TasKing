@@ -22,9 +22,6 @@
             android:textColor="@color/white"
             android:text="@string/team_view" />
 
-
-
-
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
@@ -97,18 +94,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/member_name"
-            android:id="@+id/txt_member_name"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="30dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/email"
             android:id="@+id/txt_member_email"
-            android:layout_below="@+id/txt_member_name"
             android:layout_alignParentStart="true"
             android:layout_marginTop="30dp" />
 
@@ -124,19 +111,11 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_member_name"
-            android:layout_above="@+id/txt_member_email"
-            android:layout_centerHorizontal="true"
-            android:hint="@string/member_name"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:id="@+id/edit_member_email"
             android:hint="@string/email"
             android:layout_above="@+id/txt_member_phone"
-            android:layout_alignEnd="@+id/edit_member_name" />
+            android:layout_alignEnd="@+id/add_member_btn" />
 
         <EditText
             android:layout_width="wrap_content"

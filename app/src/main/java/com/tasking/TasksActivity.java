@@ -35,8 +35,8 @@ public class TasksActivity extends AppCompatActivity
         setContentView(R.layout.activity_tasks);
         Bundle userParams = getIntent().getExtras();
         //TODO: get isManger from Bundle DASSI ROZEN!!!!!!!!!!
-        Employee employee = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
-        if(employee.getIsManager() == 0){
+        //Employee employee = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
+        if(!userParams.getBoolean("isManager")){// TODO: check if needed
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.tab_add_btn);
             fab.setVisibility(View.GONE);
         }

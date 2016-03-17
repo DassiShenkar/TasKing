@@ -26,7 +26,7 @@ public class AllTasksTab extends Fragment {
                 false);
         final Bundle userParams = getActivity().getIntent().getExtras();
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.spn_all_sort_by);
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
+        final ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tasks_array, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
@@ -49,19 +49,19 @@ public class AllTasksTab extends Fragment {
                                 public void onItemClick(View view, int position) {
                                     //TODO: get isManager from Bundle
 //                                    Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
-//                                    if (employee.getIsManager() == 1) {
-//                                        int taskId = tasks.get(position).getId();
-//                                        userParams.putInt("taskId", taskId);
-//                                        Intent intent = new Intent(getContext(), AddTaskActivity.class);
-//                                        intent.putExtras(userParams);
-//                                        startActivityForResult(intent, 1);
-//                                    } else {
-//                                        int taskId = tasks.get(position).getId();
-//                                        userParams.putInt("taskId", taskId);
-//                                        Intent intent = new Intent(getContext(), ViewTaskActivity.class);
-//                                        intent.putExtras(userParams);
-//                                        startActivityForResult(intent, 2);
-//                                    }
+                                    if (userParams.getBoolean("isManager")) {
+                                        int taskId = tasks.get(position).getId();
+                                        userParams.putInt("taskId", taskId);
+                                        Intent intent = new Intent(getContext(), AddTaskActivity.class);
+                                        intent.putExtras(userParams);
+                                        startActivityForResult(intent, 1);
+                                    } else {
+                                        int taskId = tasks.get(position).getId();
+                                        userParams.putInt("taskId", taskId);
+                                        Intent intent = new Intent(getContext(), ViewTaskActivity.class);
+                                        intent.putExtras(userParams);
+                                        startActivityForResult(intent, 2);
+                                    }
                                 }
                             })
             );
@@ -97,6 +97,7 @@ public class AllTasksTab extends Fragment {
                         default:
                             break;
                     }
+                    spinnerAdapter.notifyDataSetChanged();
                 }
 
                 @Override

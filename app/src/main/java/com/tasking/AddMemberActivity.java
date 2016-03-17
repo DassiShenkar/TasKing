@@ -49,36 +49,31 @@ public class AddMemberActivity extends Activity {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EditText name = (EditText) findViewById(R.id.edit_member_name);
                     EditText email = (EditText) findViewById(R.id.edit_member_email);
                     EditText phone = (EditText) findViewById(R.id.edit_member_phone);
-                    String nameStr = name.getText().toString();
                     String emailStr = email.getText().toString();
                     String phoneStr = phone.getText().toString();
-                    if (!nameStr.equals("") || !emailStr.equals("") || !phoneStr.equals("")){
+                    if (!emailStr.equals("") || !phoneStr.equals("")){
                         Employee employee;
                         ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers();
-                        if(employees.size() > 0) {
-                            employee = new TeamMember(emailStr, phoneStr, 0);
-                            TaskDAO.getInstance(getApplicationContext()).addMember(employee);
-                            //TODO: send member details to firebaseDB
-                            boolean exists = false;
-                            for(Employee employeeName: employees){
-                                if(employeeName.getUserName().equals(nameStr)){
-                                    exists = true;
-                                    break;
-                                }
+                        employee = new TeamMember(emailStr, phoneStr, 0);
+                        TaskDAO.getInstance(getApplicationContext()).addMember(employee);
+                        //TODO: send member details to firebaseDB
+                        boolean exists = false;
+                        for(Employee employeeName: employees){
+                            if(employeeName.getUserName().equals(emailStr)){
+                                exists = true;
+                                break;
                             }
-                            if(!exists) {
-                                Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
-                                name.setText("");
-                                email.setText("");
-                                phone.setText("");
-                                teamMembers.add(employee);
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(), "Member already exists", Toast.LENGTH_SHORT).show();
-                            }
+                        }
+                        if(!exists) {
+                            Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
+                            email.setText("");
+                            phone.setText("");
+                            teamMembers.add(employee);
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Member already exists", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else{
