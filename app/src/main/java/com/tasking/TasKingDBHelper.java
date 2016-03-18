@@ -28,6 +28,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String KEY_STATUS = "status";
     private static final String KEY_ASSIGNEE = "assignee";
     private static final String KEY_FIREBASE_ID = "firebase_id";
+    //TODO: add photo byteString column
 
     // Tables create statement
     private static final String CREATE_EMPLOYEES_TABLE = "CREATE TABLE "

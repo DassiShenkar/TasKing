@@ -89,14 +89,14 @@ public class LoginActivity extends Activity {
     }
 
     public void submit(View view) {
-        Button signUp = (Button) findViewById(R.id.btn_sign);
-        EditText username = (EditText) findViewById(R.id.txt_user_name);
-        EditText password = (EditText) findViewById(R.id.txt_password);
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
+//        Button signUp = (Button) findViewById(R.id.btn_sign);
+//        EditText username = (EditText) findViewById(R.id.txt_user_name);
+//        EditText password = (EditText) findViewById(R.id.txt_password);
+//        String user = username.getText().toString();
+//        String pass = password.getText().toString();
         Bundle userParams = new Bundle();
-        Intent intent = new Intent(this, TasksActivity.class);
-        userParams.putBoolean("isManager", false);
+        Intent intent = new Intent(this, TeamActivity.class);
+        userParams.putBoolean("isManager", true);
         intent.putExtras(userParams);
         startActivity(intent);
 //        if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){

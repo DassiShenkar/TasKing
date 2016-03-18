@@ -39,8 +39,6 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                             new RecyclerItemClickListener.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    //TODO: get isManager from Bundle DASSI
-                                    //Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
                                     if (userParams.getBoolean("isManager")) {
                                         int taskId = tasks.get(position).getId();
                                         userParams.putInt("taskId", taskId);

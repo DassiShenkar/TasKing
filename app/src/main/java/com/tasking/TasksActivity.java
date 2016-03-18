@@ -37,8 +37,6 @@ public class TasksActivity extends AppCompatActivity
         TextView createTask = (TextView) findViewById(R.id.task_text);
         ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //TODO: get isManger from Bundle DASSI ROZEN!!!!!!!!!!
-        //Employee employee = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
         if(!userParams.getBoolean("isManager")){
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.tab_add_btn);
             fab.setVisibility(View.GONE);

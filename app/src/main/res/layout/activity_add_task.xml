@@ -149,6 +149,5 @@
         android:layout_below="@+id/edit_time"
         android:layout_toEndOf="@+id/txt_assign_member"
         android:spinnerMode="dropdown" />
-
-    <!--TODO: add assignees https://asnehal.wordpress.com/2012/04/03/multi-select-drop-down-list-in-android/ -->
+    <!--TODO: add RadioGroup & RadioButtons-->
 </RelativeLayout>

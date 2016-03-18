@@ -48,8 +48,6 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                             new RecyclerItemClickListener.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    //TODO: get isManager from Bundle
-//                                    Employee employee = TaskDAO.getInstance(getContext()).getTeamMember(userParams.getString("userName"));
                                     if (userParams.getBoolean("isManager")) {
                                         int taskId = tasks.get(position).getId();
                                         userParams.putInt("taskId", taskId);

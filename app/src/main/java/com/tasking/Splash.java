@@ -22,7 +22,6 @@ public class Splash extends Activity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.BLACK);
         }
-        // TODO: 1/7/2016 handle data while splash screen is on
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

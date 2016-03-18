@@ -27,8 +27,6 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
 
     @Override
     public void onBindViewHolder(TasksRecyclerAdapter.ViewHolder holder, int position) {
-        //TODO: parse date and check it
-        //TODO: check which fragment is it
         Task task = tasks.get(position);
         holder.description.setTag(task.getId());
         holder.description.setText(task.getName());
