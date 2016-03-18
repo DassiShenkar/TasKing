@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_members_list" android:icon="@drawable/eye"
-            android:title="Show Memebers List" />
-        <item android:id="@+id/nav_add_member" android:icon="@drawable/plus"
-            android:title="Add Member" />
         <item android:id="@+id/nav_settings" android:icon="@drawable/settings"
             android:title="Settings" />
         <item android:id="@+id/nav_logout" android:icon="@drawable/lock"

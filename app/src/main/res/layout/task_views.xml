@@ -20,10 +20,10 @@
         android:id="@+id/task_img_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="52dp"
         android:src="@drawable/long_arrow"
         android:contentDescription="@string/arrow"
-        android:layout_alignBottom="@+id/tab_add_btn"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
     <android.support.design.widget.FloatingActionButton
@@ -53,7 +53,8 @@
         android:clickable="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_alignBottom="@+id/tab_add_btn"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:nestedScrollingEnabled="false"
         android:onClick="refresh" />

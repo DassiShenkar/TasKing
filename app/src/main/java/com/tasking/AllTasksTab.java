@@ -25,13 +25,13 @@ public class AllTasksTab extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_all_tasks_tab, container,
                 false);
         final Bundle userParams = getActivity().getIntent().getExtras();
-        final Spinner spinner = (Spinner) rootView.findViewById(R.id.spn_all_sort_by);
-        final ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.tasks_array, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
-        if (tasks != null) {
+        if (tasks.size() > 0) {
+            final Spinner spinner = (Spinner) rootView.findViewById(R.id.spn_all_sort_by);
+            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.tasks_array, android.R.layout.simple_spinner_item);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(spinnerAdapter);
             Collections.sort(tasks, new Comparator<Task>() {
                 public int compare(Task task1, Task task2) {
                     return task1.getDate().compareTo(task2.getDate());
@@ -41,7 +41,7 @@ public class AllTasksTab extends Fragment {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks);
+            final RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks);
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
                             new RecyclerItemClickListener.OnItemClickListener() {
@@ -54,13 +54,13 @@ public class AllTasksTab extends Fragment {
                                         userParams.putInt("taskId", taskId);
                                         Intent intent = new Intent(getContext(), AddTaskActivity.class);
                                         intent.putExtras(userParams);
-                                        startActivityForResult(intent, 1);
+                                        startActivity(intent);
                                     } else {
                                         int taskId = tasks.get(position).getId();
                                         userParams.putInt("taskId", taskId);
                                         Intent intent = new Intent(getContext(), ViewTaskActivity.class);
                                         intent.putExtras(userParams);
-                                        startActivityForResult(intent, 2);
+                                        startActivity(intent);
                                     }
                                 }
                             })
@@ -97,7 +97,7 @@ public class AllTasksTab extends Fragment {
                         default:
                             break;
                     }
-                    spinnerAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -105,13 +105,7 @@ public class AllTasksTab extends Fragment {
 
                 }
             });
-            adapter.notifyDataSetChanged();
         }
         return rootView;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
     }
 }

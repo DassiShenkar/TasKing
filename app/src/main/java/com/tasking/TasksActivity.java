@@ -34,11 +34,19 @@ public class TasksActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         Bundle userParams = getIntent().getExtras();
+        TextView createTask = (TextView) findViewById(R.id.task_text);
+        ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //TODO: get isManger from Bundle DASSI ROZEN!!!!!!!!!!
         //Employee employee = TaskDAO.getInstance(this).getTeamMember(userParams.getString("userName"));
-        if(!userParams.getBoolean("isManager")){// TODO: check if needed
+        if(!userParams.getBoolean("isManager")){
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.tab_add_btn);
             fab.setVisibility(View.GONE);
+            createTask.setText(getResources().getString(R.string.refresh_task));
+            arrow.setScaleX(-1f);
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_member_main_drawer);
+
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -97,13 +105,10 @@ public class TasksActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        TextView createTask = (TextView) findViewById(R.id.task_text);
         createTask.setTypeface(typeFace);
-        ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
         ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks();
-        if (tasks != null) {
+        if (tasks.size() > 0) {
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
         }
@@ -147,24 +152,39 @@ public class TasksActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Bundle userParams = getIntent().getExtras();
-        if (id == R.id.nav_members_list) {
-            Intent intent = new Intent(this, TeamActivity.class);
-            intent.putExtras(userParams);
-            startActivity(intent);
+        if(!userParams.getBoolean("isManager")) {
+            if (id == R.id.nav_members_list) {
+                Intent intent = new Intent(this, TeamActivity.class);
+                intent.putExtras(userParams);
+                startActivity(intent);
 
-        } else if (id == R.id.nav_add_member) {
-            Intent intent = new Intent(this, AddMemberActivity.class);
-            intent.putExtras(userParams);
-            startActivity(intent);
-        } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            intent.putExtras(userParams);
-            startActivity(intent);
-        } else if (id == R.id.nav_logout) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_about) {
+            } else if (id == R.id.nav_add_member) {
+                Intent intent = new Intent(this, AddMemberActivity.class);
+                intent.putExtras(userParams);
+                startActivity(intent);
 
+            } else if (id == R.id.nav_settings) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                intent.putExtras(userParams);
+                startActivity(intent);
+            } else if (id == R.id.nav_logout) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_about) {
+
+            }
+        }
+        else{
+            if (id == R.id.nav_settings) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                intent.putExtras(userParams);
+                startActivity(intent);
+            } else if (id == R.id.nav_logout) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.nav_about) {
+
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

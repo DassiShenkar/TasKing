@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -96,7 +95,7 @@ public class LoginActivity extends Activity {
         String user = username.getText().toString();
         String pass = password.getText().toString();
         Bundle userParams = new Bundle();
-        Intent intent = new Intent(this, TeamActivity.class);
+        Intent intent = new Intent(this, TasksActivity.class);
         userParams.putBoolean("isManager", false);
         intent.putExtras(userParams);
         startActivity(intent);

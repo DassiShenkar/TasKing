@@ -2,7 +2,6 @@ package com.tasking;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,7 +34,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //TODO: get Relevant task
         ImageButton imageButton = (ImageButton) findViewById(R.id.btn_img_save);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (data != null && requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageButton.setImageBitmap(imageBitmap);
@@ -48,7 +47,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             byte[] byteArray = bYtE.toByteArray();
             String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
             //TODO: setPicture(imageFile);
-            galleryAddPic();
+            //galleryAddPic();
         }
     }
 
@@ -90,17 +89,20 @@ public class ViewTaskActivity extends AppCompatActivity {
         return image;
     }
 
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
+//    private void galleryAddPic() {
+//        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//        File f = new File(currentPhotoPath);
+//        Uri contentUri = Uri.fromFile(f);
+//        mediaScanIntent.setData(contentUri);
+//        this.sendBroadcast(mediaScanIntent);
+//    }
 
     public void done(View view){
         Bundle userParams = getIntent().getExtras();
         Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+        Intent intent = new Intent(this, TasksActivity.class);
+        intent.putExtras(userParams);
+        startActivity(intent);
 
     }
 

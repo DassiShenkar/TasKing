@@ -56,8 +56,10 @@
     <string name="phone">Phone number</string>
     <string name="back">BACK</string>
     <string name="create_task">There are no\n tasks on your list!\n <b>Create</b> a New Task</string>
+    <string name="refresh_task">There are no\n tasks on your list!\n <b>Refresh</b> to get\n New Tasks</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="delete">DELETE</string>
+    <string name="update">Upadte interval</string>
 
 </resources>

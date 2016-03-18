@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class WaitingTab extends Fragment{
@@ -20,18 +22,12 @@ public class WaitingTab extends Fragment{
                 false);
         final Bundle userParams = getActivity().getIntent().getExtras();
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
-        if (tasks != null) {
-            //TODO: compare two dates for sorting
-            /*Collections.sort(tasks, new Comparator<Task>() {
-                public int compare(Task task1, Task task2)  {
-                    SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
-                    Date date1 = format.parse(task1.getDueDate());
-                    Date date2 = format.parse(task2.getDueDate());
-                    if (date1.getTime() == date2.getTime())
-                        return 0;
-                    return date1.getTime() < date2.getTime() ? -1 : 1;
+        if (tasks.size() > 0) {
+            Collections.sort(tasks, new Comparator<Task>() {
+                public int compare(Task task1, Task task2) {
+                    return task1.getDate().compareTo(task2.getDate());
                 }
-            });*/
+            });
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.tasks_recycler_view);
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -49,24 +45,18 @@ public class WaitingTab extends Fragment{
                                         userParams.putInt("taskId", taskId);
                                         Intent intent = new Intent(getContext(), AddTaskActivity.class);
                                         intent.putExtras(userParams);
-                                        startActivityForResult(intent, 2);
+                                        startActivity(intent);
                                     } else {
                                         int taskId = tasks.get(position).getId();
                                         userParams.putInt("taskId", taskId);
                                         Intent intent = new Intent(getContext(), ViewTaskActivity.class);
                                         intent.putExtras(userParams);
-                                        startActivityForResult(intent, 2);
+                                        startActivity(intent);
                                     }
                                 }
                             })
             );
-            adapter.notifyDataSetChanged();
         }
         return rootView;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
     }
 }
