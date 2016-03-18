@@ -4,6 +4,7 @@ package com.tasking;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-public class AllTasksTab extends Fragment {
+public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -107,5 +108,10 @@ public class AllTasksTab extends Fragment {
             });
         }
         return rootView;
+    }
+
+    @Override
+    public void onRefresh() {
+        //TODO: implement refresh logic
     }
 }
