@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -28,7 +29,7 @@ public class LoginActivity extends Activity {
         FireBaseDB db = FireBaseDB.getInstance();
 
 
-        Manager manager = new Manager("new13anager@gmail.com","15243w",1);
+        Manager manager = new Manager("new13anager@gmail.com","15243w");
         TeamMember e4  = new TeamMember("arel10@gmail.com","1232214w345",1);
         TeamMember e5  = new TeamMember("arel11@gmail.com","12322454514w345",0);
         TeamMember e6  = new TeamMember("arel12@gmail.com","12322454514ew345",0);
@@ -89,35 +90,39 @@ public class LoginActivity extends Activity {
     }
 
     public void submit(View view) {
-//        Button signUp = (Button) findViewById(R.id.btn_sign);
-//        EditText username = (EditText) findViewById(R.id.txt_user_name);
-//        EditText password = (EditText) findViewById(R.id.txt_password);
-//        String user = username.getText().toString();
-//        String pass = password.getText().toString();
+        Button signUp = (Button) findViewById(R.id.btn_sign);
+        EditText username = (EditText) findViewById(R.id.txt_user_name);
+        EditText password = (EditText) findViewById(R.id.txt_password);
+        String user = username.getText().toString();
+        String pass = password.getText().toString();
         Bundle userParams = new Bundle();
-        Intent intent = new Intent(this, TeamActivity.class);
-        userParams.putBoolean("isManager", true);
-        intent.putExtras(userParams);
-        startActivity(intent);
-//        if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){
-//            if(!user.equals("")) {
-//                if (!pass.equals("")) {
-//                    Employee employee = new Manager(user, pass, 1);
+        if(signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))){
+            if(!user.equals("")) {
+                if (!pass.equals("")) {
+                    Employee employee = new Manager(user, pass);
 //                    TaskDAO.getInstance(this).addTeamMember(employee);
 //                    Intent intent = new Intent(this, TeamActivity.class);
 //                    userParams.putString("userName", employee.getUserName());
 //                    userParams.putBoolean("isManager", true);
 //                    intent.putExtras(userParams);
 //                    startActivity(intent);
-//                }
-//                else{
-//                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//            else{
-//                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
-//            }
-//        }
+                }
+                else{
+                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+
+        Intent intent = new Intent(this, TeamActivity.class);
+        userParams.putBoolean("isManager", true);
+        intent.putExtras(userParams);
+        startActivity(intent);
+
 //        else{
 //            if(!user.equals("")){
 //                if(!pass.equals("")){
