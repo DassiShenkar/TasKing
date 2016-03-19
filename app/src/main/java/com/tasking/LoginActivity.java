@@ -116,8 +116,8 @@ public class LoginActivity extends Activity {
 
 
 
-        Intent intent = new Intent(this, TeamActivity.class);
-        userParams.putBoolean("isManager", true);
+        Intent intent = new Intent(this, TasksActivity.class);
+        userParams.putBoolean("isManager", false);
         intent.putExtras(userParams);
         startActivity(intent);
 
