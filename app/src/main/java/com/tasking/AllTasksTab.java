@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -68,12 +70,23 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String selectedSpinnerItem = spinner.getSelectedItem().toString();
+
+                    final  Map<String, String> statusMap = new HashMap<String, String>();
+                    final Map<String, String> priorityMap = new HashMap<String, String>();
+                    statusMap.put("Waiting", "2");
+                    statusMap.put("In Progress", "1");
+                    statusMap.put("Done", "demo");
+                    priorityMap.put("Urgent", "2");
+                    priorityMap.put("Normal", "1");
+                    priorityMap.put("Low", "0");
+
+
                     switch (selectedSpinnerItem) {
                         case "STATUS":
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
-                                    return lhs.getStatus().compareTo(rhs.getStatus());
+                                    return statusMap.get(lhs.getStatus().toString()).compareTo(statusMap.get(rhs.getStatus().toString()));
                                 }
                             });
                             break;
@@ -89,7 +102,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
-                                    return lhs.getPriority().compareTo(rhs.getPriority());
+                                    return priorityMap.get(lhs.getPriority().toString()).compareTo(priorityMap.get(rhs.getPriority().toString()));
                                 }
                             });
                             break;
