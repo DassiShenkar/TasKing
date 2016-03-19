@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private boolean isUpdate;
     private Task taskToUpdate;
-    private Date date;
+    private String selectedRadio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +57,15 @@ public class AddTaskActivity extends AppCompatActivity {
             taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             EditText category = (EditText) findViewById(R.id.edit_category);
-            EditText priority = (EditText) findViewById(R.id.edit_priority);
+           // EditText priority = (EditText) findViewById(R.id.edit_priority);
+
             EditText date = (EditText) findViewById(R.id.edit_date);
             EditText time = (EditText) findViewById(R.id.edit_time);
             EditText location = (EditText) findViewById(R.id.edit_location);
             name.setText(taskToUpdate.getName());
             category.setText(taskToUpdate.getCategory());
-            priority.setText(taskToUpdate.getPriority());
+         //   priority.setText(taskToUpdate.getPriority());
+
             date.setText(taskToUpdate.getDateString());
             time.setText(taskToUpdate.getTimeString());
             location.setText(taskToUpdate.getLocation());
@@ -72,13 +75,14 @@ public class AddTaskActivity extends AppCompatActivity {
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
         EditText category = (EditText) findViewById(R.id.edit_category);
-        EditText priority = (EditText) findViewById(R.id.edit_priority);
+      //  EditText priority = (EditText) findViewById(R.id.edit_priority);
         EditText date = (EditText) findViewById(R.id.edit_date);
         EditText time = (EditText) findViewById(R.id.edit_time);
         EditText location = (EditText) findViewById(R.id.edit_location);
         String taskName = name.getText().toString();
         String taskCategory = category.getText().toString();
-        String taskPriority = priority.getText().toString();
+       // String taskPriority = priority.getText().toString();
+        String taskPriority = selectedRadio;
         String taskLocation = location.getText().toString();
         String taskDate = date.getText().toString();
         String taskTime = time.getText().toString();
@@ -115,6 +119,27 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         else{
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_urgent:
+                if (checked)
+                    selectedRadio = "Urgent";
+                    break;
+            case R.id.radio_normal:
+                if (checked)
+                    selectedRadio = "Normal";
+                    break;
+            case R.id.radio_low:
+                if (checked)
+                    selectedRadio = "Low";
+                    break;
         }
     }
 
@@ -160,7 +185,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            String dateString = year+"-"+month+1 +"-"+day; //
+            String dateString = year+"-"+ ++month +"-"+day; //
             EditText b = (EditText)getActivity().findViewById(R.id.edit_date);
             b.setText(dateString);
         }
@@ -170,5 +195,4 @@ public class AddTaskActivity extends AppCompatActivity {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
-
 }
