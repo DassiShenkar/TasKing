@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TasKingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
 
     // Database Name
     private static final String DATABASE_NAME = "TasKingDB";
@@ -28,7 +28,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String KEY_STATUS = "status";
     private static final String KEY_ASSIGNEE = "assignee";
     private static final String KEY_FIREBASE_ID = "firebase_id";
-    //TODO: add photo byteString column
+    private static final String KEY_PICTURE = "picture";
 
     // Tables create statement
     private static final String CREATE_EMPLOYEES_TABLE = "CREATE TABLE "
@@ -36,8 +36,8 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS + "("
             + KEY_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_TASK_NAME + " TEXT," + KEY_TIME
             + " TEXT,"+ KEY_DATE + " TEXT," + KEY_CATEGORY + " TEXT," + KEY_PRIORITY
-            + " TEXT," + KEY_STATUS + " TEXT," + KEY_ASSIGNEE + " TEXT,"+ KEY_FIREBASE_ID + " TEXT,"
-            + KEY_LOCATION + " TEXT);";
+            + " TEXT," + KEY_STATUS + " TEXT," + KEY_ASSIGNEE + " TEXT," + KEY_FIREBASE_ID + " TEXT,"
+            + KEY_PICTURE + " TEXT," + KEY_LOCATION + " TEXT);";
     public TasKingDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

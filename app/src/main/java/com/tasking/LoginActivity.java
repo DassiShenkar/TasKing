@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-
 
 public class LoginActivity extends Activity {
 
@@ -25,21 +23,21 @@ public class LoginActivity extends Activity {
 
 
     //  Gindos DB CHECK - DO NOT TOUCH
-        Firebase.setAndroidContext(this);
-        FireBaseDB db = FireBaseDB.getInstance();
-
-
-        Manager manager = new Manager("new13anager@gmail.com","15243w");
-        TeamMember e4  = new TeamMember("arel10@gmail.com","1232214w345",1);
-        TeamMember e5  = new TeamMember("arel11@gmail.com","12322454514w345",0);
-        TeamMember e6  = new TeamMember("arel12@gmail.com","12322454514ew345",0);
+//        Firebase.setAndroidContext(this);
+//        FireBaseDB db = FireBaseDB.getInstance();
+//
+//
+//        Manager manager = new Manager("new13anager@gmail.com","15243w");
+//        TeamMember e4  = new TeamMember("arel10@gmail.com","1232214w345",1);
+//        TeamMember e5  = new TeamMember("arel11@gmail.com","12322454514w345",0);
+//        TeamMember e6  = new TeamMember("arel12@gmail.com","12322454514ew345",0);
       //  db.createNewEmployee(e);
 //        Task task = new Task("Endroid1","11/09/1990","homework","urgent","room 247","waiting",e6);
        // String mangerUid = db.createNewManager("new12anager@gmail.com","15243w");
        // AuthData ad = db.ge
-        db.createNewManager(manager);
-        db.authenticationEmployee(manager);
-        System.out.println("login="+db.getManagerUid());
+//        db.createNewManager(manager);
+//        db.authenticationEmployee(manager);
+//        System.out.println("login="+db.getManagerUid());
        // db.addNewTask(task);
       //  db.setTaskAssignees(task,e4);
       //  db.setManagerEmployees(e4,teamMember);

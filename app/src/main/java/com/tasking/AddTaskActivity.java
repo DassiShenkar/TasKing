@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class AddTaskActivity extends AppCompatActivity {
 
     private boolean isUpdate;
+    private Task taskToUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +42,19 @@ public class AddTaskActivity extends AppCompatActivity {
         spinner.setAdapter(spinnerAdapter);
         if(taskId != 0){
             isUpdate = true;
-            Task task = TaskDAO.getInstance(this).getTask(taskId);
+            taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             EditText category = (EditText) findViewById(R.id.edit_category);
             EditText priority = (EditText) findViewById(R.id.edit_priority);
             EditText date = (EditText) findViewById(R.id.edit_date);
             EditText time = (EditText) findViewById(R.id.edit_time);
             EditText location = (EditText) findViewById(R.id.edit_location);
-            name.setText(task.getName());
-            category.setText(task.getCategory());
-            priority.setText(task.getPriority());
-            date.setText(task.getDateString());
-            time.setText(task.getTimeString());
-            location.setText(task.getLocation());
+            name.setText(taskToUpdate.getName());
+            category.setText(taskToUpdate.getCategory());
+            priority.setText(taskToUpdate.getPriority());
+            date.setText(taskToUpdate.getDateString());
+            time.setText(taskToUpdate.getTimeString());
+            location.setText(taskToUpdate.getLocation());
         }
     }
 
@@ -74,23 +75,28 @@ public class AddTaskActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
         String employeeName = spinner.getSelectedItem().toString();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskPriority.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
-            Task task = new Task();
-            task.setName(taskName);
-            task.setDateFromString(taskTime, taskDate);
-            task.setCategory(taskCategory);
-            task.setPriority(taskPriority);
-            task.setStatus("WAITING");
-            task.setAssignee(employeeName);
-            task.setLocation(taskLocation);
             if(isUpdate){
-                TaskDAO.getInstance(this).updateTask(task);
+                taskToUpdate.setName(taskName);
+                taskToUpdate.setDateFromString(taskTime, taskDate);
+                taskToUpdate.setCategory(taskCategory);
+                taskToUpdate.setPriority(taskPriority);
+                taskToUpdate.setAssignee(employeeName);
+                taskToUpdate.setLocation(taskLocation);
+                TaskDAO.getInstance(this).updateTask(taskToUpdate);
                 isUpdate = false;
                 userParams.remove("taskId");
             }
             else {
+                Task task = new Task();
+                task.setName(taskName);
+                task.setDateFromString(taskTime, taskDate);
+                task.setCategory(taskCategory);
+                task.setPriority(taskPriority);
+                task.setStatus("WAITING");
+                task.setAssignee(employeeName);
+                task.setLocation(taskLocation);
                 TaskDAO.getInstance(this).addTask(task);
             }
-            //TODO setId(); from return value from addTask(task)(not implemented)
             //TODO: add task to firebaseDB & setFirebaseDBId();
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);

@@ -19,6 +19,7 @@ public class Task {
     private String picture;
 
     public Task() {
+
     }
 
     public Task(int id, String name, Date date, String category, String priority, String location, String status, String firebaseId, String assignee) {
@@ -126,4 +127,13 @@ public class Task {
     public void setAssignee(String assignee) {
         this.assignee = assignee;
     }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
 }

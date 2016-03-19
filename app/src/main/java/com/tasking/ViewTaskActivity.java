@@ -20,8 +20,8 @@ import java.util.Locale;
 
 public class ViewTaskActivity extends AppCompatActivity {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 111;
+    static final int REQUEST_TAKE_PHOTO = 111;
     String currentPhotoPath;
 
     @Override
@@ -32,7 +32,8 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //TODO: get Relevant task
+        Bundle userParams = getIntent().getExtras();
+        Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
         ImageButton imageButton = (ImageButton) findViewById(R.id.btn_img_save);
         //TODO: fix data returns null
         if (data != null && requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -47,7 +48,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
             byte[] byteArray = bYtE.toByteArray();
             String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            //TODO: setPicture(imageFile);
+            task.setPicture(imageFile);
+            TaskDAO.getInstance(this).updateTask(task);
             galleryAddPic();
         }
     }
