@@ -19,6 +19,7 @@ public class TeamActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(com.tasking.R.layout.activity_team);
         Bundle userParams = getIntent().getExtras();
+        String uId = userParams.getString("fbId");
         TextView title = (TextView)findViewById(R.id.title);
         TextView membersTitle = (TextView)findViewById(R.id.members_title);
         TextView createTeam = (TextView)findViewById(R.id.team_text);

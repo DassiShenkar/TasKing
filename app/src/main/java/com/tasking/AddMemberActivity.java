@@ -56,7 +56,7 @@ public class AddMemberActivity extends Activity {
                     if (!emailStr.equals("") || !phoneStr.equals("")){
                         Employee employee;
                         ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers();
-                        employee = new TeamMember(emailStr, phoneStr, 0);
+                        employee = new TeamMember(emailStr, phoneStr);
                         TaskDAO.getInstance(getApplicationContext()).addMember(employee);
                         //TODO: send member details to firebaseDB
                         boolean exists = false;

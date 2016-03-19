@@ -62,7 +62,10 @@
     <string name="delete">DELETE</string>
     <string name="update">Upadte interval</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="pick_time">Time</string>
-    <string name="pick_date">Date</string>
+    <string name="urgent">Urgent</string>
+    <string name="normal">Normal</string>
+    <string name="low">Low</string>
+    <string name="pick_time">Pick Time</string>
+    <string name="pick_date">Pick Date</string>
 
 </resources>
