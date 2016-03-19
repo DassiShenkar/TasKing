@@ -35,7 +35,7 @@ public class Task {
     }
 
     public String getTimeString(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
         String strTime = simpleDateFormat.format(date);
         return strTime;
     }
@@ -48,7 +48,7 @@ public class Task {
 
     public void setDateFromString(String time, String date){
         String fullDate = date + " " + time;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
         try{
             this.date = dateFormat.parse(fullDate);
         } catch (ParseException e){

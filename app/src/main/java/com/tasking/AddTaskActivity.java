@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -23,13 +22,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class AddTaskActivity extends AppCompatActivity {
 
     private boolean isUpdate;
     private Task taskToUpdate;
-    private Date date;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +132,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String timeString = hourOfDay+":"+minute+":30"; //
+            String timeString = hourOfDay + ":" + minute; //
             EditText b = (EditText)getActivity().findViewById(R.id.edit_time);
             b.setText(timeString);
         }
@@ -152,7 +150,7 @@ public class AddTaskActivity extends AppCompatActivity {
             // Use the current date as the default date in the picker
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
+            int month = c.get(Calendar.MONTH) + 1;
             int day = c.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
@@ -160,7 +158,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            String dateString = year+"-"+month+1 +"-"+day; //
+            String dateString = year + "-" + month + "-" + day; //
             EditText b = (EditText)getActivity().findViewById(R.id.edit_date);
             b.setText(dateString);
         }
