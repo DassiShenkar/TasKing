@@ -4,25 +4,18 @@ package com.tasking;
 public class Employee {
     private String userName;
     private String password;
-    private int isManager;
     private String uid;
 
     public Employee() {
 
     }
 
-    public Employee(String userName, String password, int isManager) {
+    public Employee(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.isManager = isManager;
         this.uid = null;
     }
-    public Employee(String userName, String password, int isManager,String uid) {
-        this.userName = userName;
-        this.password = password;
-        this.isManager = isManager;
-        this.uid = uid;
-    }
+
 
     public String getUserName() {
         return userName;
@@ -39,14 +32,14 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
+//
+//    public int getIsManager() {
+//        return isManager;
+//    }
 
-    public int getIsManager() {
-        return isManager;
-    }
-
-    public void setIsManager(int iSmanager) {
-        this.isManager = iSmanager;
-    }
+//    public void setIsManager(int iSmanager) {
+//        this.isManager = iSmanager;
+//    }
 
     public String getUid() {
         return uid;
@@ -60,8 +53,6 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", isManager=" + isManager +
-                '}';
+                ", password='" + password + '\'';
     }
 }

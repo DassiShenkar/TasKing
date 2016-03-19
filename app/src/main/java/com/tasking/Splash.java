@@ -17,6 +17,7 @@ public class Splash extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash);
+        final Bundle userParams = new Bundle();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -26,6 +27,7 @@ public class Splash extends Activity {
             @Override
             public void run() {
                 Intent mainIntent = new Intent(Splash.this, LoginActivity.class);
+                mainIntent.putExtras(userParams);
                 startActivity(mainIntent);
                 finish();
             }

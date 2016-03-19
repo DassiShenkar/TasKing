@@ -151,7 +151,7 @@ public class TasksActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Bundle userParams = getIntent().getExtras();
-        if(!userParams.getBoolean("isManager")) {
+        if(userParams.getBoolean("isManager")) {
             if (id == R.id.nav_members_list) {
                 Intent intent = new Intent(this, TeamActivity.class);
                 intent.putExtras(userParams);
