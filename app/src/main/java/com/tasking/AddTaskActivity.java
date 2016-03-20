@@ -54,13 +54,13 @@ public class AddTaskActivity extends AppCompatActivity {
             taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             EditText category = (EditText) findViewById(R.id.edit_category);
-            EditText priority = (EditText) findViewById(R.id.edit_priority);
+           // EditText priority = (EditText) findViewById(R.id.edit_priority);
             EditText date = (EditText) findViewById(R.id.edit_date);
             EditText time = (EditText) findViewById(R.id.edit_time);
             EditText location = (EditText) findViewById(R.id.edit_location);
             name.setText(taskToUpdate.getName());
             category.setText(taskToUpdate.getCategory());
-            priority.setText(taskToUpdate.getPriority());
+          //  priority.setText(taskToUpdate.getPriority());
             date.setText(taskToUpdate.getDateString());
             time.setText(taskToUpdate.getTimeString());
             location.setText(taskToUpdate.getLocation());
@@ -70,13 +70,13 @@ public class AddTaskActivity extends AppCompatActivity {
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
         EditText category = (EditText) findViewById(R.id.edit_category);
-        EditText priority = (EditText) findViewById(R.id.edit_priority);
+       // EditText priority = (EditText) findViewById(R.id.edit_priority);
         EditText date = (EditText) findViewById(R.id.edit_date);
         EditText time = (EditText) findViewById(R.id.edit_time);
         EditText location = (EditText) findViewById(R.id.edit_location);
         String taskName = name.getText().toString();
         String taskCategory = category.getText().toString();
-        String taskPriority = priority.getText().toString();
+        String taskPriority = "Normal";
         String taskLocation = location.getText().toString();
         String taskDate = date.getText().toString();
         String taskTime = time.getText().toString();
