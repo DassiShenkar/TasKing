@@ -126,7 +126,7 @@ public class LoginActivity extends Activity {
                                             public void onDataChange(DataSnapshot snapshot) {
                                                 Bundle userParams = getIntent().getExtras();
                                                 //Manager login
-                                                if (snapshot.child("Managers").child(uid).getKey().equals(uid)) {
+                                                if (snapshot.child("Managers").child(uid).child("username").getValue() != null) {
                                                     //Manager with team
                                                     if (snapshot.child("Managers").child(uid).getChildrenCount() > 1) {
                                                         userParams.putString("uid", uid);
