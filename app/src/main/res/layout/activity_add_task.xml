@@ -6,203 +6,324 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.tasking.AddTaskActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/task_name"
-        android:id="@+id/txt_task_name"
-        android:textSize="25sp"
-        android:textColor="@color/grey"
-        android:layout_alignBottom="@+id/edit_task_name"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="10dp"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/white"
+            android:text="@string/app_name" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/category"
-        android:id="@+id/txt_category"
-        android:textSize="25sp"
-        android:textColor="@color/grey"
-        android:layout_alignBottom="@+id/edit_category"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="10dp"/>
+    </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/priority"
-        android:id="@+id/txt_priority"
-        android:textSize="25sp"
-        android:textColor="@color/grey"
-        android:layout_below="@+id/txt_category"
-        android:layout_alignParentStart="true"
-        android:paddingTop="16dp"
-        android:paddingLeft="10dp"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/location"
-        android:id="@+id/txt_location"
-        android:textSize="25sp"
-        android:textColor="@color/grey"
-        android:layout_below="@+id/txt_priority"
-        android:paddingTop="16dp"
-        android:paddingLeft="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/date"
-        android:id="@+id/txt_date"
-        android:textSize="25sp"
-        android:textColor="@color/grey"
-        android:layout_below="@+id/txt_location"
-        android:layout_alignParentStart="true"
-        android:paddingTop="16dp"
-        android:paddingLeft="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time"
-        android:id="@+id/txt_time"
-        android:textSize="25sp"
-        android:textColor="@color/grey"
-        android:layout_below="@+id/txt_date"
-        android:layout_alignParentStart="true"
-        android:paddingTop="16dp"
-        android:paddingLeft="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/assign_member"
-        android:id="@+id/txt_assign_member"
-        android:textSize="25sp"
-        android:textColor="@color/grey"
-        android:paddingTop="16dp"
-        android:paddingLeft="10dp"
-        android:layout_below="@+id/edit_time"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="186dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_task_name"
-        android:hint="@string/task_name"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/edit_location"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_category"
-        android:text="@string/category"
-        android:layout_below="@+id/edit_task_name"
-        android:layout_alignEnd="@+id/edit_location" />
-
-
-    <RadioGroup
-        android:id="@+id/radioGroup1"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/edit_category"
-        android:layout_toEndOf="@+id/txt_category"
-        android:paddingTop="16dp">
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/name_layout"
+        android:background="@drawable/border"
+        android:layout_below="@+id/my_toolbar">
 
-        <RadioButton android:id="@+id/radio_low"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/low"
-            />
+            android:text="@string/task_name"
+            android:id="@+id/txt_task_name"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/grey"
+            android:layout_alignBottom="@+id/edit_task_name"
+            android:layout_alignParentStart="true"
+            android:labelFor="@id/edit_task_name" />
 
-
-        <RadioButton android:id="@+id/radio_normal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <EditText
+            android:layout_width="186dp"
             android:layout_height="wrap_content"
-            android:text="@string/normal"
-            android:checked="true"/>
+            android:id="@+id/edit_task_name"
+            android:singleLine="true"
+            android:lines="1"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:inputType="none"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
 
-        <RadioButton android:id="@+id/radio_urgent"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/category_layout"
+        android:layout_below="@id/name_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/urgent" />
+            android:text="@string/category"
+            android:id="@+id/txt_category"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/grey"
+            android:layout_alignParentStart="true"
+            android:labelFor="@id/edit_category"/>
 
 
-    </RadioGroup>
-    <EditText
-        android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_category"
+            android:singleLine="true"
+            android:lines="1"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:inputType="none"
+            android:layout_alignTop="@+id/txt_category"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_location"
-        android:text="@string/location"
-        android:layout_below="@+id/txt_priority"
-        android:layout_alignStart="@+id/edit_date"
-        android:paddingTop="16dp"/>
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/priority_layout"
+        android:layout_below="@id/category_layout">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:textSize="25sp"
-        android:id="@+id/edit_date"
-        android:text="@string/date"
-        android:layout_alignBottom="@+id/txt_date"
-        android:layout_alignStart="@+id/edit_time" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority"
+            android:id="@+id/txt_priority"
+            android:textSize="25sp"
+            android:textColor="@color/grey"
+            android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/txt_priority"
+            android:layout_centerHorizontal="true">
+
+            <RadioButton android:id="@+id/radio_low"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/low" />
+
+            <RadioButton android:id="@+id/radio_normal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/normal"
+                android:checked="true"/>
+
+            <RadioButton android:id="@+id/radio_urgent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/urgent" />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/edit_time"
-        android:text="@string/time"
-        android:layout_below="@+id/datePicker"
-        android:layout_alignParentEnd="true" />
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/location_layout"
+        android:layout_below="@id/priority_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:id="@+id/txt_location"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/grey"
+            android:labelFor="@id/edit_location"/>
+
+        <EditText
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_location"
+            android:singleLine="true"
+            android:lines="1"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:inputType="none"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/date_layout"
+        android:layout_below="@id/location_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date"
+            android:id="@+id/txt_date"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/grey"
+            android:layout_alignParentStart="true"
+            android:labelFor="@id/edit_date"/>
+
+        <EditText
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/edit_date"
+            android:singleLine="true"
+            android:lines="1"
+            android:textSize="25sp"
+            android:inputType="date"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/datePicker" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showDatePickerDialog"
+            android:id="@+id/datePicker"
+            android:src="@drawable/calander"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/time_layout"
+        android:layout_below="@id/date_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            android:id="@+id/txt_time"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/grey"
+            android:layout_alignParentStart="true"
+            android:labelFor="@id/edit_time"/>
+
+        <EditText
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/edit_time"
+            android:singleLine="true"
+            android:lines="1"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:inputType="time"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/time_picker" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/clock"
+            android:onClick="showTimePickerDialog"
+            android:id="@+id/time_picker"
+            android:layout_alignBottom="@+id/edit_time"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/assign_layout"
+        android:layout_below="@id/time_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/assign_member"
+            android:id="@+id/txt_assign_member"
+            android:textSize="25sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/grey"
+            android:layout_alignParentStart="true" />
+
+        <Spinner
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spn_add_member"
+            android:spinnerMode="dropdown"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/done"
         android:id="@+id/txt_add_task"
-        android:textSize="30sp"
+        android:textSize="25sp"
+        android:onClick="done"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/edit_task_name"
-        android:layout_marginBottom="48dp"
-        android:onClick="done" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spn_add_member"
-        android:spinnerMode="dropdown"
-        android:layout_below="@+id/edit_time"
-        android:layout_toStartOf="@+id/button4" />
-
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/clock"
-        android:onClick="showTimePickerDialog"
-        android:id="@+id/button4"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/datePicker" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="showDatePickerDialog"
-        android:id="@+id/datePicker"
-        android:src="@drawable/calander"
-        android:layout_below="@+id/txt_location"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="30dp" />
 
 </RelativeLayout>

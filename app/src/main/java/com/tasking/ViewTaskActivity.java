@@ -2,7 +2,9 @@ package com.tasking;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -10,16 +12,36 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class ViewTaskActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String imageFile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
+        if(savedInstanceState.getString("image") != null){
+            String byteString = savedInstanceState.getString("image");
+            ImageView imageview = (ImageView) findViewById(R.id.btn_img_save);
+            if (byteString != null) {
+                byte[] bitmapdata = byteString.getBytes(StandardCharsets.UTF_8);
+                Bitmap imageBitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
+                imageview.setImageBitmap(imageBitmap);
+            }
+            imageview.setClickable(false);
+        }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString("image", imageFile);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -32,7 +54,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             imageview.setImageBitmap(imageBitmap);
             ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
             byte[] byteArray = bYtE.toByteArray();
-            String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
             task.setPicture(imageFile);
             TaskDAO.getInstance(this).updateTask(task);
             imageview.setClickable(false);

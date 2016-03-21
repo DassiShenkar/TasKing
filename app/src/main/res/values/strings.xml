@@ -20,10 +20,10 @@
     <string name="arrow">Arrow</string>
     <string name="done">DONE</string>
     <string name="save">SAVE</string>
-    <string name="cancel">CANCEL</string>
+    <string name="cancel">Cancel</string>
     <string name="team_name">Team Name</string>
     <string name="team_members">Team Members</string>
-    <string name="send_invites">Send invites to team members</string>
+    <string name="send_invites">Send invites</string>
     <string name="waiting">WAITING</string>
     <string name="all_tasks">ALL TASKS</string>
     <string name="no_tasks">There are no\n tasks on your list!\n <b>Create</b> a New Task</string>
@@ -33,7 +33,7 @@
     <string name="location">Location</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
-    <string name="assign_member">Assign Member</string>
+    <string name="assign_member">Assign\nMember</string>
     <string name="today">TODAY</string>
     <string name="tomorrow">TOMORROW</string>
     <string name="sort_by">Sort By</string>
