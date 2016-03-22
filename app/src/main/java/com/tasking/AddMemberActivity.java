@@ -15,7 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class AddMemberActivity extends Activity {
 
@@ -102,6 +106,29 @@ public class AddMemberActivity extends Activity {
                 }
             }
             if(teamMembers.size() > 0) {
+                final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+                for(final Employee member : teamMembers) {
+                    firebase.createUser(member.getUserName(), member.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+                        @Override
+                        public void onSuccess(Map<String, Object> result) {
+                            String uid = result.get("uid").toString();
+                            Bundle userParams = getIntent().getExtras();
+                            String managerUid = userParams.getString("uid");
+                            firebase.child("Managers").child( managerUid).child(teamName).child(uid).child("username").setValue(member.getUserName());
+                            firebase.child("member-manager").child(uid).setValue(managerUid);
+                            userParams.putString("teamName", teamName);
+                            Intent intent = new Intent(getApplication(), TeamActivity.class);
+                            intent.putExtras(userParams);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(FirebaseError firebaseError) {
+                            //TODO: something
+                        }
+                    });
+                }
+
                 Bundle userParams = getIntent().getExtras();
                 Intent sendMail = new Intent(Intent.ACTION_SEND);
                 String[] to = new String[teamMembers.size()];

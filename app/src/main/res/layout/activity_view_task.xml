@@ -1,164 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.tasking.ViewTaskActivity"
     android:onClick="takePhoto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/category"
-        android:id="@+id/txt_view_category"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/white"
+            android:text="@string/app_name" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/category"
-        android:id="@+id/txt_view_curr_category"
-        android:layout_alignBottom="@+id/txt_view_category"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/priority"
-        android:id="@+id/txt_view_priority"
-        android:layout_below="@+id/txt_view_category"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/priority"
-        android:id="@+id/txt_view_curr_priority"
-        android:layout_alignTop="@+id/txt_view_priority"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/location"
-        android:id="@+id/txt_view_location"
-        android:layout_below="@+id/txt_view_priority"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/location"
-        android:id="@+id/txt_view_curr_location"
-        android:layout_alignTop="@+id/txt_view_location"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/due_time"
-        android:id="@+id/txt_vie_dueTime"
-        android:layout_below="@+id/txt_view_location"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/due_time"
-        android:id="@+id/txt_curr_dueTime"
-        android:layout_alignTop="@+id/txt_vie_dueTime"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/accept_status"
-        android:id="@+id/txt_view_accept"
-        android:layout_below="@+id/radioButton2"
-        android:layout_alignParentStart="true" />
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton"
-        android:layout_alignParentEnd="true"
-        android:checked="false"
-        android:layout_below="@+id/radioButton2"
-        android:layout_alignParentRight="true" />
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton2"
-        android:layout_below="@+id/txt_curr_dueTime"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="56dp"
-        android:checked="true" />
+    </android.support.v7.widget.Toolbar>
 
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/status"
-        android:id="@+id/txt_view_status"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/view_category_layout"
+        android:background="@drawable/border"
+        android:layout_below="@id/my_toolbar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/category"
+            android:textSize="25sp"
+            android:id="@+id/txt_view_category"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton3"
-        android:layout_below="@+id/radioButton"
-        android:layout_alignStart="@+id/radioButton" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:id="@+id/txt_view_curr_category"
+            android:layout_alignBottom="@+id/txt_view_category"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
-    <RadioButton
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton4"
-        android:layout_below="@+id/radioButton5"
-        android:layout_alignStart="@+id/radioButton6"
-        android:checked="false" />
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/view_priority_layout"
+        android:background="@drawable/border"
+        android:layout_below="@id/view_category_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority"
+            android:textSize="25sp"
+            android:id="@+id/txt_view_priority"
+            android:layout_alignParentStart="true" />
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton5"
-        android:layout_above="@+id/txt_view_status"
-        android:layout_alignParentEnd="true"
-        android:checked="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:id="@+id/txt_view_curr_priority"
+            android:layout_alignTop="@+id/txt_view_priority"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
-    <RadioButton
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButton6"
-        android:layout_below="@+id/radioButton4"
-        android:layout_alignParentEnd="true" />
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/view_location_layout"
+        android:background="@drawable/border"
+        android:layout_below="@id/view_priority_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:textSize="25sp"
+            android:id="@+id/txt_view_location"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_photo"
-        android:id="@+id/txt_view_addPhoto"
-        android:layout_below="@+id/radioButton6"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="70dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:id="@+id/txt_view_curr_location"
+            android:layout_alignTop="@+id/txt_view_location"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_img_save"
-        android:layout_alignBottom="@+id/txt_view_addPhoto"
-        android:layout_alignParentEnd="true"
-        android:onClick="takePhoto" />
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/view_duedate_layout"
+        android:background="@drawable/border"
+        android:layout_below="@id/view_location_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/due_time"
+            android:textSize="25sp"
+            android:id="@+id/txt_vie_dueTime"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:id="@+id/txt_curr_dueTime"
+            android:layout_alignTop="@+id/txt_vie_dueTime"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/view_accept_layout"
+        android:layout_below="@id/view_duedate_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accept_status"
+            android:id="@+id/txt_accept"
+            android:textSize="25sp"
+            android:textColor="@color/grey"
+            android:layout_alignParentStart="true" />
+
+        <RadioGroup
+            android:id="@+id/radGrp_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/txt_accept"
+            android:layout_centerHorizontal="true">
+
+            <RadioButton android:id="@+id/radio_waiting"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/waiting" />
+
+            <RadioButton android:id="@+id/radio_accept"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/accept"
+                android:textSize="12sp"
+                android:checked="true"/>
+
+            <RadioButton android:id="@+id/radio_reject"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:text="@string/reject" />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/view_status_layout"
+        android:layout_below="@id/view_accept_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/task_status"
+            android:id="@+id/txt_status"
+            android:textSize="25sp"
+            android:textColor="@color/grey"
+            android:layout_alignParentStart="true" />
+
+        <RadioGroup
+            android:id="@+id/radGrp_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/txt_status"
+            android:layout_centerHorizontal="true">
+
+            <RadioButton android:id="@+id/radio_status_waiting"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:text="@string/waiting" />
+
+            <RadioButton android:id="@+id/radio_inProgress"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:text="@string/in_process"
+                android:checked="true"/>
+
+            <RadioButton android:id="@+id/radio_done"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:text="@string/done" />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/border"
+        android:id="@+id/view_photo_layout"
+        android:layout_below="@id/view_status_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_photo"
+            android:id="@+id/txt_view_addPhoto"
+            android:layout_alignParentStart="true"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_img_save"
+            android:layout_alignBottom="@+id/txt_view_addPhoto"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/add_image"
+            android:onClick="takePhoto" />
+
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -167,6 +291,9 @@
         android:id="@+id/txt_view_done"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:onClick="done" />
-        <!--TODO: add RadioGroup-->
+        android:onClick="done"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp" />
 </RelativeLayout>

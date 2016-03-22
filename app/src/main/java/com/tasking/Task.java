@@ -13,6 +13,7 @@ public class Task {
     private String category;
     private String priority;
     private String location;
+    private String acceptStatus;
     private String status;
     private String firebaseId;
     private String assignee;
@@ -110,6 +111,14 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getAcceptStatus() {
+        return acceptStatus;
+    }
+
+    public void setAcceptStatus(String acceptStatus) {
+        this.acceptStatus = acceptStatus;
     }
 
     public String getFirebaseId() {

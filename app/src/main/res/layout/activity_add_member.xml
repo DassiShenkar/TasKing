@@ -26,13 +26,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:id="@+id/team_name_wrapper"
-        android:gravity="center_vertical"
-        android:weightSum="1"
         android:layout_alignParentStart="true"
         android:layout_below="@id/my_toolbar"
-        android:layout_marginTop="10dp">
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="@drawable/border">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,10 +46,12 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="186dp"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:lines="1"
+            android:inputType="none"
             android:id="@+id/edit_team_name"
-            android:hint="@string/team_name"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
@@ -55,13 +59,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:id="@+id/team_members_wrapper"
-        android:gravity="center_vertical"
-        android:weightSum="1"
         android:layout_alignParentStart="true"
         android:layout_below="@id/team_name_wrapper"
-        android:layout_marginTop="10dp">
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="@drawable/border">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,12 +77,14 @@
             android:textColor="@color/grey"
             android:layout_alignParentStart="true"/>
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
+            android:text="@string/Add"
+            android:textStyle="bold"
             android:id="@+id/add_btn"
             android:layout_alignParentTop="true"
+            android:textSize="25sp"
             android:layout_toEndOf="@+id/textView3"
             android:layout_marginStart="48dp"
             android:onClick="addMember" />
@@ -86,15 +94,21 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/edit_members_wrapper"
         android:layout_below="@+id/team_members_wrapper"
-        android:layout_above="@+id/txt_done">
+        android:layout_above="@+id/txt_done"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="@drawable/border">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/email"
+            android:textSize="25sp"
             android:id="@+id/txt_member_email"
             android:layout_alignParentStart="true"
             android:layout_marginTop="30dp" />
@@ -103,45 +117,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/phone"
+            android:textSize="25sp"
             android:id="@+id/txt_member_phone"
             android:layout_below="@+id/txt_member_email"
             android:layout_alignParentStart="true"
             android:layout_marginTop="40dp" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:id="@+id/edit_member_email"
-            android:hint="@string/email"
+            android:singleLine="true"
+            android:lines="1"
+            android:textSize="25sp"
             android:layout_above="@+id/txt_member_phone"
-            android:layout_alignEnd="@+id/add_member_btn" />
+            android:layout_alignStart="@+id/edit_member_phone" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
+            android:singleLine="true"
+            android:lines="1"
+            android:textSize="25sp"
             android:id="@+id/edit_member_phone"
             android:layout_alignBottom="@+id/txt_member_phone"
-            android:layout_centerHorizontal="true"
-            android:hint="@string/phone"/>
+            android:layout_toEndOf="@+id/txt_member_phone" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Add"
+            android:text="@string/add_member"
+            android:textSize="25sp"
+            android:textStyle="bold"
             android:id="@+id/add_member_btn"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="70dp" />
     </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/done"
+        android:text="@string/send_invites"
         android:id="@+id/txt_done"
-        android:textSize="23sp"
+        android:textStyle="bold"
+        android:textSize="25sp"
         android:textColor="@color/darkBlue"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -151,11 +173,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back"
+        android:textStyle="bold"
         android:id="@+id/txt_back"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:onClick="back"
         android:nestedScrollingEnabled="false"
         android:textColor="@color/darkBlue"
-        android:textSize="20sp" />
+        android:textSize="25sp" />
 </RelativeLayout>

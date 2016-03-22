@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -70,7 +72,6 @@ public class AddTaskActivity extends AppCompatActivity {
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
         EditText category = (EditText) findViewById(R.id.edit_category);
-       // EditText priority = (EditText) findViewById(R.id.edit_priority);
         EditText date = (EditText) findViewById(R.id.edit_date);
         EditText time = (EditText) findViewById(R.id.edit_time);
         EditText location = (EditText) findViewById(R.id.edit_location);
@@ -83,6 +84,8 @@ public class AddTaskActivity extends AppCompatActivity {
         Bundle userParams = getIntent().getExtras();
         Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
         String employeeName = spinner.getSelectedItem().toString();
+        Task task = new Task();
+        final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
         if(!taskName.equals("") && !taskCategory.equals("") && !taskPriority.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
             if(isUpdate){
                 taskToUpdate.setName(taskName);
@@ -96,7 +99,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 userParams.remove("taskId");
             }
             else {
-                Task task = new Task();
                 task.setName(taskName);
                 task.setDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);
@@ -106,7 +108,17 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setLocation(taskLocation);
                 TaskDAO.getInstance(this).addTask(task);
             }
-            //TODO: add task to firebaseDB & setFirebaseDBId();
+            if(userParams.getBoolean("isManager")) {
+                String uid = userParams.getString("uid");
+                String teamName = userParams.getString("teamName");
+                if(uid != null && teamName != null) {
+                    //TODO: create a task in db under employee
+                }
+            }
+            else {
+                //TODO: update task in db under employee
+            }
+
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);
             startActivity(intent);
