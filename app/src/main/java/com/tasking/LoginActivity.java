@@ -24,7 +24,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-//meu
+
 public class LoginActivity extends Activity {
 
 
