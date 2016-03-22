@@ -64,11 +64,13 @@ public class ViewTaskActivity extends AppCompatActivity {
         RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
         RadioGroup accept = (RadioGroup) findViewById(R.id.radGrp_accept);
         RadioGroup status = (RadioGroup) findViewById(R.id.radGrp_status);
-        if(task.getStatus() == null || !task.getStatus().equals(getResources().getString(R.string.accept))) {
+        if(task.getAcceptStatus() == null || !task.getAcceptStatus().equals(getResources().getString(R.string.accept))) {
             taskStatus.setVisibility(View.GONE);
+            accept.check(R.id.radio_waiting);
         }
-        if(task.getPicture() == null) {
+        if(task.getPicture() == null || task.getStatus() == null || !task.getStatus().equals(getResources().getString(R.string.done))) {
             addPhoto.setVisibility(View.GONE);
+            accept.check(R.id.radio_status_waiting);
         }
         category.setText(task.getCategory());
         priority.setText(task.getPriority());
@@ -128,6 +130,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
             else{
                 try {
+                    imageUri = userParams.getParcelable("imageURI");
                     imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -163,6 +166,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     }
 
     public void takePhoto(View view){
+        Bundle userParams = getIntent().getExtras();
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -176,6 +180,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             imageUri = Uri.fromFile(photoFile);
             // Continue only if the File was successfully created
             if (photoFile != null) {
+                userParams.putParcelable("imageURI", imageUri);
+                takePictureIntent.putExtras(userParams);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }

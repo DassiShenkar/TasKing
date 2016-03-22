@@ -79,12 +79,6 @@ public class LoginActivity extends Activity {
         EditText editPassword = (EditText) findViewById(R.id.txt_password);
         final String username = editUsername.getText().toString();
         String password = editPassword.getText().toString();
-        /*-------Remove after debug ---------*/
-        Bundle userParams = getIntent().getExtras();
-        userParams.putBoolean("isManager", false);
-        Intent intent = new Intent(this, TasksActivity.class);
-        intent.putExtras(userParams);
-        startActivity(intent);
         //sign up (managers only)
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
