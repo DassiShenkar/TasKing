@@ -2,6 +2,7 @@ package com.tasking;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -12,8 +13,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 
 public class LoginActivity extends Activity {
@@ -64,11 +73,11 @@ public class LoginActivity extends Activity {
     }
 
     public void submit(View view) {
-        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
         Button signUp = (Button) findViewById(R.id.btn_sign);
         EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
         EditText editPassword = (EditText) findViewById(R.id.txt_password);
-        String username = editUsername.getText().toString();
+        final String username = editUsername.getText().toString();
         String password = editPassword.getText().toString();
         /*-------Remove after debug ---------*/
         Bundle userParams = getIntent().getExtras();
@@ -77,112 +86,113 @@ public class LoginActivity extends Activity {
         intent.putExtras(userParams);
         startActivity(intent);
         //sign up (managers only)
-//        if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
-//            if (!username.equals("")) {
-//                if (!password.equals("")) {
-//                    firebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
-//                        @Override
-//                        public void onSuccess(Map<String, Object> result) {
-//                            String uid = result.get("uid").toString();
-//                            Bundle userParams = getIntent().getExtras();
-//                            userParams.putString("uid", uid);
-//                            userParams.putBoolean("isManager", true); // only managers can sign up
-//                            Intent intent = new Intent(getApplication(), TeamActivity.class);
-//                            intent.putExtras(userParams);
-//                            startActivity(intent);
-//                        }
-//
-//                        @Override
-//                        public void onError(FirebaseError firebaseError) {
-//                            //TODO: something
-//                        }
-//                    });
-//                } else {
-//                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-//                }
-//            } else {
-//                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            //login
-//            if (!username.equals("")) {
-//                if (!password.equals("")) {
-//                    firebase.authWithPassword(username, password,
-//                            new Firebase.AuthResultHandler() {
-//                                @Override
-//                                public void onAuthenticated(AuthData authData) {
-//                                    final String uid = authData.getUid();
-//                                    Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-//                                    SharedPreferences settings = getSharedPreferences("user_pref", MODE_PRIVATE);
-//                                    SharedPreferences.Editor prefEditor = settings.edit();
-//                                    prefEditor.putBoolean("isAuthenticated", true);
-//                                    prefEditor.apply();
-//                                    if (uid != null) {
-//                                        firebase.addValueEventListener(new ValueEventListener() {
-//                                            @Override
-//                                            public void onDataChange(DataSnapshot snapshot) {
-//                                                Bundle userParams = getIntent().getExtras();
-//                                                //Manager login
-//                                                if (snapshot.child("Managers").child(uid).child("username").getValue() != null) {
-//                                                    //Manager with team
-//                                                    if (snapshot.child("Managers").child(uid).getChildrenCount() > 1) {
-//                                                        userParams.putString("uid", uid);
-//                                                        userParams.putBoolean("isManager", true);
-//                                                        //TODO: save team in local db
-//                                                        Intent intent = new Intent(getApplication(), TasksActivity.class);
-//                                                        intent.putExtras(userParams);
-//                                                        startActivity(intent);
-//                                                    //Manager with no team
-//                                                    } else {
-//                                                        userParams.putString("uid", uid);
-//                                                        userParams.putBoolean("isManager", true);
-//                                                        Intent intent = new Intent(getApplication(), TeamActivity.class);
-//                                                        intent.putExtras(userParams);
-//                                                        startActivity(intent);
-//                                                    }
-//                                                // Team Member
-//                                                } else {
-//                                                    userParams.putString("uid", uid);
-//                                                    userParams.putBoolean("isManager", false);
-//                                                    //TODO: save tasks in local db
-//                                                    Intent intent = new Intent(getApplication(), TasksActivity.class);
-//                                                    intent.putExtras(userParams);
-//                                                    startActivity(intent);
-//                                                }
-//                                            }
-//
-//                                            @Override
-//                                            public void onCancelled(FirebaseError firebaseError) {
-//                                                Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        });
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onAuthenticationError(FirebaseError error) {
-//                                    SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-//                                    boolean isAuthenticated = preferences.getBoolean("isAuthenticated", true);
-//                                    if(isAuthenticated) {
-//                                        Bundle userParams = getIntent().getExtras();
-//                                        ArrayList<Employee> teamMembers = TaskDAO.getInstance(getApplication()).getMembers();
-//                                        boolean isManager = teamMembers.size() > 0;
-//                                        userParams.putBoolean("isManager", isManager);
-//                                        Intent intent = new Intent(getApplication(), TasksActivity.class);
-//                                        userParams.putString("workMode", "offline");
-//                                        intent.putExtras(userParams);
-//                                        startActivity(intent);
-//                                    }
-//                                    Toast.makeText(getApplication(), error.getMessage(), Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//
-//                } else {
-//                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-//                }
-//            } else {
-//                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
-//            }
-//        }
+        if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
+            if (!username.equals("")) {
+                if (!password.equals("")) {
+                    firebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                        @Override
+                        public void onSuccess(Map<String, Object> result) {
+                            String uid = result.get("uid").toString();
+                            firebase.child("Managers").child(uid).child("username").setValue(username);
+                            Bundle userParams = getIntent().getExtras();
+                            userParams.putString("uid", uid);
+                            userParams.putBoolean("isManager", true); // only managers can sign up
+                            Intent intent = new Intent(getApplication(), TeamActivity.class);
+                            intent.putExtras(userParams);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(FirebaseError firebaseError) {
+                            //TODO: something
+                        }
+                    });
+                } else {
+                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            //login
+            if (!username.equals("")) {
+                if (!password.equals("")) {
+                    firebase.authWithPassword(username, password,
+                            new Firebase.AuthResultHandler() {
+                                @Override
+                                public void onAuthenticated(AuthData authData) {
+                                    final String uid = authData.getUid();
+                                    Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+                                    SharedPreferences settings = getSharedPreferences("user_pref", MODE_PRIVATE);
+                                    SharedPreferences.Editor prefEditor = settings.edit();
+                                    prefEditor.putBoolean("isAuthenticated", true);
+                                    prefEditor.apply();
+                                    if (uid != null) {
+                                        firebase.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot snapshot) {
+                                                Bundle userParams = getIntent().getExtras();
+                                                //Manager login
+                                                if (snapshot.child("Managers").child(uid).child("username").getValue() != null) {
+                                                    //Manager with team
+                                                    if (snapshot.child("Managers").child(uid).getChildrenCount() > 1) {
+                                                        userParams.putString("uid", uid);
+                                                        userParams.putBoolean("isManager", true);
+                                                        //TODO: save team in local db & save tasks in local db
+                                                        Intent intent = new Intent(getApplication(), TasksActivity.class);
+                                                        intent.putExtras(userParams);
+                                                        startActivity(intent);
+                                                    //Manager with no team
+                                                    } else {
+                                                        userParams.putString("uid", uid);
+                                                        userParams.putBoolean("isManager", true);
+                                                        Intent intent = new Intent(getApplication(), TeamActivity.class);
+                                                        intent.putExtras(userParams);
+                                                        startActivity(intent);
+                                                    }
+                                                // Team Member
+                                                } else {
+                                                    userParams.putString("uid", uid);
+                                                    userParams.putBoolean("isManager", false);
+                                                    //TODO: save tasks in local db
+                                                    Intent intent = new Intent(getApplication(), TasksActivity.class);
+                                                    intent.putExtras(userParams);
+                                                    startActivity(intent);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
+                                                Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onAuthenticationError(FirebaseError error) {
+                                    SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+                                    boolean isAuthenticated = preferences.getBoolean("isAuthenticated", true);
+                                    if(isAuthenticated) {
+                                        Bundle userParams = getIntent().getExtras();
+                                        ArrayList<Employee> teamMembers = TaskDAO.getInstance(getApplication()).getMembers();
+                                        boolean isManager = teamMembers.size() > 0;
+                                        userParams.putBoolean("isManager", isManager);
+                                        Intent intent = new Intent(getApplication(), TasksActivity.class);
+                                        userParams.putString("workMode", "offline");
+                                        intent.putExtras(userParams);
+                                        startActivity(intent);
+                                    }
+                                    Toast.makeText(getApplication(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                } else {
+                    Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

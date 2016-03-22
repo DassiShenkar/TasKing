@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
@@ -16,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -29,6 +32,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private boolean isUpdate;
     private Task taskToUpdate;
+    private String selectedRadio;
 
 
     @Override
@@ -41,6 +45,14 @@ public class AddTaskActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.BLACK);
         }
         Bundle userParams = getIntent().getExtras();
+        RadioGroup priority = (RadioGroup) findViewById(R.id.radGrp_priority);
+        priority.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton selected = (RadioButton) findViewById(checkedId);
+                selectedRadio = selected.getText().toString();
+            }
+        });
         int taskId = userParams.getInt("taskId");
         final Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
         ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
@@ -56,13 +68,11 @@ public class AddTaskActivity extends AppCompatActivity {
             taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             EditText category = (EditText) findViewById(R.id.edit_category);
-           // EditText priority = (EditText) findViewById(R.id.edit_priority);
             EditText date = (EditText) findViewById(R.id.edit_date);
             EditText time = (EditText) findViewById(R.id.edit_time);
             EditText location = (EditText) findViewById(R.id.edit_location);
             name.setText(taskToUpdate.getName());
             category.setText(taskToUpdate.getCategory());
-          //  priority.setText(taskToUpdate.getPriority());
             date.setText(taskToUpdate.getDateString());
             time.setText(taskToUpdate.getTimeString());
             location.setText(taskToUpdate.getLocation());
@@ -77,7 +87,6 @@ public class AddTaskActivity extends AppCompatActivity {
         EditText location = (EditText) findViewById(R.id.edit_location);
         String taskName = name.getText().toString();
         String taskCategory = category.getText().toString();
-        String taskPriority = "Normal";
         String taskLocation = location.getText().toString();
         String taskDate = date.getText().toString();
         String taskTime = time.getText().toString();
@@ -85,13 +94,14 @@ public class AddTaskActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
         String employeeName = spinner.getSelectedItem().toString();
         Task task = new Task();
-        final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        if(!taskName.equals("") && !taskCategory.equals("") && !taskPriority.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
+
+
+        if(!taskName.equals("") && !taskCategory.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
             if(isUpdate){
                 taskToUpdate.setName(taskName);
                 taskToUpdate.setDateFromString(taskTime, taskDate);
                 taskToUpdate.setCategory(taskCategory);
-                taskToUpdate.setPriority(taskPriority);
+                taskToUpdate.setPriority(selectedRadio);
                 taskToUpdate.setAssignee(employeeName);
                 taskToUpdate.setLocation(taskLocation);
                 TaskDAO.getInstance(this).updateTask(taskToUpdate);
@@ -102,18 +112,29 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setName(taskName);
                 task.setDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);
-                task.setPriority(taskPriority);
-                task.setStatus("WAITING");
+                task.setPriority(selectedRadio);
+                task.setStatus("Waiting");
                 task.setAssignee(employeeName);
                 task.setLocation(taskLocation);
                 TaskDAO.getInstance(this).addTask(task);
             }
+
+            final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+
             if(userParams.getBoolean("isManager")) {
                 String uid = userParams.getString("uid");
-                String teamName = userParams.getString("teamName");
-                if(uid != null && teamName != null) {
-                    //TODO: create a task in db under employee
-                }
+
+                Firebase postRef = firebase.child("Managers").child(uid).child("Tasks");
+                Firebase newPostRef = postRef.push();
+                String postId = newPostRef.getKey();
+                firebase.child("Managers").child(uid).child("Tasks").child(postId).setValue(task);
+                //TODO: save task uid to local DB
+
+
+               // String teamName = userParams.getString("teamName");
+//                if(uid != null && teamName != null) {
+//                    //TODO: create a task in db under employee
+//                }
             }
             else {
                 //TODO: update task in db under employee

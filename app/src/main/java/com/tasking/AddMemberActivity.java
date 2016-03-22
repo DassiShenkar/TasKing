@@ -49,7 +49,7 @@ public class AddMemberActivity extends Activity {
         if(!teamName.equals("")) {
             RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
             wrapper.setVisibility(View.VISIBLE);
-            Button add = (Button) findViewById(R.id.add_member_btn);
+            TextView add = (TextView) findViewById(R.id.add_member_btn);
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -62,7 +62,6 @@ public class AddMemberActivity extends Activity {
                         ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers();
                         employee = new TeamMember(emailStr, phoneStr);
                         TaskDAO.getInstance(getApplicationContext()).addMember(employee);
-                        //TODO: send member details to firebaseDB
                         boolean exists = false;
                         for(Employee employeeName: employees){
                             if(employeeName.getUserName().equals(emailStr)){
@@ -114,7 +113,9 @@ public class AddMemberActivity extends Activity {
                             String uid = result.get("uid").toString();
                             Bundle userParams = getIntent().getExtras();
                             String managerUid = userParams.getString("uid");
-                            firebase.child("Managers").child( managerUid).child(teamName).child(uid).child("username").setValue(member.getUserName());
+                            if (managerUid != null) {
+                                firebase.child("Managers").child( managerUid).child(teamName).child(uid).child("username").setValue(member.getUserName());
+                            }
                             firebase.child("member-manager").child(uid).setValue(managerUid);
                             userParams.putString("teamName", teamName);
                             Intent intent = new Intent(getApplication(), TeamActivity.class);
