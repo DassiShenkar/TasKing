@@ -40,21 +40,20 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".TeamActivity"
             android:label="@string/team_view"
             android:theme="@style/AppTheme" >
         </activity>
-        <!-- <activity android:name=".TasksActivity" > -->
-        <!-- </activity> -->
-        <activity android:name=".AddMemberActivity" >
+        <activity android:name=".AddMemberActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".TasksActivity" >
+        <activity android:name=".TasksActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".AddTaskActivity" >
+        <activity android:name=".AddTaskActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".SettingsActivity" >
+        <activity android:name=".SettingsActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ViewTaskActivity" >
+        <activity android:name=".ViewTaskActivity" android:screenOrientation="portrait">
         </activity>
     </application>
 
