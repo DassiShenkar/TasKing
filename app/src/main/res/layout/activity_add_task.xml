@@ -83,8 +83,7 @@
             android:textSize="25sp"
             android:layout_centerVertical="true"
             android:textColor="@color/grey"
-            android:layout_alignParentStart="true"
-            android:labelFor="@id/edit_category"/>
+            android:layout_alignParentStart="true" />
 
 
         <EditText
@@ -172,8 +171,7 @@
             android:id="@+id/txt_location"
             android:textSize="25sp"
             android:layout_centerVertical="true"
-            android:textColor="@color/grey"
-            android:labelFor="@id/edit_location"/>
+            android:textColor="@color/grey" />
 
         <EditText
             android:layout_width="186dp"
@@ -209,8 +207,7 @@
             android:textSize="25sp"
             android:layout_centerVertical="true"
             android:textColor="@color/grey"
-            android:layout_alignParentStart="true"
-            android:labelFor="@id/edit_date"/>
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="136dp"
@@ -254,8 +251,7 @@
             android:textSize="25sp"
             android:layout_centerVertical="true"
             android:textColor="@color/grey"
-            android:layout_alignParentStart="true"
-            android:labelFor="@id/edit_time"/>
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="136dp"
@@ -318,6 +314,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/done"
+        android:textStyle="bold"
         android:id="@+id/txt_add_task"
         android:textSize="25sp"
         android:onClick="done"
