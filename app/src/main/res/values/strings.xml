@@ -24,7 +24,7 @@
     <string name="team_name">Team Name</string>
     <string name="team_members">Team Members</string>
     <string name="send_invites">Send invites</string>
-    <string name="waiting">WAITING</string>
+    <string name="waiting">Waiting</string>
     <string name="all_tasks">ALL TASKS</string>
     <string name="no_tasks">There are no\n tasks on your list!\n <b>Create</b> a New Task</string>
     <string name="task_name">Task Name</string>

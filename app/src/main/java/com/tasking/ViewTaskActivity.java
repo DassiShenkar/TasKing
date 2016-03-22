@@ -12,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,6 +38,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
+        Bundle userParams = getIntent().getExtras();
         if(savedInstanceState != null) {
             if (savedInstanceState.getParcelable("imageURI") != null) {
                 imageUri = savedInstanceState.getParcelable("imageURI");
@@ -49,6 +54,56 @@ public class ViewTaskActivity extends AppCompatActivity {
                 imageview.setClickable(false);
             }
         }
+        Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+        TextView category = (TextView) findViewById(R.id.txt_view_curr_category);
+        TextView priority = (TextView) findViewById(R.id.txt_view_curr_priority);
+        TextView location = (TextView) findViewById(R.id.txt_view_curr_location);
+        TextView dueDate = (TextView) findViewById(R.id.txt_curr_dueTime);
+        RelativeLayout acceptStatus = (RelativeLayout) findViewById(R.id.view_accept_layout);
+        RelativeLayout taskStatus = (RelativeLayout) findViewById(R.id.view_status_layout);
+        RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
+        RadioGroup accept = (RadioGroup) findViewById(R.id.radGrp_accept);
+        RadioGroup status = (RadioGroup) findViewById(R.id.radGrp_status);
+        if(task.getStatus() == null || !task.getStatus().equals(getResources().getString(R.string.accept))) {
+            taskStatus.setVisibility(View.GONE);
+        }
+        if(task.getPicture() == null) {
+            addPhoto.setVisibility(View.GONE);
+        }
+        category.setText(task.getCategory());
+        priority.setText(task.getPriority());
+        location.setText(task.getLocation());
+        String date = task.getDateString() + " " + task.getTimeString();
+        dueDate.setText(date);
+        accept.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Bundle userParams = getIntent().getExtras();
+                int taskId = userParams.getInt("taskId");
+                Task task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
+                RadioButton selected = (RadioButton) findViewById(checkedId);
+                if(selected.getText().toString().equals(getResources().getString(R.string.accept))) {
+                    RelativeLayout status = (RelativeLayout) findViewById(R.id.view_status_layout);
+                    status.setVisibility(View.VISIBLE);
+                }
+                task.setAcceptStatus(selected.getText().toString());
+                TaskDAO.getInstance(getApplicationContext()).updateTask(task);
+            }
+        });
+        status.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Bundle userParams = getIntent().getExtras();
+                int taskId = userParams.getInt("taskId");
+                Task task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
+                RadioButton selected = (RadioButton) findViewById(checkedId);
+                if(selected.getText().toString().equals(getResources().getString(R.string.done))) {
+                    RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
+                    addPhoto.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     @Override
