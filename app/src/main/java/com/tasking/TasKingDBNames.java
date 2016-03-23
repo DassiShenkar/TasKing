@@ -8,6 +8,7 @@ public class TasKingDBNames {
     public static final class MemberEntry implements BaseColumns {
         public static final String TABLE_NAME = "employees";
         public static final String COLUMN_EMPLOYEE_USERNAME = "username";
+        public static final String COLUMN_EMPLOYEE_UID = "uid";
     }
     public static final class TaskEntry implements BaseColumns{
         public static final String TABLE_NAME = "tasks";

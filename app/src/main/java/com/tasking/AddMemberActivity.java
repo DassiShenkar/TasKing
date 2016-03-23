@@ -61,7 +61,7 @@ public class AddMemberActivity extends Activity {
                         Employee employee;
                         ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers();
                         employee = new TeamMember(emailStr, phoneStr);
-                        TaskDAO.getInstance(getApplicationContext()).addMember(employee);
+                       // TaskDAO.getInstance(getApplicationContext()).addMember(employee);
                         boolean exists = false;
                         for(Employee employeeName: employees){
                             if(employeeName.getUserName().equals(emailStr)){
@@ -113,8 +113,12 @@ public class AddMemberActivity extends Activity {
                             String uid = result.get("uid").toString();
                             Bundle userParams = getIntent().getExtras();
                             String managerUid = userParams.getString("uid");
+                            member.setUid(uid);
+
+                            TaskDAO.getInstance(getApplicationContext()).addMember(member);
                             if (managerUid != null) {
-                                firebase.child("Managers").child( managerUid).child(teamName).child(uid).child("username").setValue(member.getUserName());
+                                firebase.child("Managers").child( managerUid).child("Team_Name").setValue(teamName);
+                                firebase.child("Managers").child( managerUid).child("Team").child(uid).child("username").setValue(member.getUserName());
                             }
                             firebase.child("member-manager").child(uid).setValue(managerUid);
                             userParams.putString("teamName", teamName);

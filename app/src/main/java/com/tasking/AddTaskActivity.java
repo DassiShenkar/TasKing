@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
@@ -109,6 +110,15 @@ public class AddTaskActivity extends AppCompatActivity {
                 userParams.remove("taskId");
             }
             else {
+                final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+                String uid = userParams.getString("uid");
+                Firebase postRef = firebase.child("Managers").child(uid).child("Tasks");
+                Firebase newPostRef = postRef.push();
+                String postId = newPostRef.getKey();  // create new uid for task
+
+
+
+
                 task.setName(taskName);
                 task.setDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);
@@ -116,30 +126,25 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setStatus("Waiting");
                 task.setAssignee(employeeName);
                 task.setLocation(taskLocation);
+                task.setFirebaseId(postId);
                 TaskDAO.getInstance(this).addTask(task);
+
+                if(userParams.getBoolean("isManager")) {  // add task under Manager and Employee
+                    Employee member =  TaskDAO.getInstance(this).getMember(employeeName);
+                    firebase.child("Managers").child(uid).child("Tasks").child(postId).setValue(task);
+                    firebase.child("Managers").child(uid).child("Team").child(member.getUid()).child("Tasks").child(postId).setValue(task);
+                    //TODO: debug and see why member.getUid() returns a null
+                }
+                else {
+                    //TODO: get manager uid and then activate the code below
+
+                    /*
+                    DataSnapshot DS = new DataSnapshot(firebase, com.firebase.client.snapshot.IndexedNode node);
+                    String managerUid =  firebase.child("member-manager").child(uid).getKey();
+                    firebase.child("Managers").child(managerUid).child("Tasks").child(postId).setValue(task);
+                    firebase.child("Managers").child(managerUid).child("Team").child(uid).child("Tasks").child(postId).setValue(task);*/
+                }
             }
-
-            final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-
-            if(userParams.getBoolean("isManager")) {
-                String uid = userParams.getString("uid");
-
-                Firebase postRef = firebase.child("Managers").child(uid).child("Tasks");
-                Firebase newPostRef = postRef.push();
-                String postId = newPostRef.getKey();
-                firebase.child("Managers").child(uid).child("Tasks").child(postId).setValue(task);
-                //TODO: save task uid to local DB
-
-
-               // String teamName = userParams.getString("teamName");
-//                if(uid != null && teamName != null) {
-//                    //TODO: create a task in db under employee
-//                }
-            }
-            else {
-                //TODO: update task in db under employee
-            }
-
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);
             startActivity(intent);
