@@ -157,6 +157,7 @@ public class TaskDAO implements ITaskDAO {
             db = DBHelper.getReadableDatabase();
             ContentValues teamValues = new ContentValues();
             teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, employee.getUserName());
+            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_UID, employee.getUid());
             db.insert(TasKingDBNames.MemberEntry.TABLE_NAME, null, teamValues);
         }
         finally {
@@ -172,7 +173,7 @@ public class TaskDAO implements ITaskDAO {
         try {
             db = DBHelper.getReadableDatabase();
             db.delete(TasKingDBNames.MemberEntry.TABLE_NAME, TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + " = ?",
-                        new String[]{ employee.getUserName() });
+                    new String[]{employee.getUserName()});
         }
         finally {
             if (db != null) {
@@ -206,6 +207,32 @@ public class TaskDAO implements ITaskDAO {
     }
 
 
+    public Employee getMember(String employeeEmail) {
+        SQLiteDatabase db = null;
+        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME;
+        Employee employee = new Employee();
+        try {
+            db = DBHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor.moveToFirst()){
+                do{
+                    if(cursor.getString(0).equals(employeeEmail)){
+                        employee.setUserName(cursor.getString(0));
+                        employee.setUid(cursor.getString(1));
+                        break;
+                    }
+
+
+                } while(cursor.moveToNext());
+                cursor.close();
+            }
+            return employee;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
 
     /*
     private static TaskDAO taskDAO;

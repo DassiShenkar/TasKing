@@ -17,6 +17,8 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_TASKS = "tasks";
     //Employee Table Column names
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_UID = "uid";
+
     // Tasks Table Columns names
     private static final String KEY_TASK_ID = "id";
     private static final String KEY_TASK_NAME = "name";
@@ -33,7 +35,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
 
     // Tables create statement
     private static final String CREATE_EMPLOYEES_TABLE = "CREATE TABLE "
-            + TABLE_EMPLOYEES + "(" + KEY_USERNAME + " TEXT PRIMARY KEY);";
+            + TABLE_EMPLOYEES + "(" + KEY_USERNAME + " TEXT PRIMARY KEY," + KEY_UID + " TEXT);";
     private static final String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS + "("
             + KEY_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_TASK_NAME + " TEXT," + KEY_TIME
             + " TEXT,"+ KEY_DATE + " TEXT," + KEY_CATEGORY + " TEXT," + KEY_PRIORITY
