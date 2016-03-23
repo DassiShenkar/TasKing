@@ -4,59 +4,61 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp"
     >
 
     <RelativeLayout
-        android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_content">
+        android:layout_height="48dp"
+        android:id="@+id/list_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:paddingStart="30dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_description"
             android:text="@string/task_name"
-            android:textSize="30sp"/>
+            android:textColor="@color/darkBlue"
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_category"
-            android:textSize="16sp"
-            android:layout_below="@id/list_item_description"
+            android:textSize="14sp"
             android:text="@string/category"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp" />
+            android:layout_toRightOf="@+id/list_item_description"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignBottom="@+id/list_item_description" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/trash"
+            android:id="@+id/btn_team_delete"
+            android:layout_alignParentEnd="true"
+            android:cropToPadding="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignBottom="@+id/list_item_dueDate"
+            android:layout_alignTop="@+id/list_item_description" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_dueDate"
+            android:textSize="14sp"
+            android:text="@string/due_time"
+            android:textAlignment="textEnd"
+            android:layout_below="@+id/list_item_description"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_item_dueDate"
-        android:textSize="16sp"
-        android:text="@string/due_time"
-        android:layout_toEndOf="@+id/list_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="false"
-        android:textAlignment="textEnd"
-        android:layout_alignBottom="@+id/list_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp" />
-
-    <ImageView
-        android:paddingEnd="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/trash"
-        android:id="@+id/btn_team_delete"
-        android:layout_above="@+id/list_item_dueDate"
-        android:layout_alignParentEnd="true"
-        android:cropToPadding="true"
-        android:paddingStart="30dp"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentBottom="false" />
     <LinearLayout
         android:text = ""
         android:textSize = "1sp"

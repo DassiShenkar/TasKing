@@ -34,7 +34,6 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:id="@+id/name_layout"
-        android:background="@drawable/border"
         android:layout_below="@+id/my_toolbar">
 
         <TextView
@@ -71,7 +70,6 @@
         android:paddingEnd="30dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/border"
         android:id="@+id/category_layout"
         android:layout_below="@id/name_layout">
 
@@ -108,7 +106,6 @@
         android:paddingEnd="30dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/border"
         android:id="@+id/priority_layout"
         android:layout_below="@id/category_layout">
 
@@ -160,7 +157,6 @@
         android:paddingEnd="30dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/border"
         android:id="@+id/location_layout"
         android:layout_below="@id/priority_layout">
 
@@ -195,7 +191,6 @@
         android:paddingEnd="30dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/border"
         android:id="@+id/date_layout"
         android:layout_below="@id/location_layout">
 
@@ -209,7 +204,7 @@
             android:textColor="@color/grey"
             android:layout_alignParentStart="true" />
 
-        <EditText
+        <TextView
             android:layout_width="136dp"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -227,6 +222,7 @@
             android:onClick="showDatePickerDialog"
             android:id="@+id/datePicker"
             android:src="@drawable/calander"
+            android:background="@color/white"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
@@ -239,7 +235,6 @@
         android:paddingEnd="30dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/border"
         android:id="@+id/time_layout"
         android:layout_below="@id/date_layout">
 
@@ -253,7 +248,7 @@
             android:textColor="@color/grey"
             android:layout_alignParentStart="true" />
 
-        <EditText
+        <TextView
             android:layout_width="136dp"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -273,6 +268,7 @@
             android:onClick="showTimePickerDialog"
             android:id="@+id/time_picker"
             android:layout_alignBottom="@+id/edit_time"
+            android:background="@color/white"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
@@ -285,7 +281,6 @@
         android:paddingEnd="30dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/border"
         android:id="@+id/assign_layout"
         android:layout_below="@id/time_layout">
 
