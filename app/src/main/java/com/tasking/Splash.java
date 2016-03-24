@@ -26,6 +26,18 @@ public class Splash extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+//                SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+//                boolean isAuthenticated = preferences.getBoolean("isAuthenticated", true);
+//                if(isAuthenticated) {
+//                    Bundle userParams = getIntent().getExtras();
+//                    ArrayList<Employee> teamMembers = TaskDAO.getInstance(getApplication()).getMembers();
+//                    boolean isManager = teamMembers.size() > 0;
+//                    userParams.putBoolean("isManager", isManager);
+//                    Intent intent = new Intent(getApplication(), TasksActivity.class);
+//                    userParams.putString("workMode", "offline");
+//                    intent.putExtras(userParams);
+//                    startActivity(intent);
+//                }
                 Intent mainIntent = new Intent(Splash.this, LoginActivity.class);
                 mainIntent.putExtras(userParams);
                 startActivity(mainIntent);

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class TaskDAO implements ITaskDAO {
@@ -41,6 +42,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, task.getPicture());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS, task.getAcceptStatus());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TIME_STAMP, new Date().toString());
             db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, taskValues);
         }
         finally {
@@ -67,6 +69,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, task.getPicture());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS, task.getAcceptStatus());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TIME_STAMP, new Date().toString());
             db.update(TasKingDBNames.TaskEntry.TABLE_NAME,
                     taskValues, TasKingDBNames.TaskEntry.COLUMN_TASK_ID + " = ?",
                     new String[]{String.valueOf(task.getId())});

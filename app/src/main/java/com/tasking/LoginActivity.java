@@ -21,7 +21,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -165,18 +164,6 @@ public class LoginActivity extends Activity {
 
                                 @Override
                                 public void onAuthenticationError(FirebaseError error) {
-                                    SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-                                    boolean isAuthenticated = preferences.getBoolean("isAuthenticated", true);
-                                    if(isAuthenticated) {
-                                        Bundle userParams = getIntent().getExtras();
-                                        ArrayList<Employee> teamMembers = TaskDAO.getInstance(getApplication()).getMembers();
-                                        boolean isManager = teamMembers.size() > 0;
-                                        userParams.putBoolean("isManager", isManager);
-                                        Intent intent = new Intent(getApplication(), TasksActivity.class);
-                                        userParams.putString("workMode", "offline");
-                                        intent.putExtras(userParams);
-                                        startActivity(intent);
-                                    }
                                     Toast.makeText(getApplication(), error.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });

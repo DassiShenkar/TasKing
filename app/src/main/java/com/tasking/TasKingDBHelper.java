@@ -8,10 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TasKingDBHelper extends SQLiteOpenHelper {
 
+    //:TODO add uid field
+
     private static final int DATABASE_VERSION = 15;
 
     // Database Name
     private static final String DATABASE_NAME = "TasKingDB";
+
     // Table names
     private static final String TABLE_EMPLOYEES = "employees";
     private static final String TABLE_TASKS = "tasks";
