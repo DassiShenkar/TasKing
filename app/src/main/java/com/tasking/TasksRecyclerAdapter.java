@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ import java.util.ArrayList;
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.ViewHolder> {
 
     private ArrayList<Task> tasks;
+    private boolean isManager;
 
-    public TasksRecyclerAdapter(ArrayList<Task> tasks){
+    public TasksRecyclerAdapter(ArrayList<Task> tasks, boolean isManager){
+        this.isManager = isManager;
         this.tasks = tasks;
     }
 
@@ -31,7 +34,14 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         holder.description.setTag(task.getId());
         holder.description.setText(task.getName());
         holder.category.setText(task.getCategory());
-        holder.date.setText(task.getDateString() + " " + task.getTimeString());
+        String date = (task.getDateString() + " " + task.getTimeString());
+        holder.date.setText(date);
+        if(isManager){
+            holder.icon.setImageResource(R.drawable.ic_action_edit);
+        }
+        else{
+            holder.icon.setImageResource(R.drawable.ic_visibility_black_24dp);
+        }
     }
 
     @Override
@@ -41,6 +51,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView icon;
         private TextView description;
         private TextView category;
         private TextView date;
@@ -50,6 +61,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
             description = (TextView) parentView.findViewById(R.id.list_item_description);
             category = (TextView) parentView.findViewById(R.id.list_item_category);
             date = (TextView) parentView.findViewById(R.id.list_item_dueDate);
+            icon = (ImageView) parentView.findViewById(R.id.edit_task_icon);
             Typeface regularTypeFace = Typeface.createFromAsset(parentView.getContext().getAssets(), "fonts/Raleway-Regular.ttf");
             description.setTypeface(regularTypeFace);
             category.setTypeface(regularTypeFace);
