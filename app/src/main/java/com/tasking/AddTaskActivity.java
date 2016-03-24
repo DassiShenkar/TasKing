@@ -130,9 +130,11 @@ public class AddTaskActivity extends AppCompatActivity {
                 TaskDAO.getInstance(this).addTask(task);
 
                 if(userParams.getBoolean("isManager")) {  // add task under Manager and Employee
+
+
                     Employee member =  TaskDAO.getInstance(this).getMember(employeeName);
-                    firebase.child("Managers").child(uid).child("Tasks").child(postId).setValue(task);
-                    firebase.child("Managers").child(uid).child("Team").child(member.getUid()).child("Tasks").child(postId).setValue(task);
+//                    firebase.child("Managers").child(uid).child("Tasks").child(postId).setValue(task);
+//                    firebase.child("Managers").child(uid).child("Team").child(member.getUid()).child("Tasks").child(postId).setValue(task);
                     //TODO: debug and see why member.getUid() returns a null
                 }
                 else {
