@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,8 +30,19 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                 false);
         final Bundle userParams = getActivity().getIntent().getExtras();
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.all_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>());
+        recyclerView.setAdapter(emptyAdapter);
+        final Spinner spinner = (Spinner) rootView.findViewById(R.id.spn_all_sort_by);
+        TextView spinnerText = (TextView) rootView.findViewById(R.id.txt_all_sort_by);
+        spinner.setVisibility(View.GONE);
+        spinnerText.setVisibility(View.GONE);
         if (tasks.size() > 0) {
-            final Spinner spinner = (Spinner) rootView.findViewById(R.id.spn_all_sort_by);
+            spinner.setVisibility(View.VISIBLE);
+            spinnerText.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
                     R.array.tasks_array, android.R.layout.simple_spinner_item);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -40,10 +52,6 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                     return task1.getDate().compareTo(task2.getDate());
                 }
             });
-            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.all_recycler_view);
-            recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
             final RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks);
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
@@ -71,8 +79,8 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String selectedSpinnerItem = spinner.getSelectedItem().toString();
 
-                    final  Map<String, String> statusMap = new HashMap<String, String>();
-                    final Map<String, String> priorityMap = new HashMap<String, String>();
+                    final Map<String, String> statusMap = new HashMap<>();
+                    final Map<String, String> priorityMap = new HashMap<>();
                     statusMap.put("Waiting", "2");
                     statusMap.put("In Progress", "1");
                     statusMap.put("Done", "demo");
@@ -86,7 +94,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
-                                    return statusMap.get(lhs.getStatus().toString()).compareTo(statusMap.get(rhs.getStatus().toString()));
+                                    return statusMap.get(lhs.getStatus()).compareTo(statusMap.get(rhs.getStatus()));
                                 }
                             });
                             break;
@@ -102,7 +110,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
-                                    return priorityMap.get(lhs.getPriority().toString()).compareTo(priorityMap.get(rhs.getPriority().toString()));
+                                    return priorityMap.get(lhs.getPriority()).compareTo(priorityMap.get(rhs.getPriority()));
                                 }
                             });
                             break;

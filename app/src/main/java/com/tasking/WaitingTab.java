@@ -21,6 +21,12 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_waiting_tab, container,
                 false);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.tasks_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>());
+        recyclerView.setAdapter(emptyAdapter);
         final Bundle userParams = getActivity().getIntent().getExtras();
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
         if (tasks.size() > 0) {
@@ -29,10 +35,6 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                     return task1.getDate().compareTo(task2.getDate());
                 }
             });
-            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.tasks_recycler_view);
-            recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
             RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks);
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
