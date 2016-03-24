@@ -40,6 +40,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, task.getAssignee());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, task.getPicture());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS, task.getAcceptStatus());
             db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, taskValues);
         }
         finally {
@@ -65,6 +66,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, task.getAssignee());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, task.getPicture());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS, task.getAcceptStatus());
             db.update(TasKingDBNames.TaskEntry.TABLE_NAME,
                     taskValues, TasKingDBNames.TaskEntry.COLUMN_TASK_ID + " = ?",
                     new String[]{String.valueOf(task.getId())});
@@ -87,7 +89,7 @@ public class TaskDAO implements ITaskDAO {
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY,
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS,
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID,
-                                        TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE},
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS},
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_ID + "=?",
                                         new String[]{ String.valueOf(id) }, null, null, null, null);
             if(cursor != null){
@@ -105,6 +107,7 @@ public class TaskDAO implements ITaskDAO {
                 task.setAssignee(cursor.getString(8));
                 task.setFirebaseId(cursor.getString(9));
                 task.setPicture(cursor.getString(10));
+                task.setAcceptStatus(cursor.getString(11));
             }
             if(cursor != null) {
                 cursor.close();
@@ -137,7 +140,8 @@ public class TaskDAO implements ITaskDAO {
                     task.setAssignee(cursor.getString(7));
                     task.setFirebaseId(cursor.getString(8));
                     task.setPicture(cursor.getString(9));
-                    task.setLocation(cursor.getString(10));
+                    task.setAcceptStatus(cursor.getString(10));
+                    task.setLocation(cursor.getString(11));
                     tasks.add(task);
                 } while(cursor.moveToNext());
                 cursor.close();
