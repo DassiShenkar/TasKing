@@ -70,13 +70,13 @@ public class LoginActivity extends Activity {
         EditText editPassword = (EditText) findViewById(R.id.txt_password);
         final String username = editUsername.getText().toString();
         String password = editPassword.getText().toString();
-        /*-------------for debug--------------------*/
+        /*-------------for debug - remove after debug--------------------*/
         Bundle userParams = getIntent().getExtras();
         userParams.putBoolean("isManager", false);
         Intent intent = new Intent(getApplication(), TasksActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);
-/*-----------------------for debug------------------------------------------------------
+/*-----------------------for debug backend logic------------------------------------------------------
         //sign up (managers only)
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
