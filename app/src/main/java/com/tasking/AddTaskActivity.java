@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
@@ -23,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
@@ -152,6 +150,10 @@ public class AddTaskActivity extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void cancel(View view) {
+        //TODO: back to tasks activity
     }
 
     public static class TimePickerFragment extends DialogFragment

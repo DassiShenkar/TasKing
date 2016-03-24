@@ -20,7 +20,7 @@
     <string name="arrow">Arrow</string>
     <string name="done">DONE</string>
     <string name="save">SAVE</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">CANCEL</string>
     <string name="team_name">Team Name</string>
     <string name="team_members">Team Members</string>
     <string name="send_invites">Send invites</string>
