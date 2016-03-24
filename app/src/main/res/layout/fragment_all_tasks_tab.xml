@@ -48,4 +48,15 @@
             android:spinnerMode="dropdown"
             android:layout_centerVertical="true" />
     </RelativeLayout>
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/spinner" />
+
 </RelativeLayout>
