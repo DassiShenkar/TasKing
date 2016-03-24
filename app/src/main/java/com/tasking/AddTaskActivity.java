@@ -19,10 +19,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,8 +66,8 @@ public class AddTaskActivity extends AppCompatActivity {
             taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             EditText category = (EditText) findViewById(R.id.edit_category);
-            EditText date = (EditText) findViewById(R.id.edit_date);
-            EditText time = (EditText) findViewById(R.id.edit_time);
+            TextView date = (TextView) findViewById(R.id.edit_date);
+            TextView time = (TextView) findViewById(R.id.edit_time);
             EditText location = (EditText) findViewById(R.id.edit_location);
             name.setText(taskToUpdate.getName());
             category.setText(taskToUpdate.getCategory());
@@ -81,8 +80,8 @@ public class AddTaskActivity extends AppCompatActivity {
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
         EditText category = (EditText) findViewById(R.id.edit_category);
-        EditText date = (EditText) findViewById(R.id.edit_date);
-        EditText time = (EditText) findViewById(R.id.edit_time);
+        TextView date = (TextView) findViewById(R.id.edit_date);
+        TextView time = (TextView) findViewById(R.id.edit_time);
         EditText location = (EditText) findViewById(R.id.edit_location);
         String taskName = name.getText().toString();
         String taskCategory = category.getText().toString();
@@ -108,11 +107,11 @@ public class AddTaskActivity extends AppCompatActivity {
                 userParams.remove("taskId");
             }
             else {
-                final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-                String uid = userParams.getString("uid");
-                Firebase postRef = firebase.child("Managers").child(uid).child("Tasks");
-                Firebase newPostRef = postRef.push();
-                String postId = newPostRef.getKey();  // create new uid for task
+//                final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+//                String uid = userParams.getString("uid");
+//                Firebase postRef = firebase.child("Managers").child(uid).child("Tasks");
+//                Firebase newPostRef = postRef.push();
+//                String postId = newPostRef.getKey();  // create new uid for task
 
 
 
@@ -121,10 +120,11 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);
                 task.setPriority(selectedRadio);
+                task.setAcceptStatus("Waiting");
                 task.setStatus("Waiting");
                 task.setAssignee(employeeName);
                 task.setLocation(taskLocation);
-                task.setFirebaseId(postId);
+                //task.setFirebaseId(postId);
                 TaskDAO.getInstance(this).addTask(task);
 
                 if(userParams.getBoolean("isManager")) {  // add task under Manager and Employee
@@ -155,7 +155,10 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public void cancel(View view) {
-        //TODO: back to tasks activity
+        Bundle userParams = getIntent().getExtras();
+        Intent intent = new Intent(this, TasksActivity.class);
+        intent.putExtras(userParams);
+        startActivity(intent);
     }
 
     public static class TimePickerFragment extends DialogFragment
@@ -175,7 +178,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             String timeString = hourOfDay + ":" + minute; //
-            EditText b = (EditText)getActivity().findViewById(R.id.edit_time);
+            TextView b = (TextView) getActivity().findViewById(R.id.edit_time);
             b.setText(timeString);
         }
     }
@@ -192,7 +195,7 @@ public class AddTaskActivity extends AppCompatActivity {
             // Use the current date as the default date in the picker
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH) + 1;
+            int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
@@ -200,8 +203,9 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
+            ++month;
             String dateString = year + "-" + month + "-" + day; //
-            EditText b = (EditText)getActivity().findViewById(R.id.edit_date);
+            TextView b = (TextView) getActivity().findViewById(R.id.edit_date);
             b.setText(dateString);
         }
     }
