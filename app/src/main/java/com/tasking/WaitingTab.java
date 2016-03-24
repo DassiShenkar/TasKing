@@ -25,7 +25,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>());
+        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>(), false);
         recyclerView.setAdapter(emptyAdapter);
         final Bundle userParams = getActivity().getIntent().getExtras();
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
@@ -35,7 +35,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                     return task1.getDate().compareTo(task2.getDate());
                 }
             });
-            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks);
+            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks, userParams.getBoolean("isManager"));
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
                             new RecyclerItemClickListener.OnItemClickListener() {
