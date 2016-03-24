@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerInside"
         android:layout_width="wrap_content"
-        android:src="@drawable/ic_plus"
+        android:src="@drawable/ic_action_new"
         app:layout_anchorGravity="bottom|right|end"
         android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
