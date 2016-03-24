@@ -22,24 +22,30 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:id="@+id/spinner"
-        android:padding="10dp">
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sort_by"
             android:id="@+id/txt_all_sort_by"
-            android:textSize="30sp"
+            android:textSize="22sp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
 
         <Spinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/spn_all_sort_by"
             android:layout_toEndOf="@+id/txt_all_sort_by"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 </RelativeLayout>
