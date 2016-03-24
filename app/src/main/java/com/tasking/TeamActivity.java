@@ -44,10 +44,15 @@ public class TeamActivity extends Activity {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employeeNames);
+            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employeeNames, this);
             recyclerView.setAdapter(adapter);
         }
     }
+
+    public void removeUser(View view){
+
+    }
+
     public void addMember(View view){
         Bundle userParams = getIntent().getExtras();
         Intent intent = new Intent(this, AddMemberActivity.class);

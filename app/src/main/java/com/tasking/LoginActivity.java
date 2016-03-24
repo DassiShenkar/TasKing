@@ -18,6 +18,9 @@ import com.firebase.client.Firebase;
 
 public class LoginActivity extends Activity {
 
+    private String uid;
+    private boolean isManager;
+    private boolean hasTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

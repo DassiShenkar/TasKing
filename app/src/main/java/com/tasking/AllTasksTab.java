@@ -79,14 +79,14 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String selectedSpinnerItem = spinner.getSelectedItem().toString();
 
-                    final Map<String, String> statusMap = new HashMap<>();
-                    final Map<String, String> priorityMap = new HashMap<>();
-                    statusMap.put("Waiting", "2");
-                    statusMap.put("In Progress", "1");
-                    statusMap.put("Done", "0");
-                    priorityMap.put("Urgent", "2");
-                    priorityMap.put("Normal", "1");
-                    priorityMap.put("Low", "0");
+                    final Map<String, Integer> statusMap = new HashMap<>();
+                    final Map<String, Integer> priorityMap = new HashMap<>();
+                    statusMap.put("Waiting", 2);
+                    statusMap.put("In Progress", 1);
+                    statusMap.put("Done", 0);
+                    priorityMap.put("Urgent", 2);
+                    priorityMap.put("Normal", 1);
+                    priorityMap.put("Low", 0);
 
 
                     switch (selectedSpinnerItem) {
