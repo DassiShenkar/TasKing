@@ -33,8 +33,7 @@
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:background="@drawable/border">
+        android:paddingBottom="16dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,6 +54,17 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/team_name_wrapper" />
 
 
     <RelativeLayout
@@ -89,8 +99,18 @@
             android:layout_marginStart="48dp"
             android:onClick="addMember" />
 
-
     </RelativeLayout>
+
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/team_members_wrapper" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -101,8 +121,7 @@
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:background="@drawable/border">
+        android:paddingBottom="16dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -156,6 +175,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="70dp" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/edit_members_wrapper" />
 
     <TextView
         android:layout_width="wrap_content"

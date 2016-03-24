@@ -23,6 +23,7 @@ public class TasKingDBNames {
         public static final String COLUMN_TASK_ASSIGNEE = "assignee";
         public static final String COLUMN_TASK_FIREBASE_ID = "firebase_id";
         public static final String COLUMN_TASK_PICTURE = "picture";
+        public static final String COLUMN_TASK_ACCEPT_STATUS = "accept_status";
     }
 
     /*

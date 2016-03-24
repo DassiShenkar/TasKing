@@ -168,7 +168,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/txt_accept"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:checkedButton="@+id/radio_waiting">
 
             <RadioButton android:id="@+id/radio_waiting"
                 android:layout_width="0dp"
