@@ -51,7 +51,7 @@
             android:layout_centerVertical="true" />
 
         <EditText
-            android:layout_width="186dp"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
             android:id="@+id/edit_task_name"
             android:singleLine="true"
@@ -99,7 +99,7 @@
 
 
         <EditText
-            android:layout_width="186dp"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
             android:id="@+id/edit_category"
             android:singleLine="true"
@@ -208,7 +208,7 @@
             android:textColor="@color/grey" />
 
         <EditText
-            android:layout_width="186dp"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
             android:id="@+id/edit_location"
             android:singleLine="true"
