@@ -59,7 +59,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         TextView priority = (TextView) findViewById(R.id.txt_view_curr_priority);
         TextView location = (TextView) findViewById(R.id.txt_view_curr_location);
         TextView dueDate = (TextView) findViewById(R.id.txt_curr_dueTime);
-        RelativeLayout acceptStatus = (RelativeLayout) findViewById(R.id.view_accept_layout);
         RelativeLayout taskStatus = (RelativeLayout) findViewById(R.id.view_status_layout);
         RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
         RadioGroup accept = (RadioGroup) findViewById(R.id.radGrp_accept);
@@ -103,6 +102,8 @@ public class ViewTaskActivity extends AppCompatActivity {
                     RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
                     addPhoto.setVisibility(View.VISIBLE);
                 }
+                task.setStatus(selected.getText().toString());
+                TaskDAO.getInstance(getApplicationContext()).updateTask(task);
             }
         });
 
