@@ -10,7 +10,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
 
     //:TODO add uid field
 
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 17;
 
     // Database Name
     private static final String DATABASE_NAME = "TasKingDB";
@@ -21,6 +21,7 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     //Employee Table Column names
     private static final String KEY_USERNAME = "username";
     private static final String KEY_UID = "uid";
+    private static final String KEY_MANAGER_ID = "manager_id";
 
     // Tasks Table Columns names
     private static final String KEY_TASK_ID = "id";
@@ -35,15 +36,20 @@ public class TasKingDBHelper extends SQLiteOpenHelper {
     private static final String KEY_FIREBASE_ID = "firebase_id";
     private static final String KEY_PICTURE = "picture";
     private static final String KEY_ACCEPT_STATUS = "accept_status";
+    private static final String KEY_TIME_STAMP = "time_stamp";
+    private static final String KEY_USER_ID = "uid";
 
     // Tables create statement
     private static final String CREATE_EMPLOYEES_TABLE = "CREATE TABLE "
-            + TABLE_EMPLOYEES + "(" + KEY_USERNAME + " TEXT PRIMARY KEY," + KEY_UID + " TEXT);";
+            + TABLE_EMPLOYEES + "(" + KEY_USERNAME + " TEXT PRIMARY KEY," + KEY_UID + " TEXT, "
+            + KEY_MANAGER_ID + " TEXT);";
     private static final String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS + "("
             + KEY_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_TASK_NAME + " TEXT," + KEY_TIME
             + " TEXT,"+ KEY_DATE + " TEXT," + KEY_CATEGORY + " TEXT," + KEY_PRIORITY
             + " TEXT," + KEY_STATUS + " TEXT," + KEY_ASSIGNEE + " TEXT," + KEY_FIREBASE_ID + " TEXT,"
-            + KEY_PICTURE + " TEXT," + KEY_ACCEPT_STATUS + " TEXT," + KEY_LOCATION + " TEXT);";
+            + KEY_PICTURE + " TEXT," + KEY_ACCEPT_STATUS + " TEXT," + KEY_TIME_STAMP + " TEXT,"
+            + KEY_USER_ID + " TEXT," + KEY_LOCATION + " TEXT);";
+
     public TasKingDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

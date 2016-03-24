@@ -18,6 +18,8 @@ public class Task {
     private String firebaseId;
     private String assignee;
     private String picture;
+    private String timeStamp;
+    private String userId;
 
     public Task() {
 
@@ -145,4 +147,19 @@ public class Task {
         this.picture = picture;
     }
 
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

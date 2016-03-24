@@ -128,7 +128,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setStatus("Waiting");
                 task.setAssignee(employeeName);
                 task.setLocation(taskLocation);
-                //task.setFirebaseId(postId);
+//                task.setFirebaseId(postId);
                 TaskDAO.getInstance(this).addTask(task);
 
                 if(userParams.getBoolean("isManager")) {  // add task under Manager and Employee

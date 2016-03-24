@@ -30,6 +30,11 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         final Bundle userParams = getActivity().getIntent().getExtras();
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
         if (tasks.size() > 0) {
+            for(Task task : tasks){
+                if(task.getStatus().equals(getResources().getString(R.string.status_done))){
+                    tasks.remove(task);
+                }
+            }
             Collections.sort(tasks, new Comparator<Task>() {
                 public int compare(Task task1, Task task2) {
                     return task1.getDate().compareTo(task2.getDate());

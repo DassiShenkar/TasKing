@@ -5,6 +5,7 @@ public class Employee {
     private String userName;
     private String password;
     private String uid;
+    private String managerId;
 
     public Employee() {
 
@@ -47,6 +48,14 @@ public class Employee {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
     }
 
     @Override
