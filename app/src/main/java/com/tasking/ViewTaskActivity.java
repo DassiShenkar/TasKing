@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
 
 public class ViewTaskActivity extends AppCompatActivity {
 
@@ -56,24 +55,32 @@ public class ViewTaskActivity extends AppCompatActivity {
         RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
         RadioGroup accept = (RadioGroup) findViewById(R.id.radGrp_accept);
         RadioGroup status = (RadioGroup) findViewById(R.id.radGrp_status);
+        RadioButton toCheck;
         if(task.getAcceptStatus() == null || !task.getAcceptStatus().equals(getResources().getString(R.string.accept))) {
             taskStatus.setVisibility(View.GONE);
-            accept.check(R.id.radio_waiting);
+            toCheck = (RadioButton) findViewById(R.id.radio_waiting);
+            toCheck.setChecked(true);
         }
         else{
             accept.check(R.id.radio_accept);
+            toCheck = (RadioButton) findViewById(R.id.radio_accept);
+            toCheck.setChecked(true);
         }
         if(task.getStatus() == null || !task.getStatus().equals(getResources().getString(R.string.status_done))) {
             addPhoto.setVisibility(View.GONE);
-            accept.check(R.id.radio_status_waiting);
+            toCheck = (RadioButton) findViewById(R.id.radio_status_waiting);
+            toCheck.setChecked(true);
         }
         else{
-            status.check(R.id.radio_done);
+            toCheck = (RadioButton) findViewById(R.id.radio_done);
+            toCheck.setChecked(true);
         }
         if(task.getPicture() != null){
             ImageView imageview = (ImageView) findViewById(R.id.btn_img_save);
-            byte[] bitmapdata = task.getPicture().getBytes(StandardCharsets.UTF_8);
-            Bitmap imageBitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
+           // byte[] bitmapdata = task.getPicture().getBytes(StandardCharsets.UTF_8);
+            byte[] encodeByte=Base64.decode(task.getPicture(), Base64.DEFAULT);
+            Bitmap imageBitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            //Bitmap imageBitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
             imageview.setImageBitmap(imageBitmap);
         }
         category.setText(task.getCategory());
@@ -132,8 +139,11 @@ public class ViewTaskActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageview.setImageBitmap(imageBitmap);
-            ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
-            byte[] byteArray = bYtE.toByteArray();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            if (imageBitmap != null) {
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            }
+            byte[] byteArray = stream.toByteArray();
             imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
             task.setPicture(imageFile);
             TaskDAO.getInstance(this).updateTask(task);

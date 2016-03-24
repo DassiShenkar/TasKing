@@ -72,7 +72,7 @@ public class LoginActivity extends Activity {
         String password = editPassword.getText().toString();
         /*-------------for debug--------------------*/
         Bundle userParams = getIntent().getExtras();
-        userParams.putBoolean("isManager", true);
+        userParams.putBoolean("isManager", false);
         Intent intent = new Intent(getApplication(), TasksActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);

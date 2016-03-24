@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 
 public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
@@ -30,9 +31,10 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         final Bundle userParams = getActivity().getIntent().getExtras();
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
         if (tasks.size() > 0) {
-            for(Task task : tasks){
+            for(Iterator<Task> it = tasks.iterator(); it.hasNext();){
+                Task task = it.next();
                 if(task.getStatus().equals(getResources().getString(R.string.status_done))){
-                    tasks.remove(task);
+                    it.remove();
                 }
             }
             Collections.sort(tasks, new Comparator<Task>() {
