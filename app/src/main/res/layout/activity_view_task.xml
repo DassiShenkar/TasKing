@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.tasking.ViewTaskActivity">
-
+    tools:context="com.tasking.ViewTaskActivity"
+    android:background="@color/white">
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
@@ -25,140 +25,177 @@
 
     </android.support.v7.widget.Toolbar>
 
-
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_category_layout"
+        android:layout_below="@id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:id="@+id/view_category_layout"
-        android:background="@drawable/border"
-        android:layout_below="@id/my_toolbar">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/category"
-            android:textSize="25sp"
+            android:textSize="22sp"
+            android:textColor="@color/grey"
             android:id="@+id/txt_view_category"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentTop="false"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:id="@+id/txt_view_curr_category"
             android:layout_alignBottom="@+id/txt_view_category"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
-
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/view_category_layout" />
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_priority_layout"
+        android:layout_below="@id/view_category_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:id="@+id/view_priority_layout"
-        android:background="@drawable/border"
-        android:layout_below="@id/view_category_layout">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/priority"
-            android:textSize="25sp"
+            android:textSize="22sp"
+            android:textColor="@color/grey"
             android:id="@+id/txt_view_priority"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:id="@+id/txt_view_curr_priority"
             android:layout_alignTop="@+id/txt_view_priority"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
-
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/view_priority_layout" />
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_location_layout"
+        android:layout_below="@id/view_priority_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:id="@+id/view_location_layout"
-        android:background="@drawable/border"
-        android:layout_below="@id/view_priority_layout">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location"
-            android:textSize="25sp"
+            android:textSize="22sp"
+            android:textColor="@color/grey"
             android:id="@+id/txt_view_location"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:id="@+id/txt_view_curr_location"
             android:layout_alignTop="@+id/txt_view_location"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
-
-
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/view_location_layout" />
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_duedate_layout"
+        android:layout_below="@id/view_location_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:id="@+id/view_duedate_layout"
-        android:background="@drawable/border"
-        android:layout_below="@id/view_location_layout">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/due_time"
-            android:textSize="25sp"
+            android:textSize="22sp"
+            android:textColor="@color/grey"
             android:id="@+id/txt_vie_dueTime"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_centerVertical="true"
             android:id="@+id/txt_curr_dueTime"
             android:layout_alignTop="@+id/txt_vie_dueTime"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
-
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/view_duedate_layout" />
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_accept_layout"
+        android:layout_below="@id/view_duedate_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="@drawable/border"
-        android:id="@+id/view_accept_layout"
-        android:layout_below="@id/view_duedate_layout">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/accept_status"
             android:id="@+id/txt_accept"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textColor="@color/grey"
             android:layout_alignParentStart="true" />
 
@@ -196,25 +233,33 @@
         </RadioGroup>
 
     </RelativeLayout>
-
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/view_accept_layout" />
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_status_layout"
+        android:layout_below="@id/view_accept_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="@drawable/border"
-        android:id="@+id/view_status_layout"
-        android:layout_below="@id/view_accept_layout">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/task_status"
             android:id="@+id/txt_status"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textColor="@color/grey"
             android:layout_alignParentStart="true" />
 
@@ -251,18 +296,26 @@
         </RadioGroup>
 
     </RelativeLayout>
-
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/view_status_layout" />
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_photo_layout"
+        android:layout_below="@id/view_status_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="@drawable/border"
-        android:id="@+id/view_photo_layout"
-        android:layout_below="@id/view_status_layout">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -270,30 +323,53 @@
             android:text="@string/add_photo"
             android:id="@+id/txt_view_addPhoto"
             android:layout_alignParentStart="true"
-            android:textSize="25sp" />
+            android:textSize="22sp"
+            android:textColor="@color/grey"
+            android:layout_centerVertical="true" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_img_save"
-            android:layout_alignBottom="@+id/txt_view_addPhoto"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/add_image"
-            android:onClick="takePhoto" />
-
+            android:src="@drawable/ic_action_camera"
+            android:onClick="takePhoto"
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
-
+    <LinearLayout
+        android:text = ""
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/view_photo_layout" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/done"
-        android:id="@+id/txt_view_done"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:text="@string/save"
+        android:id="@+id/txt_add_task"
+        android:textSize="18sp"
+        android:textColor="@color/darkBlue"
         android:onClick="done"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="false"
         android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="30dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:id="@+id/txt_cancel_add_task"
+        android:textSize="18sp"
+        android:textColor="@color/darkBlue"
+        android:onClick="cancel"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="30dp" />
 </RelativeLayout>
