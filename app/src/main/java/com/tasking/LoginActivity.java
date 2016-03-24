@@ -2,7 +2,6 @@ package com.tasking;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -13,15 +12,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
-import java.util.Map;
 
 
 public class LoginActivity extends Activity {
@@ -78,6 +70,13 @@ public class LoginActivity extends Activity {
         EditText editPassword = (EditText) findViewById(R.id.txt_password);
         final String username = editUsername.getText().toString();
         String password = editPassword.getText().toString();
+        /*-------------for debug--------------------*/
+        Bundle userParams = getIntent().getExtras();
+        userParams.putBoolean("isManager", true);
+        Intent intent = new Intent(getApplication(), TasksActivity.class);
+        intent.putExtras(userParams);
+        startActivity(intent);
+/*-----------------------for debug------------------------------------------------------
         //sign up (managers only)
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
@@ -119,6 +118,7 @@ public class LoginActivity extends Activity {
                                     SharedPreferences settings = getSharedPreferences("user_pref", MODE_PRIVATE);
                                     SharedPreferences.Editor prefEditor = settings.edit();
                                     prefEditor.putBoolean("isAuthenticated", true);
+                                    prefEditor.putString("userName", username);
                                     prefEditor.apply();
                                     if (uid != null) {
                                         firebase.addValueEventListener(new ValueEventListener() {
@@ -175,5 +175,6 @@ public class LoginActivity extends Activity {
                 Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
             }
         }
+------------------------------------------------------------------------------------------*/
     }
 }
