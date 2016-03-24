@@ -44,6 +44,9 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         Bundle userParams = getIntent().getExtras();
         RadioGroup priority = (RadioGroup) findViewById(R.id.radGrp_priority);
+        int checked = priority.getCheckedRadioButtonId();
+        RadioButton selected = (RadioButton) findViewById(checked);
+        selectedRadio = selected.getText().toString();
         priority.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -74,6 +77,7 @@ public class AddTaskActivity extends AppCompatActivity {
             date.setText(taskToUpdate.getDateString());
             time.setText(taskToUpdate.getTimeString());
             location.setText(taskToUpdate.getLocation());
+
         }
     }
 

@@ -19,6 +19,7 @@
     <string name="wrong_password">Wrong password</string>
     <string name="arrow">Arrow</string>
     <string name="done">DONE</string>
+    <string name="status_done">Done</string>
     <string name="save">SAVE</string>
     <string name="cancel">CANCEL</string>
     <string name="team_name">Team Name</string>
@@ -45,7 +46,7 @@
     <string name="settings">SETTINGS</string>
     <string name="log_out">Log Out</string>
     <string name="about">About</string>
-    <string name="in_process">IN PROCESS</string>
+    <string name="in_process">In Process</string>
     <string name="accept_status">Accept Status</string>
     <string name="task_status">Task Status</string>
     <string name="add_photo">Add Photo</string>
