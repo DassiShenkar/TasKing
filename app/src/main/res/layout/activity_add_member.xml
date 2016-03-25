@@ -1,213 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     tools:context="com.tasking.AddMemberActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
-       android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/blue"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
             android:layout_marginStart="10dp"
+            android:text="@string/team_view"
             android:textColor="@color/white"
-            android:text="@string/team_view" />
+            android:textSize="22sp" />
 
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:id="@+id/team_name_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/team_name_wrapper"
         android:layout_alignParentStart="true"
         android:layout_below="@id/my_toolbar"
-        android:paddingStart="30dp"
+        android:paddingBottom="16dp"
         android:paddingEnd="30dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:paddingStart="30dp"
+        android:paddingTop="16dp">
+
         <TextView
+            android:id="@+id/txt_team_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:text="@string/team_name"
-            android:id="@+id/txt_team_name"
-            android:textSize="25sp"
             android:textColor="@color/grey"
-            android:layout_alignBottom="@+id/edit_team_name"
-            android:layout_alignParentStart="true" />
+            android:textSize="22sp" />
 
         <EditText
+            android:id="@+id/edit_team_name"
             android:layout_width="166dp"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:lines="1"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true"
             android:inputType="none"
-            android:id="@+id/edit_team_name"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:lines="1"
+            android:singleLine="true" />
     </RelativeLayout>
 
     <LinearLayout
-        android:text = ""
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentEnd="false"
         android:layout_alignParentBottom="false"
-        android:layout_below="@+id/team_name_wrapper" />
-
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/team_name_wrapper"
+        android:background="@color/grey"
+        android:text="" />
 
     <RelativeLayout
+        android:id="@+id/team_members_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/team_members_wrapper"
         android:layout_alignParentStart="true"
         android:layout_below="@id/team_name_wrapper"
-        android:paddingStart="30dp"
+        android:paddingBottom="16dp"
         android:paddingEnd="30dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp" >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/team_members"
-            android:id="@+id/textView3"
-            android:textSize="25sp"
-            android:textColor="@color/grey"
-            android:layout_alignParentStart="true"/>
+        android:paddingStart="30dp"
+        android:paddingTop="16dp">
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Add"
-            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/add_member"
+            android:textColor="@color/grey"
+            android:textSize="22sp" />
+
+        <ImageButton
             android:id="@+id/add_btn"
-            android:layout_alignParentTop="true"
-            android:textSize="25sp"
-            android:layout_toEndOf="@+id/textView3"
-            android:layout_marginStart="48dp"
-            android:onClick="addMember" />
+            android:onClick="editMember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:src="@drawable/ic_action_add_person" />
 
     </RelativeLayout>
 
     <LinearLayout
-        android:text = ""
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentEnd="false"
         android:layout_alignParentBottom="false"
-        android:layout_below="@+id/team_members_wrapper" />
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/team_members_wrapper"
+        android:background="@color/grey"
+        android:text="" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/edit_members_wrapper"
-        android:layout_below="@+id/team_members_wrapper"
-        android:layout_above="@+id/txt_done"
-        android:paddingStart="30dp"
+        android:layout_below="@+id/team_name_wrapper">
+
+    <RelativeLayout
+        android:id="@+id/edit_member_email_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingEnd="30dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp" >
+        android:paddingRight="10dp"
+        android:paddingStart="30dp"
+        android:paddingTop="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:textSize="25sp"
             android:id="@+id/txt_member_email"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="30dp" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/phone"
-            android:textSize="25sp"
-            android:id="@+id/txt_member_phone"
-            android:layout_below="@+id/txt_member_email"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="40dp" />
+            android:layout_marginTop="30dp"
+            android:text="@string/email"
+            android:textSize="22sp" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:id="@+id/edit_member_email"
-            android:singleLine="true"
-            android:lines="1"
-            android:textSize="25sp"
-            android:layout_above="@+id/txt_member_phone"
-            android:layout_alignStart="@+id/edit_member_phone" />
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:singleLine="true"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/txt_member_email"
+            android:layout_centerVertical="true"
+            android:inputType="textEmailAddress"
             android:lines="1"
-            android:textSize="25sp"
-            android:id="@+id/edit_member_phone"
-            android:layout_alignBottom="@+id/txt_member_phone"
-            android:layout_toEndOf="@+id/txt_member_phone" />
+            android:singleLine="true"
+            android:textSize="22sp" />
+    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/edit_member_phone_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/edit_member_email_wrapper">
+
+            <TextView
+                android:id="@+id/txt_member_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="40dp"
+                android:text="@string/phone"
+                android:textSize="22sp" />
+
+            <EditText
+                android:id="@+id/edit_member_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_member_phone"
+                android:inputType="phone"
+                android:lines="1"
+                android:singleLine="true"
+                android:textSize="22sp" />
+
+        </RelativeLayout>
 
         <TextView
+            android:id="@+id/add_member_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_member"
-            android:textSize="25sp"
+            android:onClick="addMember"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:id="@+id/add_member_btn"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="70dp" />
+            android:layout_below="@+id/edit_member_phone_wrapper"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:text = ""
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentBottom="false"
-        android:layout_below="@+id/edit_members_wrapper" />
-
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/send_invites"
-        android:id="@+id/txt_done"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:textColor="@color/darkBlue"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="done"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/send_invites"
+    android:id="@+id/txt_done"
+    android:textSize="18sp"
+    android:textColor="@color/darkBlue"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="false"
+    android:layout_marginBottom="20dp"
+    android:layout_alignParentEnd="true"
+    android:layout_marginEnd="30dp"
+    android:onClick="sendInvites" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back"
-        android:textStyle="bold"
         android:id="@+id/txt_back"
+        android:onClick="back"
+        android:textColor="@color/darkBlue"
+        android:textSize="18sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:onClick="back"
-        android:nestedScrollingEnabled="false"
-        android:textColor="@color/darkBlue"
-        android:textSize="25sp" />
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="30dp" />
 </RelativeLayout>

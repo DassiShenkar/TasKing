@@ -41,13 +41,18 @@ public class AddMemberActivity extends Activity {
         title.setTypeface(boldTypeFace);
     }
 
+    public void editMember(View view) {
+        RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.team_members_wrapper);
+        RelativeLayout editWrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
+        wrapper.setVisibility(View.GONE);
+        editWrapper.setVisibility(View.VISIBLE);
+    }
+
     public void addMember(View view){
         teamMembers = new ArrayList<>();
         EditText name = (EditText) findViewById(R.id.edit_team_name);
         teamName = name.getText().toString();
         if(!teamName.equals("")) {
-            RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
-            wrapper.setVisibility(View.VISIBLE);
             TextView add = (TextView) findViewById(R.id.add_member_btn);
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,7 +101,7 @@ public class AddMemberActivity extends Activity {
         startActivity(intent);
     }
 
-    public void done(View view){
+    public void sendInvites(View view){
         if(teamMembers != null){
             for (Employee member : teamMembers) {
                 if(member.getUserName().equals("")){
