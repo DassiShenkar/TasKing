@@ -50,6 +50,10 @@ public class AddTaskActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.BLACK);
         }
         Bundle userParams = getIntent().getExtras();
+        if(!userParams.getBoolean("isManager")){
+            RelativeLayout assigne = (RelativeLayout) findViewById(R.id.assign_layout);
+            assigne.setVisibility(View.GONE);
+        }
         RadioGroup priority = (RadioGroup) findViewById(R.id.radGrp_priority);
         int checked = priority.getCheckedRadioButtonId();
         RadioButton selected = (RadioButton) findViewById(checked);
@@ -62,15 +66,17 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         });
         int taskId = userParams.getInt("taskId");
-        final Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
-        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
-        ArrayList<String> employeeNames = new ArrayList<>();
-        for(Employee e: employees){
-            employeeNames.add(e.getUserName());
+        if(userParams.getBoolean("isManager")) {
+            final Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
+            ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
+            ArrayList<String> employeeNames = new ArrayList<>();
+            for (Employee e : employees) {
+                employeeNames.add(e.getUserName());
+            }
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(spinnerAdapter);
         }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
         if(taskId != 0){
             isUpdate = true;
             taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
@@ -98,20 +104,23 @@ public class AddTaskActivity extends AppCompatActivity {
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
         EditText category = (EditText) findViewById(R.id.edit_category);
-        //TODO: change from text view to spinner
+        //TODO: change from text view to spinner created Strings
         TextView date = (TextView) findViewById(R.id.edit_date);
         TextView time = (TextView) findViewById(R.id.edit_time);
         EditText location = (EditText) findViewById(R.id.edit_location);
         String taskName = name.getText().toString();
         String taskCategory = category.getText().toString();
         String taskLocation = location.getText().toString();
-        //TODO: change from text view to spinner
-        //TODO: extra credit scan barcode
+        //TODO: change from text view to spinner created Strings
+        //TODO: extra credit scan barcode created class
         String taskDate = date.getText().toString();
         String taskTime = time.getText().toString();
         Bundle userParams = getIntent().getExtras();
-        Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
-        String employeeName = spinner.getSelectedItem().toString();
+        String employeeName = null;
+        if(userParams.getBoolean("isManger")) {
+            Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
+            employeeName = spinner.getSelectedItem().toString();
+        }
         Task task = new Task();
 
 
@@ -121,7 +130,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 taskToUpdate.setDateFromString(taskTime, taskDate);
                 taskToUpdate.setCategory(taskCategory);
                 taskToUpdate.setPriority(selectedRadio);
-                taskToUpdate.setAssignee(employeeName);
+                if(userParams.getBoolean("isManger")){
+                    taskToUpdate.setAssignee(employeeName);
+                }
+                else{
+                    taskToUpdate.setAssignee("Self");
+                }
                 taskToUpdate.setLocation(taskLocation);
                 TaskDAO.getInstance(this).updateTask(taskToUpdate);
                 isUpdate = false;
@@ -143,7 +157,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setPriority(selectedRadio);
                 task.setAcceptStatus("Waiting");
                 task.setStatus("Waiting");
-                task.setAssignee(employeeName);
+                if(userParams.getBoolean("isManger")){
+                    task.setAssignee(employeeName);
+                }
+                else{
+                    task.setAssignee("Self");
+                }
                 task.setLocation(taskLocation);
 //                task.setFirebaseId(postId);
                 TaskDAO.getInstance(this).addTask(task);

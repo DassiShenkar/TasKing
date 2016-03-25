@@ -33,8 +33,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         if (tasks.size() > 0) {
             for(Iterator<Task> it = tasks.iterator(); it.hasNext();){
                 Task task = it.next();
-                if(task.getStatus().equals(getResources().getString(R.string.status_done))){
-                    //TODO: remove in progrees tasks
+                if(task.getStatus().equals(getResources().getString(R.string.status_done)) || task.getStatus().equals(getResources().getString(R.string.in_process))){
                     it.remove();
                 }
             }

@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TasKingDBHelper extends SQLiteOpenHelper {
 
-    //:TODO add uid field
-
     private static final int DATABASE_VERSION = 17;
 
     // Database Name
