@@ -15,6 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,6 +28,9 @@ import java.util.Map;
 
 
 public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
+    private ArrayList<Task> newTasks;
+    private ArrayList<Employee> newEmployees;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,7 +98,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
 
 
                     switch (selectedSpinnerItem) {
-                        case "STATUS":
+                        case "Status":
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
@@ -98,7 +106,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                                 }
                             });
                             break;
-                        case "TIME":
+                        case "Time":
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
@@ -106,7 +114,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                                 }
                             });
                             break;
-                        case "PRIORITY":
+                        case "Priority":
                             Collections.sort(tasks, new Comparator<Task>() {
                                 @Override
                                 public int compare(Task lhs, Task rhs) {
@@ -131,6 +139,38 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
 
     @Override
     public void onRefresh() {
-        //TODO: implement refresh logic
+        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        firebase.addValueEventListener(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.child("Managers").child("Tasks").getChildren()){
+                    Task task = snapshot.getValue(Task.class);
+                    addToTasks(task);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void addToTasks(Task task){
+        Bundle userParams = getActivity().getIntent().getExtras();
+        if(userParams.getBoolean("isManager")) {
+            //TODO: get employees
+        }
+        if (newTasks == null) {
+            newTasks = new ArrayList<>();
+        } else {
+            newTasks.clear();
+        }
+        Task compareTask = TaskDAO.getInstance(getContext()).getTask(task.getId());
+        if (compareTask == null) {
+            //TODO: add task
+        } else if (task.getTimeStamp().equals(compareTask.getTimeStamp())) {//TODO: compare dates
+            //TODO: update task
+        }
     }
 }

@@ -75,7 +75,7 @@ public class LoginActivity extends Activity {
         String password = editPassword.getText().toString();
         /*-------------for debug - remove after debug--------------------*/
         Bundle userParams = getIntent().getExtras();
-        userParams.putBoolean("isManager", false);
+        userParams.putBoolean("isManager", true);
         Intent intent = new Intent(getApplication(), TasksActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);
@@ -151,6 +151,7 @@ public class LoginActivity extends Activity {
                                                     userParams.putString("uid", uid);
                                                     userParams.putBoolean("isManager", false);
                                                     //TODO: save tasks in local db
+                                                    //TODO: TOAST: You have been added to Team: <TeamName> by <ManagerName>
                                                     Intent intent = new Intent(getApplication(), TasksActivity.class);
                                                     intent.putExtras(userParams);
                                                     startActivity(intent);

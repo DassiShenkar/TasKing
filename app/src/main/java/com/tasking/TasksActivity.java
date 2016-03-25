@@ -102,11 +102,12 @@ public class TasksActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        //TODO: add number of waiting tasks
         navigationView.setNavigationItemSelectedListener(this);
         createTask.setTypeface(typeFace);
         ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks();
         if (tasks.size() > 0) {
+            //TODO: create task for team member self assignee
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
         }
@@ -170,7 +171,7 @@ public class TasksActivity extends AppCompatActivity
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             } else if (id == R.id.nav_about) {
-
+                //TODO: implement this
             }
         }
         else{
@@ -182,7 +183,7 @@ public class TasksActivity extends AppCompatActivity
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             } else if (id == R.id.nav_about) {
-
+                //TODO: implement this
             }
         }
 

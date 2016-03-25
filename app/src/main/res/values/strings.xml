@@ -72,5 +72,6 @@
     <string name="reject">Reject</string>
     <string name="delete_ic">delete icon</string>
     <string name="go">GO</string>
+    <string name="task_photo">Photo</string>
 
 </resources>

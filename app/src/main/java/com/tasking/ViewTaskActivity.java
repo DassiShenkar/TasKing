@@ -31,21 +31,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
         Bundle userParams = getIntent().getExtras();
-//        if(savedInstanceState != null) {
-//            if (savedInstanceState.getParcelable("imageURI") != null) {
-//                imageUri = savedInstanceState.getParcelable("imageURI");
-//            }
-//            if (savedInstanceState.getString("image") != null) {
-//                String byteString = savedInstanceState.getString("image");
-//                ImageView imageview = (ImageView) findViewById(R.id.btn_img_save);
-//                if (byteString != null) {
-//                    byte[] bitmapdata = byteString.getBytes(StandardCharsets.UTF_8);
-//                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
-//                    imageview.setImageBitmap(imageBitmap);
-//                }
-//                imageview.setClickable(false);
-//            }
-//        }
         Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
         TextView category = (TextView) findViewById(R.id.txt_view_curr_category);
         TextView priority = (TextView) findViewById(R.id.txt_view_curr_priority);
@@ -77,10 +62,8 @@ public class ViewTaskActivity extends AppCompatActivity {
         }
         if(task.getPicture() != null){
             ImageView imageview = (ImageView) findViewById(R.id.btn_img_save);
-           // byte[] bitmapdata = task.getPicture().getBytes(StandardCharsets.UTF_8);
             byte[] encodeByte=Base64.decode(task.getPicture(), Base64.DEFAULT);
             Bitmap imageBitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            //Bitmap imageBitmap = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
             imageview.setImageBitmap(imageBitmap);
         }
         category.setText(task.getCategory());
@@ -88,6 +71,9 @@ public class ViewTaskActivity extends AppCompatActivity {
         location.setText(task.getLocation());
         String date = task.getDateString() + " " + task.getTimeString();
         dueDate.setText(date);
+        //TODO: If ReportAcceptStatus == “ACCEPT” Then TOAST: “Task <ReportAcceptStatus> && Task is <TaskStatus>”
+        //TODO: If ReportAcceptStatus == “REJECT” Then TOAST: “Task <ReportAcceptStatus>
+
         accept.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -168,6 +154,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     public void done(View view){
         //TODO: update backend
+        //TODO: If Error / Time Out: TOAST: “Error Saving Task Status: Please try again”
         Bundle userParams = getIntent().getExtras();
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);

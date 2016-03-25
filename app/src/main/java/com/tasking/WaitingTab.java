@@ -34,6 +34,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
             for(Iterator<Task> it = tasks.iterator(); it.hasNext();){
                 Task task = it.next();
                 if(task.getStatus().equals(getResources().getString(R.string.status_done))){
+                    //TODO: remove in progrees tasks
                     it.remove();
                 }
             }
@@ -70,5 +71,16 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     @Override
     public void onRefresh() {
         //TODO: implement refresh logic
+        //TODO: NEW TASK NOTIFICATION  (Via GCM - OPTIONAL - Extra Credit)
+        //TODO: When a New task is sent to TeamMember, they see a GCM Floating Notification.
+//TODO:        When the client checks for a new task, and finds one:
+//TODO:        NOTIFICATION: “You have received a new Task”. [View Task],[Cancel]
+//TODO:        If more than 1 new task:
+//TODO:        NOTIFICATION: “You have received some new Tasks”. [View],[Cancel]
+//TODO:        On [View] Open WAITING Tab in Main View.
+//TODO:        HIGHLIGHT the NEW TASKS (options: Bold Text, Background Color)
+//TODO:        VIEW TASK
+//TODO:        Open REPORT TASK STATUS View for this Task
+
     }
 }

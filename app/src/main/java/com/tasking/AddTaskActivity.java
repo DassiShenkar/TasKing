@@ -4,20 +4,25 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -37,6 +42,8 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+        RelativeLayout photo = (RelativeLayout) findViewById(R.id.photo_layout);
+        photo.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -67,6 +74,13 @@ public class AddTaskActivity extends AppCompatActivity {
         if(taskId != 0){
             isUpdate = true;
             taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
+            if(taskToUpdate.getPicture() != null){
+                photo.setVisibility(View.VISIBLE);
+                ImageView imageview = (ImageView) findViewById(R.id.img_show_photo);
+                byte[] encodeByte= Base64.decode(taskToUpdate.getPicture(), Base64.DEFAULT);
+                Bitmap imageBitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+                imageview.setImageBitmap(imageBitmap);
+            }
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             EditText category = (EditText) findViewById(R.id.edit_category);
             TextView date = (TextView) findViewById(R.id.edit_date);
@@ -84,12 +98,15 @@ public class AddTaskActivity extends AppCompatActivity {
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
         EditText category = (EditText) findViewById(R.id.edit_category);
+        //TODO: change from text view to spinner
         TextView date = (TextView) findViewById(R.id.edit_date);
         TextView time = (TextView) findViewById(R.id.edit_time);
         EditText location = (EditText) findViewById(R.id.edit_location);
         String taskName = name.getText().toString();
         String taskCategory = category.getText().toString();
         String taskLocation = location.getText().toString();
+        //TODO: change from text view to spinner
+        //TODO: extra credit scan barcode
         String taskDate = date.getText().toString();
         String taskTime = time.getText().toString();
         Bundle userParams = getIntent().getExtras();
@@ -130,6 +147,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setLocation(taskLocation);
 //                task.setFirebaseId(postId);
                 TaskDAO.getInstance(this).addTask(task);
+                //TODO: Show toast: “New Task created and sent”
 
                 if(userParams.getBoolean("isManager")) {  // add task under Manager and Employee
 

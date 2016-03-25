@@ -140,6 +140,7 @@ public class AddMemberActivity extends Activity {
                 String subject = "Let's go TasKing Together";
                 String body = "Hello\n" + userParams.getString("userName") + " welcomes you to download the TasKing app\nand join the " +
                         teamName + " team\nYou can get the app at http://someplace.com";
+                //TODO: put google play link in mail body
                 sendMail.setType("message/rfc822");
                 sendMail.putExtra(Intent.EXTRA_EMAIL, to);
                 sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
