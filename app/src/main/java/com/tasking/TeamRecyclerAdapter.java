@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapter
         .ViewHolder> {
 
-    private ArrayList<String> employees;
+    private ArrayList<Employee> employees;
     private Context context;
 
-    public  TeamRecyclerAdapter(ArrayList<String> employees, Context context){
+    public  TeamRecyclerAdapter(ArrayList<Employee> employees, Context context){
         this.employees = employees;
         this.context = context;
     }
@@ -33,8 +33,8 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
 
     @Override
     public void onBindViewHolder(TeamRecyclerAdapter.ViewHolder holder, final int position) {
-        String employee = employees.get(position);
-        holder.userName.setText(employee);
+        Employee employee = employees.get(position);
+        holder.userName.setText(employee.getUserName());
         holder.deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,9 +44,7 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     }
 
     public void delete(int position) {
-        String employeeStr = employees.get(position);
-        Employee employee = TaskDAO.getInstance(context).getMember(employeeStr);
-        TaskDAO.getInstance(context).removeMember(employee);
+        TaskDAO.getInstance(context).removeMember(employees.get(position));
         //TODO: remove in firebase
         employees.remove(position);
         notifyItemRemoved(position);

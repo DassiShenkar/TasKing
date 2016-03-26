@@ -65,32 +65,39 @@ public class AddMemberActivity extends Activity {
                     EditText phone = (EditText) findViewById(R.id.edit_member_phone);
                     String emailStr = email.getText().toString();
                     String phoneStr = phone.getText().toString();
+                    Bundle userParams = getIntent().getExtras();
                     if (!emailStr.equals("") || !phoneStr.equals("")){
                         Employee employee;
-                        ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers();
-                        boolean exists = false;
-                        for(Employee employeeName: employees){
-                            if(employeeName.getUserName().equals(emailStr)){
-                                exists = true;
-                                break;
+                        ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers(userParams.getString("uid"));
+                        email.setText("");
+                        phone.setText("");
+                        employee = new TeamMember(emailStr, phoneStr);
+                        teamMembers.add(employee);
+                        final Employee employeeAdd = employee;
+                        final Bundle managerParams = getIntent().getExtras();
+                        final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+                        firebase.createUser(employee.getUserName(), employee.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+                            @Override
+                            public void onSuccess(Map<String, Object> result) {
+                                String uid = result.get("uid").toString();
+                                String managerUid = managerParams.getString("uid");
+                                if (managerUid != null) {
+                                    firebase.child("managers").child(managerUid).child("team").child("teamName").setValue(teamName);
+                                    firebase.child("managers").child(managerUid).child("team").child(uid).child("username").setValue(employeeAdd.getUserName());
+                                }
+                                firebase.child("member-manager").child(uid).setValue(managerUid);
+                                employeeAdd.setUid(uid);
+                                employeeAdd.setManagerId(managerUid);
+                                TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd);
+                                Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        if(!exists) {
-                            Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
-                            email.setText("");
-                            phone.setText("");
-                            employee = new TeamMember(emailStr, phoneStr);
-                            TaskDAO.getInstance(getApplicationContext()).addMember(employee);
-                            teamMembers.add(employee);
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Member already exists", Toast.LENGTH_SHORT).show();
-                        }
-                        ArrayList<String> employeeNames = new ArrayList<>();
-                        for(Employee e: teamMembers){
-                            employeeNames.add(e.getUserName());
-                        }
-                        if (employeeNames.size() > 0){
+
+                            @Override
+                            public void onError(FirebaseError firebaseError) {
+                                Toast.makeText(getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        if (employees.size() > 0){
                             RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
                             RelativeLayout addMember = (RelativeLayout) findViewById(R.id.team_members_wrapper);
                             wrapperEdit.setVisibility(View.GONE);
@@ -100,7 +107,7 @@ public class AddMemberActivity extends Activity {
                             recyclerView.setHasFixedSize(true);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                             recyclerView.setLayoutManager(layoutManager);
-                            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employeeNames, getApplicationContext());
+                            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employees, getApplicationContext());
                             recyclerView.setAdapter(adapter);
                         }
                     }
@@ -115,13 +122,6 @@ public class AddMemberActivity extends Activity {
         }
     }
 
-    public void back(View view){
-        Intent intent = new Intent(this, TeamActivity.class);
-        Bundle userParams = getIntent().getExtras();
-        intent.putExtras(userParams);
-        startActivity(intent);
-    }
-
     public void sendInvites(View view){
         if(teamMembers != null){
             for (Employee member : teamMembers) {
@@ -130,31 +130,6 @@ public class AddMemberActivity extends Activity {
                 }
             }
             if(teamMembers.size() > 0) {
-                final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-                for(final Employee member : teamMembers) {
-                    firebase.createUser(member.getUserName(), member.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
-                        @Override
-                        public void onSuccess(Map<String, Object> result) {
-                            String uid = result.get("uid").toString();
-                            Bundle userParams = getIntent().getExtras();
-                            String managerUid = userParams.getString("uid");
-                            member.setUid(uid);
-
-                            TaskDAO.getInstance(getApplicationContext()).addMember(member);
-                            if (managerUid != null) {
-                                firebase.child("Managers").child( managerUid).child("Team_Name").setValue(teamName);
-                                firebase.child("Managers").child( managerUid).child("Team").child(uid).child("username").setValue(member.getUserName());
-                            }
-                            firebase.child("member-manager").child(uid).setValue(managerUid);
-                        }
-
-                        @Override
-                        public void onError(FirebaseError firebaseError) {
-                            //TODO: something
-                        }
-                    });
-                }
-
                 Bundle userParams = getIntent().getExtras();
                 Intent sendMail = new Intent(Intent.ACTION_SEND);
                 String[] to = new String[teamMembers.size()];

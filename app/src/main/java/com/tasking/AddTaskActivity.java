@@ -85,7 +85,7 @@ public class AddTaskActivity extends AppCompatActivity {
         locationSpinner.setAdapter(locationSpinnerAdapter);
         if(userParams.getBoolean("isManager")) {
             final Spinner assigneeSpinner = (Spinner) findViewById(R.id.spn_add_member);
-            ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
+            ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers(userParams.getString("uid"));
             ArrayList<String> employeeNames = new ArrayList<>();
             for (Employee e : employees) {
                 employeeNames.add(e.getUserName());
@@ -184,23 +184,23 @@ public class AddTaskActivity extends AppCompatActivity {
                 TaskDAO.getInstance(this).addTask(task);
                 //TODO: Show toast: “New Task created and sent”
 
-                if(userParams.getBoolean("isManager")) {  // add task under Manager and Employee
+               // if(userParams.getBoolean("isManager")) {  // add task under Manager and Employee
 
 
-                    Employee member =  TaskDAO.getInstance(this).getMember(employeeName);
-//                    firebase.child("Managers").child(uid).child("Tasks").child(postId).setValue(task);
-//                    firebase.child("Managers").child(uid).child("Team").child(member.getUid()).child("Tasks").child(postId).setValue(task);
+                    //Employee member =  TaskDAO.getInstance(this).getMember(employeeName);
+//                    firebase.child("managers").child(uid).child("tasks").child(postId).setValue(task);
+//                    firebase.child("managers").child(uid).child("team").child(member.getUid()).child("tasks").child(postId).setValue(task);
                     //TODO: debug and see why member.getUid() returns a null
-                }
-                else {
+               // }
+               // else {
                     //TODO: get manager uid and then activate the code below
 
                     /*
                     DataSnapshot DS = new DataSnapshot(firebase, com.firebase.client.snapshot.IndexedNode node);
                     String managerUid =  firebase.child("member-manager").child(uid).getKey();
-                    firebase.child("Managers").child(managerUid).child("Tasks").child(postId).setValue(task);
-                    firebase.child("Managers").child(managerUid).child("Team").child(uid).child("Tasks").child(postId).setValue(task);*/
-                }
+                    firebase.child("managers").child(managerUid).child("tasks").child(postId).setValue(task);
+                    firebase.child("managers").child(managerUid).child("team").child(uid).child("tasks").child(postId).setValue(task);*/
+               // }
             }
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);

@@ -31,11 +31,7 @@ public class TeamActivity extends Activity {
         membersTitle.setVisibility(View.GONE);
         createTeam.setTypeface(regularTypeFace);
         String userName = userParams.getString("userName");
-        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
-        ArrayList<String> employeeNames = new ArrayList<>();
-        for(Employee e: employees){
-            employeeNames.add(e.getUserName());
-        }
+        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers(userParams.getString("uid"));
         if (employees.size() > 0){
             membersTitle.setVisibility(View.VISIBLE);
             createTeam.setVisibility(View.GONE);
@@ -44,7 +40,7 @@ public class TeamActivity extends Activity {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employeeNames, this);
+            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employees, this);
             recyclerView.setAdapter(adapter);
         }
     }

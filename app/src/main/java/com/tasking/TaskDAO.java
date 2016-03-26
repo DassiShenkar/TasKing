@@ -202,10 +202,10 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public ArrayList<Employee> getMembers() {
+    public ArrayList<Employee> getMembers(String uid) {
         SQLiteDatabase db = null;
         ArrayList<Employee> employees = new ArrayList<>();
-        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME;
+        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
         try {
             db = DBHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);
@@ -228,34 +228,28 @@ public class TaskDAO implements ITaskDAO {
     }
 
 
-    public Employee getMember(String employeeEmail) {
-        SQLiteDatabase db = null;
-        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME;
-        Employee employee = new Employee();
-        try {
-            db = DBHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
-            if(cursor.moveToFirst()){
-                do{
-                    if(cursor.getString(0).equals(employeeEmail)){
-                        employee.setUserName(cursor.getString(0));
-                        employee.setUid(cursor.getString(1));
-                        employee.setManagerId(cursor.getString(2));
-                        employee.setUid(cursor.getString(1));
-                        break;
-                    }
-
-
-                } while(cursor.moveToNext());
-                cursor.close();
-            }
-            return employee;
-        } finally {
-            if (db != null) {
-                db.close();
-            }
-        }
-    }
+//    public Employee getMember(String uid) {
+//        SQLiteDatabase db = null;
+//        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
+//        Employee employee = new Employee();
+//        try {
+//            db = DBHelper.getReadableDatabase();
+//            Cursor cursor = db.rawQuery(query, null);
+//            if(cursor.moveToFirst()){
+//                do{
+//                    employee.setUserName(cursor.getString(0));
+//                    employee.setUid(cursor.getString(1));
+//                    employee.setManagerId(cursor.getString(2));
+//                } while(cursor.moveToNext());
+//                cursor.close();
+//            }
+//            return employee;
+//        } finally {
+//            if (db != null) {
+//                db.close();
+//            }
+//        }
+//    }
 
     /*
     private static TaskDAO taskDAO;
