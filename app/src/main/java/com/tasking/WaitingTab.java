@@ -1,6 +1,7 @@
 package com.tasking;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,9 +32,11 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>(), false);
         recyclerView.setAdapter(emptyAdapter);
         final Bundle userParams = getActivity().getIntent().getExtras();
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf");
         TextView createTask = (TextView) rootView.findViewById(R.id.waiting_task_text);
         createTask.setText(getResources().getString(R.string.create_waiting_task));
         ImageView arrow = (ImageView) rootView.findViewById(R.id.waiting_img_arrow);
+        createTask.setTypeface(typeFace);
         if(!userParams.getBoolean("isManager")) {
             createTask.setText(getResources().getString(R.string.refresh_waiting_task));
             arrow.setScaleX(-1f);
