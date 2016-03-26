@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -44,6 +46,8 @@ public class AddMemberActivity extends Activity {
     public void editMember(View view) {
         RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.team_members_wrapper);
         RelativeLayout editWrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
+        recyclerView.setVisibility(View.GONE);
         wrapper.setVisibility(View.GONE);
         editWrapper.setVisibility(View.VISIBLE);
     }
@@ -64,8 +68,6 @@ public class AddMemberActivity extends Activity {
                     if (!emailStr.equals("") || !phoneStr.equals("")){
                         Employee employee;
                         ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers();
-                        employee = new TeamMember(emailStr, phoneStr);
-                        TaskDAO.getInstance(getApplicationContext()).addMember(employee);
                         boolean exists = false;
                         for(Employee employeeName: employees){
                             if(employeeName.getUserName().equals(emailStr)){
@@ -77,10 +79,29 @@ public class AddMemberActivity extends Activity {
                             Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
                             email.setText("");
                             phone.setText("");
+                            employee = new TeamMember(emailStr, phoneStr);
+                            TaskDAO.getInstance(getApplicationContext()).addMember(employee);
                             teamMembers.add(employee);
                         }
                         else{
                             Toast.makeText(getApplicationContext(), "Member already exists", Toast.LENGTH_SHORT).show();
+                        }
+                        ArrayList<String> employeeNames = new ArrayList<>();
+                        for(Employee e: teamMembers){
+                            employeeNames.add(e.getUserName());
+                        }
+                        if (employeeNames.size() > 0){
+                            RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
+                            RelativeLayout addMember = (RelativeLayout) findViewById(R.id.team_members_wrapper);
+                            wrapperEdit.setVisibility(View.GONE);
+                            addMember.setVisibility(View.VISIBLE);
+                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            recyclerView.setHasFixedSize(true);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                            recyclerView.setLayoutManager(layoutManager);
+                            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employeeNames, getApplicationContext());
+                            recyclerView.setAdapter(adapter);
                         }
                     }
                     else{

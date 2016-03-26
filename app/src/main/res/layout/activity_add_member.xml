@@ -115,6 +115,15 @@
         android:background="@color/grey"
         android:text="" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/team_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/team_members_wrapper" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
