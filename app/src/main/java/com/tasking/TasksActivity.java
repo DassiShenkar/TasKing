@@ -168,7 +168,6 @@ public class TasksActivity extends AppCompatActivity
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             } else if (id == R.id.nav_about) {
-                //TODO: implement this
             }
         }
         else{
@@ -180,7 +179,6 @@ public class TasksActivity extends AppCompatActivity
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             } else if (id == R.id.nav_about) {
-                //TODO: implement this
             }
         }
 

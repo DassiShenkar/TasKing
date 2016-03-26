@@ -97,5 +97,11 @@
     <string name="delete_ic">delete icon</string>
     <string name="go">GO</string>
     <string name="task_photo">Photo</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_logout">Log Out</string>
+    <string name="nav_about">About: TasKing v14.03</string>
+    <string name="nav_names">Gregory K / Dassi R / Arel G</string>
+    <string name="nav_show_member">Show Memebers List</string>
+    <string name="nav_add_member">Add Member</string>
 
 </resources>

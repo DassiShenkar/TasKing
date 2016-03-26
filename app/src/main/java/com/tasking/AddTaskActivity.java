@@ -73,10 +73,18 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         });
         int taskId = userParams.getInt("taskId");
+        final Spinner categorySpinner = (Spinner) findViewById(R.id.spn_category);
+        final Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
+        String[] categoryItems = getResources().getStringArray(R.array.category_array);
+        MyArrayAdapter<String> categorySpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, categoryItems);
+        categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categorySpinnerAdapter);
+        String[] locationItems = getResources().getStringArray(R.array.location_array);
+        MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, locationItems);
+        locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationSpinnerAdapter);
         if(userParams.getBoolean("isManager")) {
             final Spinner assigneeSpinner = (Spinner) findViewById(R.id.spn_add_member);
-            final Spinner categorySpinner = (Spinner) findViewById(R.id.spn_category);
-            final Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
             ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
             ArrayList<String> employeeNames = new ArrayList<>();
             for (Employee e : employees) {
@@ -85,14 +93,6 @@ public class AddTaskActivity extends AppCompatActivity {
             MyArrayAdapter<String> assigneeSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, employeeNames);
             assigneeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             assigneeSpinner.setAdapter(assigneeSpinnerAdapter);
-            String[] categoryItems = getResources().getStringArray(R.array.category_array);
-            MyArrayAdapter<String> categorySpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, categoryItems);
-            categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            categorySpinner.setAdapter(categorySpinnerAdapter);
-            String[] locationItems = getResources().getStringArray(R.array.location_array);
-            MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, locationItems);
-            locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            locationSpinner.setAdapter(locationSpinnerAdapter);
         }
         if(taskId != 0){
             isUpdate = true;
@@ -103,6 +103,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 byte[] encodeByte= Base64.decode(taskToUpdate.getPicture(), Base64.DEFAULT);
                 Bitmap imageBitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
                 imageview.setImageBitmap(imageBitmap);
+                imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
             }
             EditText name = (EditText) findViewById(R.id.edit_task_name);
             TextView date = (TextView) findViewById(R.id.edit_date);

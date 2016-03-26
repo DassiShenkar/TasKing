@@ -147,6 +147,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     public void cancel(View view){
         Bundle userParams = getIntent().getExtras();
+        userParams.remove("taskId");
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);
@@ -156,6 +157,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         //TODO: update backend
         //TODO: If Error / Time Out: TOAST: “Error Saving Task Status: Please try again”
         Bundle userParams = getIntent().getExtras();
+        userParams.remove("taskId");
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);
