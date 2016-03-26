@@ -67,15 +67,27 @@ public class AddTaskActivity extends AppCompatActivity {
         });
         int taskId = userParams.getInt("taskId");
         if(userParams.getBoolean("isManager")) {
-            final Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
+            final Spinner assigneeSpinner = (Spinner) findViewById(R.id.spn_add_member);
+            final Spinner categorySpinner = (Spinner) findViewById(R.id.spn_category);
+            final Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
             ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers();
             ArrayList<String> employeeNames = new ArrayList<>();
             for (Employee e : employees) {
                 employeeNames.add(e.getUserName());
             }
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(spinnerAdapter);
+            ArrayAdapter<String> assigneeSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
+            assigneeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            assigneeSpinner.setAdapter(assigneeSpinnerAdapter);
+            ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this,
+                    R.array.category_array,
+                    android.R.layout.simple_spinner_dropdown_item);
+            categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            categorySpinner.setAdapter(categorySpinnerAdapter);
+            ArrayAdapter<CharSequence> locationSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                    R.array.location_array,
+                    android.R.layout.simple_spinner_dropdown_item);
+            locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            locationSpinner.setAdapter(locationSpinnerAdapter);
         }
         if(taskId != 0){
             isUpdate = true;
@@ -88,30 +100,23 @@ public class AddTaskActivity extends AppCompatActivity {
                 imageview.setImageBitmap(imageBitmap);
             }
             EditText name = (EditText) findViewById(R.id.edit_task_name);
-            EditText category = (EditText) findViewById(R.id.edit_category);
             TextView date = (TextView) findViewById(R.id.edit_date);
             TextView time = (TextView) findViewById(R.id.edit_time);
-            EditText location = (EditText) findViewById(R.id.edit_location);
             name.setText(taskToUpdate.getName());
-            category.setText(taskToUpdate.getCategory());
             date.setText(taskToUpdate.getDateString());
             time.setText(taskToUpdate.getTimeString());
-            location.setText(taskToUpdate.getLocation());
-
         }
     }
 
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
-        EditText category = (EditText) findViewById(R.id.edit_category);
-        //TODO: change from text view to spinner created Strings
+        Spinner categorySpinner = (Spinner) findViewById(R.id.spn_category);
+        String taskCategory = categorySpinner.getSelectedItem().toString();
         TextView date = (TextView) findViewById(R.id.edit_date);
         TextView time = (TextView) findViewById(R.id.edit_time);
-        EditText location = (EditText) findViewById(R.id.edit_location);
+        Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
+        String taskLocation = locationSpinner.getSelectedItem().toString();
         String taskName = name.getText().toString();
-        String taskCategory = category.getText().toString();
-        String taskLocation = location.getText().toString();
-        //TODO: change from text view to spinner created Strings
         //TODO: extra credit scan barcode created class
         String taskDate = date.getText().toString();
         String taskTime = time.getText().toString();

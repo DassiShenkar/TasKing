@@ -97,18 +97,15 @@
             android:textColor="@color/grey"
             android:layout_alignParentStart="true" />
 
-
-        <EditText
+        <Spinner
             android:layout_width="166dp"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_category"
-            android:singleLine="true"
-            android:lines="1"
-            android:textSize="18sp"
-            android:layout_centerVertical="true"
-            android:inputType="none"
-            android:layout_alignTop="@+id/txt_category"
-            android:layout_alignParentEnd="true" />
+            android:id="@+id/spn_category"
+            android:spinnerMode="dropdown"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/txt_category"
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
 
@@ -207,17 +204,15 @@
             android:layout_centerVertical="true"
             android:textColor="@color/grey" />
 
-        <EditText
+        <Spinner
             android:layout_width="166dp"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_location"
-            android:singleLine="true"
-            android:lines="1"
-            android:textSize="18sp"
-            android:layout_centerVertical="true"
-            android:inputType="none"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:id="@+id/spn_location"
+            android:spinnerMode="dropdown"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/txt_location"
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
 
@@ -326,7 +321,6 @@
             android:lines="1"
             android:textSize="22sp"
             android:layout_centerVertical="true"
-            android:inputType="time"
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/time_picker" />
 

@@ -75,8 +75,8 @@ public class LoginActivity extends Activity {
         String password = editPassword.getText().toString();
         /*-------------for debug - remove after debug--------------------*/
         Bundle userParams = getIntent().getExtras();
-        userParams.putBoolean("isManager", false);
-        Intent intent = new Intent(getApplication(), TasksActivity.class);
+        userParams.putBoolean("isManager", true);
+        Intent intent = new Intent(getApplication(), TeamActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);
 /*-----------------------for debug backend logic------------------------------------------------------
