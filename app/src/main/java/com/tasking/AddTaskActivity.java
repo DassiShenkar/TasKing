@@ -181,6 +181,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 task.setLocation(taskLocation);
 //                task.setFirebaseId(postId);
+                task.setUserId(userParams.getString("uid"));
                 TaskDAO.getInstance(this).addTask(task);
                 //TODO: Show toast: “New Task created and sent”
 

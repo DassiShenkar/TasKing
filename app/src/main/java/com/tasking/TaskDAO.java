@@ -132,10 +132,10 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public ArrayList<Task> getTasks() {
+    public ArrayList<Task> getTasks(String uid) {
         SQLiteDatabase db = null;
         ArrayList<Task> tasks = new ArrayList<>();
-        String query = "SELECT * FROM " + TasKingDBNames.TaskEntry.TABLE_NAME;
+        String query = "SELECT * FROM " + TasKingDBNames.TaskEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
         try {
             db = DBHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);

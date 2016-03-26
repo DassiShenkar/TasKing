@@ -37,7 +37,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
         View rootView = inflater.inflate(R.layout.fragment_all_tasks_tab, container,
                 false);
         final Bundle userParams = getActivity().getIntent().getExtras();
-        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
+        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("uid"));
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.all_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());

@@ -102,7 +102,7 @@ public class TasksActivity extends AppCompatActivity
         //TODO: add number of waiting tasks
         navigationView.setNavigationItemSelectedListener(this);
         createTask.setTypeface(typeFace);
-        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks();
+        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("uid"));
         if (tasks.size() > 0) {
             //TODO: create task for team member self assignee
             createTask.setVisibility(View.GONE);

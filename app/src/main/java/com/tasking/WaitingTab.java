@@ -41,7 +41,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
             createTask.setText(getResources().getString(R.string.refresh_waiting_task));
             arrow.setScaleX(-1f);
         }
-        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
+        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("uid"));
         if(tasks.size() == 0){
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);

@@ -9,7 +9,7 @@ public interface ITaskDAO {
     void addTask(Task task);
     void updateTask(Task task);
     Task getTask(int id);
-    ArrayList<Task> getTasks();
+    ArrayList<Task> getTasks(String uid);
     void addMember(Employee employee);
     void removeMember(Employee employee);
     ArrayList<Employee> getMembers(String uid);
