@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,14 +31,23 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>(), false);
         recyclerView.setAdapter(emptyAdapter);
         final Bundle userParams = getActivity().getIntent().getExtras();
+        TextView createTask = (TextView) rootView.findViewById(R.id.waiting_task_text);
+        createTask.setText(getResources().getString(R.string.create_waiting_task));
+        ImageView arrow = (ImageView) rootView.findViewById(R.id.waiting_img_arrow);
+        if(!userParams.getBoolean("isManager")) {
+            createTask.setText(getResources().getString(R.string.refresh_waiting_task));
+            arrow.setScaleX(-1f);
+        }
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks();
-        if (tasks.size() > 0) {
-            for(Iterator<Task> it = tasks.iterator(); it.hasNext();){
-                Task task = it.next();
-                if(task.getStatus().equals(getResources().getString(R.string.status_done)) || task.getStatus().equals(getResources().getString(R.string.in_process))){
-                    it.remove();
-                }
+        for(Iterator<Task> it = tasks.iterator(); it.hasNext();){
+            Task task = it.next();
+            if(task.getStatus().equals(getResources().getString(R.string.status_done)) || task.getStatus().equals(getResources().getString(R.string.in_process))){
+                it.remove();
             }
+        }
+        if (tasks.size() > 0) {
+            createTask.setVisibility(View.GONE);
+            arrow.setVisibility(View.GONE);
             Collections.sort(tasks, new Comparator<Task>() {
                 public int compare(Task task1, Task task2) {
                     return task1.getDate().compareTo(task2.getDate());

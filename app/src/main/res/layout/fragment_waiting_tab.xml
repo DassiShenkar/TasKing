@@ -7,13 +7,40 @@
     android:background="@color/white"
     android:id="@+id/waiting_swipe_refresh" >
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/tasks_recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|top"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="match_parent"
+        android:id="@+id/no_tasks_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waiting_task_text"
+            android:textSize="34sp"
+            android:textColor="@color/darkBlue"
+            android:text="@string/create_task"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:layout_above="@+id/waiting_img_arrow"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/waiting_img_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="52dp"
+            android:src="@drawable/long_arrow"
+            android:contentDescription="@string/arrow"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tasks_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>
