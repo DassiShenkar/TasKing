@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -41,6 +42,13 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+        Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
+        RadioButton low = (RadioButton) findViewById(R.id.radio_low);
+        RadioButton normal = (RadioButton) findViewById(R.id.radio_normal);
+        RadioButton urgent = (RadioButton) findViewById(R.id.radio_urgent);
+        low.setTypeface(typeFace);
+        normal.setTypeface(typeFace);
+        urgent.setTypeface(typeFace);
         RelativeLayout photo = (RelativeLayout) findViewById(R.id.photo_layout);
         photo.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -3,6 +3,7 @@ package com.tasking;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,6 +38,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null){
             fileUri = savedInstanceState.getParcelable("file_uri");
+            currentPhotoPath = savedInstanceState.getString("path");
         }
         setContentView(R.layout.activity_view_task);
         Bundle userParams = getIntent().getExtras();
@@ -49,6 +51,19 @@ public class ViewTaskActivity extends AppCompatActivity {
         RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
         RadioGroup accept = (RadioGroup) findViewById(R.id.radGrp_accept);
         RadioGroup status = (RadioGroup) findViewById(R.id.radGrp_status);
+        Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
+        RadioButton waiting = (RadioButton) findViewById(R.id.radio_status_waiting);
+        RadioButton inProgress = (RadioButton) findViewById(R.id.radio_inProgress);
+        RadioButton done = (RadioButton) findViewById(R.id.radio_done);
+        RadioButton acceptWaiting = (RadioButton) findViewById(R.id.radio_waiting);
+        RadioButton acceptRad = (RadioButton) findViewById(R.id.radio_accept);
+        RadioButton reject = (RadioButton) findViewById(R.id.radio_reject);
+        waiting.setTypeface(typeFace);
+        inProgress.setTypeface(typeFace);
+        done.setTypeface(typeFace);
+        acceptWaiting.setTypeface(typeFace);
+        acceptRad.setTypeface(typeFace);
+        reject.setTypeface(typeFace);
         RadioButton toCheck;
         if(task.getAcceptStatus() == null || !task.getAcceptStatus().equals(getResources().getString(R.string.accept))) {
             taskStatus.setVisibility(View.GONE);
@@ -120,83 +135,68 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("file_uri", fileUri);
+        outState.putString("path", currentPhotoPath);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         fileUri = savedInstanceState.getParcelable("file_uri");
+        currentPhotoPath = savedInstanceState.getString("path");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bundle userParams = getIntent().getExtras();
-        Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
-        imageView = (ImageView) findViewById(R.id.btn_img_save);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            //Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Bitmap imageBitmap = null;
-            try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //imageView.setImageBitmap(imageBitmap);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            if (imageBitmap != null) {
-                imageBitmap.compress(Bitmap.CompressFormat.PNG, 25, stream);
-            }
-            byte[] byteArray = stream.toByteArray();
-            String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            task.setPicture(imageFile);
-            TaskDAO.getInstance(this).updateTask(task);
-            imageView.setImageBitmap(imageBitmap);
-            imageView.setClickable(false);
+            setPic();
         }
     }
 
     public void takePhoto(View view){
-//        Bundle userParams = getIntent().getExtras();
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-//        }
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
+                //TODO
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
                 fileUri = Uri.fromFile(photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
-            //TODO: test this shit
         }
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         );
-
-        // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
+    }
+
+    private void setPic() {
+        int targetW = imageView.getWidth();
+        int targetH = imageView.getHeight();
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        imageView.setImageBitmap(bitmap);
+        imageView.setClickable(false);
     }
 
     public void cancel(View view){
@@ -210,6 +210,21 @@ public class ViewTaskActivity extends AppCompatActivity {
         //TODO: update backend
         //TODO: If Error / Time Out: TOAST: “Error Saving Task Status: Please try again”
         Bundle userParams = getIntent().getExtras();
+        Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+        Bitmap imageBitmap = null;
+        try {
+            imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if (imageBitmap != null) {
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
+        }
+        byte[] byteArray = stream.toByteArray();
+        String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        task.setPicture(imageFile);
+        TaskDAO.getInstance(this).updateTask(task);
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);

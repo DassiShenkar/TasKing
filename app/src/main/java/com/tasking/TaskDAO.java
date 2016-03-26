@@ -147,7 +147,7 @@ public class TaskDAO implements ITaskDAO {
                     task.setStatus(cursor.getString(6));
                     task.setAssignee(cursor.getString(7));
                     task.setFirebaseId(cursor.getString(8));
-                    task.setPicture(cursor.getString(9));
+                    //task.setPicture(cursor.getString(9));
                     task.setAcceptStatus(cursor.getString(10));
                     task.setTimeStamp(cursor.getString(11));
                     task.setUserId(cursor.getString(12));
