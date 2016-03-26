@@ -27,6 +27,7 @@ public class TasKingDBNames {
         public static final String COLUMN_TASK_ACCEPT_STATUS = "accept_status";
         public static final String COLUMN_TASK_TIME_STAMP = "time_stamp";
         public static final String COLUMN_TASK_USER_ID = "uid";
+        public static final String COLUMN_TASK_MANAGER_ID = "manager_uid";
     }
 
     /*
