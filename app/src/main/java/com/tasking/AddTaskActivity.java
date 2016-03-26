@@ -16,7 +16,6 @@ import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -75,17 +74,15 @@ public class AddTaskActivity extends AppCompatActivity {
             for (Employee e : employees) {
                 employeeNames.add(e.getUserName());
             }
-            ArrayAdapter<String> assigneeSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeNames);
+            MyArrayAdapter<String> assigneeSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, employeeNames);
             assigneeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             assigneeSpinner.setAdapter(assigneeSpinnerAdapter);
-            ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this,
-                    R.array.category_array,
-                    android.R.layout.simple_spinner_dropdown_item);
+            String[] categoryItems = getResources().getStringArray(R.array.category_array);
+            MyArrayAdapter<String> categorySpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, categoryItems);
             categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             categorySpinner.setAdapter(categorySpinnerAdapter);
-            ArrayAdapter<CharSequence> locationSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                    R.array.location_array,
-                    android.R.layout.simple_spinner_dropdown_item);
+            String[] locationItems = getResources().getStringArray(R.array.location_array);
+            MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, locationItems);
             locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             locationSpinner.setAdapter(locationSpinnerAdapter);
         }

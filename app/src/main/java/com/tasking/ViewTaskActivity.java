@@ -36,7 +36,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null){
-            currentPhotoPath = savedInstanceState.getParcelable("file_uri");
+            fileUri = savedInstanceState.getParcelable("file_uri");
         }
         setContentView(R.layout.activity_view_task);
         Bundle userParams = getIntent().getExtras();
@@ -145,12 +145,13 @@ public class ViewTaskActivity extends AppCompatActivity {
             //imageView.setImageBitmap(imageBitmap);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             if (imageBitmap != null) {
-                imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 25, stream);
             }
             byte[] byteArray = stream.toByteArray();
             String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
             task.setPicture(imageFile);
             TaskDAO.getInstance(this).updateTask(task);
+            imageView.setImageBitmap(imageBitmap);
             imageView.setClickable(false);
         }
     }
