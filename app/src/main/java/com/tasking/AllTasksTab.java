@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,7 +30,6 @@ import java.util.Map;
 public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private ArrayList<Task> newTasks;
-    private ArrayList<Employee> newEmployees;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,13 +45,16 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
         recyclerView.setAdapter(emptyAdapter);
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.spn_all_sort_by);
         TextView spinnerText = (TextView) rootView.findViewById(R.id.txt_all_sort_by);
+        LinearLayout line = (LinearLayout) rootView.findViewById(R.id.spinner_line);
         spinner.setVisibility(View.GONE);
+        line.setVisibility(View.GONE);
         spinnerText.setVisibility(View.GONE);
         if (tasks.size() > 0) {
             spinner.setVisibility(View.VISIBLE);
             spinnerText.setVisibility(View.VISIBLE);
-            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
-                    R.array.tasks_array, android.R.layout.simple_spinner_item);
+            line.setVisibility(View.VISIBLE);
+            String[] taskItems = getResources().getStringArray(R.array.tasks_array);
+            MyArrayAdapter<String> spinnerAdapter = new MyArrayAdapter<>(getContext(), R.layout.spinner_item, taskItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(spinnerAdapter);
             Collections.sort(tasks, new Comparator<Task>() {

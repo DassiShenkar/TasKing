@@ -53,7 +53,6 @@ public class AddMemberActivity extends Activity {
     }
 
     public void addMember(View view){
-        teamMembers = new ArrayList<>();
         EditText name = (EditText) findViewById(R.id.edit_team_name);
         teamName = name.getText().toString();
         if(!teamName.equals("")) {
@@ -68,11 +67,9 @@ public class AddMemberActivity extends Activity {
                     Bundle userParams = getIntent().getExtras();
                     if (!emailStr.equals("") || !phoneStr.equals("")){
                         Employee employee;
-                        ArrayList<Employee> employees = TaskDAO.getInstance(getApplicationContext()).getMembers(userParams.getString("uid"));
                         email.setText("");
                         phone.setText("");
                         employee = new TeamMember(emailStr, phoneStr);
-                        teamMembers.add(employee);
                         final Employee employeeAdd = employee;
                         final Bundle managerParams = getIntent().getExtras();
                         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
@@ -86,10 +83,22 @@ public class AddMemberActivity extends Activity {
                                     firebase.child("managers").child(managerUid).child("team").child(uid).child("username").setValue(employeeAdd.getUserName());
                                 }
                                 firebase.child("member-manager").child(uid).setValue(managerUid);
-                                employeeAdd.setUid(uid);
-                                employeeAdd.setManagerId(managerUid);
-                                TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd);
+                                TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, uid, managerUid);
                                 Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
+                                teamMembers = TaskDAO.getInstance(getApplicationContext()).getMembers(managerUid);
+                                if (teamMembers.size() > 0){
+                                    RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
+                                    RelativeLayout addMember = (RelativeLayout) findViewById(R.id.team_members_wrapper);
+                                    wrapperEdit.setVisibility(View.GONE);
+                                    addMember.setVisibility(View.VISIBLE);
+                                    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    recyclerView.setHasFixedSize(true);
+                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                                    recyclerView.setLayoutManager(layoutManager);
+                                    RecyclerView.Adapter adapter = new TeamRecyclerAdapter(teamMembers, getApplicationContext());
+                                    recyclerView.setAdapter(adapter);
+                                }
                             }
 
                             @Override
@@ -97,19 +106,6 @@ public class AddMemberActivity extends Activity {
                                 Toast.makeText(getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                        if (employees.size() > 0){
-                            RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
-                            RelativeLayout addMember = (RelativeLayout) findViewById(R.id.team_members_wrapper);
-                            wrapperEdit.setVisibility(View.GONE);
-                            addMember.setVisibility(View.VISIBLE);
-                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            recyclerView.setHasFixedSize(true);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                            recyclerView.setLayoutManager(layoutManager);
-                            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employees, getApplicationContext());
-                            recyclerView.setAdapter(adapter);
-                        }
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -137,7 +133,6 @@ public class AddMemberActivity extends Activity {
                 for (Employee member : teamMembers) {
                     to[i++] = member.getUserName();
                 }
-                teamMembers = null;
                 String subject = "Let's go TasKing Together";
                 String body = "Hello\n" + userParams.getString("userName") + " welcomes you to download the TasKing app\nand join the " +
                         teamName + " team\nYou can get the app at http://someplace.com";

@@ -19,7 +19,7 @@ public class TeamActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(com.tasking.R.layout.activity_team);
         Bundle userParams = getIntent().getExtras();
-        String uId = userParams.getString("fbId");
+        String uid = userParams.getString("uid");
         TextView title = (TextView)findViewById(R.id.title);
         TextView membersTitle = (TextView)findViewById(R.id.members_title);
         TextView createTeam = (TextView)findViewById(R.id.team_text);
@@ -30,8 +30,7 @@ public class TeamActivity extends Activity {
         membersTitle.setTypeface(regularTypeFace);
         membersTitle.setVisibility(View.GONE);
         createTeam.setTypeface(regularTypeFace);
-        String userName = userParams.getString("userName");
-        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers(userParams.getString("uid"));
+        ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers(uid);
         if (employees.size() > 0){
             membersTitle.setVisibility(View.VISIBLE);
             createTeam.setVisibility(View.GONE);
@@ -43,10 +42,6 @@ public class TeamActivity extends Activity {
             RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employees, this);
             recyclerView.setAdapter(adapter);
         }
-    }
-
-    public void removeUser(View view){
-
     }
 
     public void addMember(View view){

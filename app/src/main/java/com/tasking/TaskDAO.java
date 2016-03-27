@@ -169,14 +169,14 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public void addMember(Employee employee) {
+    public void addMember(Employee employee, String uid, String mUid) {
         SQLiteDatabase db = null;
         try {
             db = DBHelper.getReadableDatabase();
             ContentValues teamValues = new ContentValues();
             teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, employee.getUserName());
-            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_UID, employee.getUid());
-            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_MANAGER_ID, employee.getManagerId());
+            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_UID, uid);
+            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_MANAGER_ID, mUid);
             db.insert(TasKingDBNames.MemberEntry.TABLE_NAME, null, teamValues);
         }
         finally {
@@ -209,7 +209,7 @@ public class TaskDAO implements ITaskDAO {
         try {
             db = DBHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor.moveToFirst()){
+            if(cursor.moveToFirst()){ //TODO:  <------- its not working here!!!!!!!!!!
                 do{
                     Employee employee = new Employee();
                     employee.setUserName(cursor.getString(0));
