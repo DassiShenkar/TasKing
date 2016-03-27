@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TasKingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 20;
 
     // Database Name
     private static final String DATABASE_NAME = "TasKingDB";

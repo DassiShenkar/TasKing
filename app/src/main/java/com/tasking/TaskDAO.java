@@ -205,11 +205,11 @@ public class TaskDAO implements ITaskDAO {
     public ArrayList<Employee> getMembers(String uid) {
         SQLiteDatabase db = null;
         ArrayList<Employee> employees = new ArrayList<>();
-        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
+        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME + " WHERE manager_id = '" + uid + "'";
         try {
             db = DBHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor.moveToFirst()){ //TODO:  <------- its not working here!!!!!!!!!!
+            if(cursor.moveToFirst()){
                 do{
                     Employee employee = new Employee();
                     employee.setUserName(cursor.getString(0));
