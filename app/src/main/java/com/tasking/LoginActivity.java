@@ -21,6 +21,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -93,6 +94,8 @@ public class LoginActivity extends Activity {
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
                 if (!password.equals("")) {
+                    //FireBaseDB.getInstance().createNewManager(username, password);
+                    //String uid = FireBaseDB.getInstance().getManagerUid(); //TODO: if we have time
                     firebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
                         @Override
                         public void onSuccess(Map<String, Object> result) {
@@ -144,13 +147,16 @@ public class LoginActivity extends Activity {
                                                     prefEditor.apply();
                                                     //Manager with team
                                                     if (snapshot.child("managers").child(uid).getChildrenCount() > 1) {
-//                                                        for (DataSnapshot teamMember : snapshot.child("managers").child(uid).child("team").getChildren()) {
-//                                                            ArrayList<Employee> localTeam = TaskDAO.getInstance(getApplicationContext()).getMembers(userParams.getString("uid"));
-//                                                            if (localTeam.size() == 0) {
-//                                                                Employee employee = teamMember.getValue(Employee.class);
-//                                                                TaskDAO.getInstance(getApplicationContext()).addMember(employee);
-//                                                            }
-//                                                        }//TODO: handle exeption: firebase: failed to bounce to type
+                                                        ArrayList<Employee> localTeam = TaskDAO.getInstance(getApplicationContext()).getMembers(userParams.getString("uid"));
+                                                        if (localTeam.size() == 0) {
+                                                            for (DataSnapshot teamMember : snapshot.child("managers").child(uid).child("team").getChildren()) {
+                                                                System.out.println(teamMember);
+                                                                String memberUid = teamMember.getKey();
+                                                                Employee employee = teamMember.getValue(Employee.class);
+                                                                TaskDAO.getInstance(getApplicationContext()).addMember(employee, memberUid, uid);
+                                                            }
+                                                        }
+                                                        //TODO: getTasks from firebase
                                                         userParams.putString("uid", uid);
                                                         userParams.putBoolean("isManager", true);
                                                         Intent intent = new Intent(getApplication(), TasksActivity.class);

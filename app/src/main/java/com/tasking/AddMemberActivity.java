@@ -73,14 +73,14 @@ public class AddMemberActivity extends Activity {
                         final Employee employeeAdd = employee;
                         final Bundle managerParams = getIntent().getExtras();
                         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-                        firebase.createUser(employee.getUserName(), employee.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+                        firebase.createUser(employee.getUsername(), employee.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                             @Override
                             public void onSuccess(Map<String, Object> result) {
                                 String uid = result.get("uid").toString();
                                 String managerUid = managerParams.getString("uid");
                                 if (managerUid != null) {
-                                    firebase.child("managers").child(managerUid).child("team").child("teamName").setValue(teamName);
-                                    firebase.child("managers").child(managerUid).child("team").child(uid).child("username").setValue(employeeAdd.getUserName());
+                                    firebase.child("managers").child(managerUid).child("teamName").setValue(teamName);
+                                    firebase.child("managers").child(managerUid).child("team").child(uid).child("username").setValue(employeeAdd.getUsername());
                                 }
                                 firebase.child("member-manager").child(uid).setValue(managerUid);
                                 TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, uid, managerUid);
@@ -121,7 +121,7 @@ public class AddMemberActivity extends Activity {
     public void sendInvites(View view){
         if(teamMembers != null){
             for (Employee member : teamMembers) {
-                if(member.getUserName().equals("")){
+                if(member.getUsername().equals("")){
                     teamMembers.remove(member);
                 }
             }
@@ -131,7 +131,7 @@ public class AddMemberActivity extends Activity {
                 String[] to = new String[teamMembers.size()];
                 int i = 0;
                 for (Employee member : teamMembers) {
-                    to[i++] = member.getUserName();
+                    to[i++] = member.getUsername();
                 }
                 String subject = "Let's go TasKing Together";
                 String body = "Hello\n" + userParams.getString("userName") + " welcomes you to download the TasKing app\nand join the " +

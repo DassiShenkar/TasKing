@@ -174,7 +174,7 @@ public class TaskDAO implements ITaskDAO {
         try {
             db = DBHelper.getReadableDatabase();
             ContentValues teamValues = new ContentValues();
-            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, employee.getUserName());
+            teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME, employee.getUsername());
             teamValues.put(TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_UID, uid);
             teamValues.put(TasKingDBNames.MemberEntry.COLUMN_MANAGER_ID, mUid);
             db.insert(TasKingDBNames.MemberEntry.TABLE_NAME, null, teamValues);
@@ -192,7 +192,7 @@ public class TaskDAO implements ITaskDAO {
         try {
             db = DBHelper.getReadableDatabase();
             db.delete(TasKingDBNames.MemberEntry.TABLE_NAME, TasKingDBNames.MemberEntry.COLUMN_EMPLOYEE_USERNAME + " = ?",
-                    new String[]{employee.getUserName()});
+                    new String[]{employee.getUsername()});
         }
         finally {
             if (db != null) {
@@ -212,7 +212,7 @@ public class TaskDAO implements ITaskDAO {
             if(cursor.moveToFirst()){
                 do{
                     Employee employee = new Employee();
-                    employee.setUserName(cursor.getString(0));
+                    employee.setUsername(cursor.getString(0));
                     employee.setUid(cursor.getString(1));
                     employee.setManagerId(cursor.getString(2));
                     employees.add(employee);
@@ -227,29 +227,29 @@ public class TaskDAO implements ITaskDAO {
         }
     }
 
-
-//    public Employee getMember(String uid) {
-//        SQLiteDatabase db = null;
-//        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
-//        Employee employee = new Employee();
-//        try {
-//            db = DBHelper.getReadableDatabase();
-//            Cursor cursor = db.rawQuery(query, null);
-//            if(cursor.moveToFirst()){
-//                do{
-//                    employee.setUserName(cursor.getString(0));
-//                    employee.setUid(cursor.getString(1));
-//                    employee.setManagerId(cursor.getString(2));
-//                } while(cursor.moveToNext());
-//                cursor.close();
-//            }
-//            return employee;
-//        } finally {
-//            if (db != null) {
-//                db.close();
-//            }
-//        }
-//    }
+    @Override
+    public Employee getMember(String uid) {
+        SQLiteDatabase db = null;
+        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
+        Employee employee = new Employee();
+        try {
+            db = DBHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            if(cursor.moveToFirst()){
+                do{
+                    employee.setUsername(cursor.getString(0));
+                    employee.setUid(cursor.getString(1));
+                    employee.setManagerId(cursor.getString(2));
+                } while(cursor.moveToNext());
+                cursor.close();
+            }
+            return employee;
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
 
     /*
     private static TaskDAO taskDAO;

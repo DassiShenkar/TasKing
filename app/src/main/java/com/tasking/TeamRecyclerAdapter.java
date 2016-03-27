@@ -25,7 +25,6 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.team_list_item, parent, false);
         return new ViewHolder(v);
@@ -34,7 +33,7 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     @Override
     public void onBindViewHolder(TeamRecyclerAdapter.ViewHolder holder, final int position) {
         Employee employee = employees.get(position);
-        holder.userName.setText(employee.getUserName());
+        holder.userName.setText(employee.getUsername());
         holder.deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
