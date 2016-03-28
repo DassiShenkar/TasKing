@@ -21,33 +21,20 @@ public class Task {
     private String timeStamp;
     private String userId;
     private String managerUid;
+    private String assigneeUid;
 
     public Task() {
 
     }
 
-//    public Task(int id, String name, Date date, String category, String priority, String location, String status, String firebaseId, String assignee) {
-//        this.id = id;
-//        this.name = name;
-//        this.date = date;
-//        this.category = category;
-//        this.priority = priority;
-//        this.location = location;
-//        this.status = status;
-//        this.firebaseId = firebaseId;
-//        this.assignee = assignee;
-//    }
-
     public String getTimeString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
-        String strTime = simpleDateFormat.format(date);
-        return strTime;
+        return simpleDateFormat.format(date);
     }
 
     public String getDateString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String strDate = simpleDateFormat.format(date);
-        return strDate;
+        return simpleDateFormat.format(date);
     }
 
     public void setDateFromString(String time, String date){
@@ -170,5 +157,13 @@ public class Task {
 
     public void setManagerUid(String managerUid) {
         this.managerUid = managerUid;
+    }
+
+    public String getAssigneeUid() {
+        return assigneeUid;
+    }
+
+    public void setAssigneeUid(String assigneeUid) {
+        this.assigneeUid = assigneeUid;
     }
 }

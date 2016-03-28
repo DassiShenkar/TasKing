@@ -45,6 +45,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, new Date().toString());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_USER_ID, task.getUserId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, task.getManagerUid());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID, task.getAssigneeUid());
             db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, taskValues);
         }
         finally {
@@ -74,6 +75,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, new Date().toString());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_USER_ID, task.getUserId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, task.getManagerUid());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID, task.getAssigneeUid());
             db.update(TasKingDBNames.TaskEntry.TABLE_NAME,
                     taskValues, TasKingDBNames.TaskEntry.COLUMN_TASK_ID + " = ?",
                     new String[]{String.valueOf(task.getId())});
@@ -98,7 +100,8 @@ public class TaskDAO implements ITaskDAO {
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID,
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS,
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, TasKingDBNames.TaskEntry.COLUMN_TASK_USER_ID,
-                                        TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID}, TasKingDBNames.TaskEntry.COLUMN_TASK_ID + "=?",
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID},
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_ID + "=?",
                                         new String[]{ String.valueOf(id) }, null, null, null, null);
             if(cursor != null){
                 cursor.moveToFirst();
@@ -119,6 +122,7 @@ public class TaskDAO implements ITaskDAO {
                 task.setTimeStamp(cursor.getString(12));
                 task.setUserId(cursor.getString(13));
                 task.setManagerUid(cursor.getString(14));
+                task.setAssigneeUid(cursor.getString(15));
             }
             if(cursor != null) {
                 cursor.close();
@@ -155,7 +159,8 @@ public class TaskDAO implements ITaskDAO {
                     task.setTimeStamp(cursor.getString(11));
                     task.setUserId(cursor.getString(12));
                     task.setManagerUid(cursor.getString(13));
-                    task.setLocation(cursor.getString(14));
+                    task.setAssigneeUid(cursor.getString(14));
+                    task.setLocation(cursor.getString(15));
                     tasks.add(task);
                 } while(cursor.moveToNext());
                 cursor.close();
