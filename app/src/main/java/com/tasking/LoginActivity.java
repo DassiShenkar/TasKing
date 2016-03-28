@@ -24,12 +24,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-
 public class LoginActivity extends Activity {
-
-    private String uid;
-    private boolean isManager;
-    private boolean hasTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +53,6 @@ public class LoginActivity extends Activity {
         button.setTransformationMethod(null);
     }
 
-
     public void signUp(View view) {
         TextView toggleSignUp = (TextView) findViewById(R.id.txt_toggle_sign);
         TextView signMsg = (TextView) findViewById(R.id.txt_sign_msg);
@@ -71,7 +65,6 @@ public class LoginActivity extends Activity {
             toggleSignUp.setText(getResources().getString(R.string.sign_up));
             signUp.setText(getResources().getString(R.string.log_in));
             signMsg.setText(getResources().getString(R.string.log_in_msg));
-
         }
     }
 
@@ -82,20 +75,9 @@ public class LoginActivity extends Activity {
         EditText editPassword = (EditText) findViewById(R.id.txt_password);
         final String username = editUsername.getText().toString();
         String password = editPassword.getText().toString();
-        /*-------------for debug - remove after debug--------------------
-        Bundle userParams = getIntent().getExtras();
-        userParams.putBoolean("isManager", true);
-        Intent intent = new Intent(getApplication(), TeamActivity.class);
-        intent.putExtras(userParams);
-        startActivity(intent);*/
-
-//-----------------------for debug backend logic------------------------------------------------------
-        //sign up (managers only)
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
                 if (!password.equals("")) {
-                    //FireBaseDB.getInstance().createNewManager(username, password);
-                    //String uid = FireBaseDB.getInstance().getManagerUid(); //TODO: if we have time
                     firebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
                         @Override
                         public void onSuccess(Map<String, Object> result) {
@@ -108,10 +90,9 @@ public class LoginActivity extends Activity {
                             intent.putExtras(userParams);
                             startActivity(intent);
                         }
-
                         @Override
                         public void onError(FirebaseError firebaseError) {
-                            //TODO: something
+                            Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -121,7 +102,6 @@ public class LoginActivity extends Activity {
                 Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
             }
         } else {
-            //login
             if (!username.equals("")) {
                 if (!password.equals("")) {
                     firebase.authWithPassword(username, password,
@@ -139,13 +119,11 @@ public class LoginActivity extends Activity {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
                                                 Bundle userParams = getIntent().getExtras();
-                                                //Manager login
                                                 if (snapshot.child("managers").child(uid).child("username").getValue() != null) {
                                                     SharedPreferences settings = getSharedPreferences("user_pref", MODE_PRIVATE);
                                                     SharedPreferences.Editor prefEditor = settings.edit();
                                                     prefEditor.putBoolean("isManager", true);
                                                     prefEditor.apply();
-                                                    //Manager with team
                                                     if (snapshot.child("managers").child(uid).getChildrenCount() > 1) {
                                                         ArrayList<Employee> localTeam = TaskDAO.getInstance(getApplicationContext()).getMembers(userParams.getString("uid"));
                                                         if (localTeam.size() == 0) {
@@ -162,7 +140,6 @@ public class LoginActivity extends Activity {
                                                         Intent intent = new Intent(getApplication(), TasksActivity.class);
                                                         intent.putExtras(userParams);
                                                         startActivity(intent);
-                                                        //Manager with no team
                                                     } else {
                                                         userParams.putString("uid", uid);
                                                         userParams.putBoolean("isManager", true);
@@ -170,7 +147,6 @@ public class LoginActivity extends Activity {
                                                         intent.putExtras(userParams);
                                                         startActivity(intent);
                                                     }
-                                                    // Team Member
                                                 } else {
                                                     userParams.putString("uid", uid);
                                                     userParams.putBoolean("isManager", false);
@@ -180,7 +156,6 @@ public class LoginActivity extends Activity {
                                                     //TODO: get tasks from firebase
                                                 }
                                             }
-
                                             @Override
                                             public void onCancelled(FirebaseError firebaseError) {
                                                 Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
@@ -189,7 +164,6 @@ public class LoginActivity extends Activity {
                                     }
                                     prefEditor.apply();
                                 }
-
                                 @Override
                                 public void onAuthenticationError(FirebaseError error) {
                                     Toast.makeText(getApplication(), error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -202,6 +176,5 @@ public class LoginActivity extends Activity {
                 Toast.makeText(this, "Please enter user name", Toast.LENGTH_SHORT).show();
             }
         }
-       // ------------------------------------------------------------------------------------------
     }
 }
