@@ -166,4 +166,24 @@ public class Task {
     public void setAssigneeUid(String assigneeUid) {
         this.assigneeUid = assigneeUid;
     }
+
+    @Override
+    public String toString() {
+        return "Task{ 'name':'" + name + "' "
+                    + "'date':'" + date + "' "
+                + "'category':'" + category + "' "
+                + "'priority':'" + priority + "' "
+                + "'location':'" + location + "' "
+                + "'acceptStatus':'" + acceptStatus + "' "
+                + "'status':'" + status + "' "
+                + "'firebaseId':'" + firebaseId + "' "
+                + "'assignee':'" + assignee + "' "
+                + "'picture':'" + picture + "' "
+                + "'timeStamp':'" + timeStamp + "' "
+                + "'userId':'" + userId + "' "
+                + "'managerUid':'" + managerUid + "'"
+                + "'assigneeUid':'" + assigneeUid + "'}";
+    }
 }
+
+

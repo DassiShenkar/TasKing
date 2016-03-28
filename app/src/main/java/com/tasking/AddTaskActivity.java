@@ -34,6 +34,7 @@ import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -145,7 +146,8 @@ public class AddTaskActivity extends AppCompatActivity {
         String employeeName = null;
         if(userParams.getBoolean("isManager")) {
             Spinner spinner = (Spinner) findViewById(R.id.spn_add_member);
-            employeeName = spinner.getSelectedItem().toString();
+            Employee employee = (Employee)spinner.getSelectedItem();
+            employeeName = employee.getUsername();
         }
         Task task = new Task();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
@@ -162,6 +164,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 taskToUpdate.setLocation(taskLocation);
                 taskToUpdate.setAssigneeUid(employee.getUid());
+                taskToUpdate.setTimeStamp(new Date().toString());
                 TaskDAO.getInstance(this).updateTask(taskToUpdate);
                 isUpdate = false;
                 userParams.remove("taskId");
@@ -191,6 +194,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setPriority(selectedRadio);
                 task.setAcceptStatus("Waiting");
                 task.setStatus("Waiting");
+                task.setTimeStamp(new Date().toString());
                 if(userParams.getBoolean("isManager")){
                     task.setAssignee(employeeName);
                 }
@@ -202,6 +206,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setUserId(userParams.getString("uid"));
                 task.setManagerUid(managerUid);
                 task.setAssigneeUid(employee.getUid());
+                task.setPicture(null);
                 TaskDAO.getInstance(this).addTask(task);
                 if (managerUid != null && postId != null) {
                     //TODO: check callback
