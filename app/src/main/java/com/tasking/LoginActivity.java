@@ -136,7 +136,6 @@ public class LoginActivity extends Activity {
                                                                 TaskDAO.getInstance(getApplicationContext()).addMember(employee, memberUid, uid);
                                                             }
                                                         }
-                                                        //TODO: getTasks from firebase
                                                         ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
                                                         Date localDate = null;
                                                         Date firebaseDate = null;
@@ -160,7 +159,6 @@ public class LoginActivity extends Activity {
                                                                 }
                                                             }
                                                         }
-
                                                         userParams.putString("uid", uid);
                                                         userParams.putBoolean("isManager", true);
                                                         Intent intent = new Intent(getApplication(), TasksActivity.class);
@@ -178,14 +176,14 @@ public class LoginActivity extends Activity {
                                                     Date localDate = null;
                                                     Date firebaseDate = null;
                                                     Employee member = TaskDAO.getInstance(getApplicationContext()).getMember(uid);
-                                                    String managerUid = member.getManagerId();
+                                                    String managerUid = member.getManagerId();//TODO: we dont have employees table for members..........
+                                                    //TODO: get manager ID from member-manager in fireDB
                                                     for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
-                                                        //TODO:Exception bounce to type
                                                         Task taskToAdd = task.getValue(Task.class);
                                                         if (taskToAdd.getAssigneeUid().equals(uid)) {
                                                             for (Task localTask : localTasks) {
                                                                 if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
+                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);//TODO: this is wrong( :-0 )
                                                                 } else {
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
@@ -202,13 +200,14 @@ public class LoginActivity extends Activity {
                                                             }
                                                         }
                                                     }
+                                                    //TODO: why do we have two of the same????????? (4 in the morning question :( )
                                                     ArrayList<Task> localMemberTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
                                                     Date localTaskDate = null;
                                                     Date firebaseTaskDate = null;
                                                     for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
                                                         Task taskToAdd = task.getValue(Task.class);
                                                         for (Task localTask : localMemberTasks) {
-                                                            if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
+                                                            if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {//TODO: this is wrong( :-0 )
                                                                 TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
                                                             } else {
                                                                 try {
@@ -225,12 +224,12 @@ public class LoginActivity extends Activity {
                                                             }
                                                         }
                                                     }
+                                                    userParams.putString("managerUid", managerUid);
                                                     userParams.putString("uid", uid);
                                                     userParams.putBoolean("isManager", false);
                                                     Intent intent = new Intent(getApplication(), TasksActivity.class);
                                                     intent.putExtras(userParams);
                                                     startActivity(intent);
-                                                    //TODO: get tasks from firebase
                                                 }
                                             }
 

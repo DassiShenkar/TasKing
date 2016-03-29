@@ -33,6 +33,9 @@ public class TasksActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         Bundle userParams = getIntent().getExtras();
+        if(userParams.getString("taskId") != null) {
+            userParams.remove("taskId");
+        }
         TextView createTask = (TextView) findViewById(R.id.task_text);
         ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

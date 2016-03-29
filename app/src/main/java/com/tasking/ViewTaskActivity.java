@@ -80,7 +80,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         category.setText(task.getCategory());
         priority.setText(task.getPriority());
         location.setText(task.getLocation());
-        String date = task.getDateString() + " " + task.getTimeString();
+        String date = task.convertDateString() + " " + task.convertTimeString();
         dueDate.setText(date);
         //TODO: If ReportAcceptStatus == “ACCEPT” Then TOAST: “Task <ReportAcceptStatus> && Task is <TaskStatus>”
         //TODO: If ReportAcceptStatus == “REJECT” Then TOAST: “Task <ReportAcceptStatus>
@@ -155,6 +155,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     public void done(View view){
         //TODO: update backend
+
         //TODO: If Error / Time Out: TOAST: “Error Saving Task Status: Please try again”
         Bundle userParams = getIntent().getExtras();
         userParams.remove("taskId");

@@ -10,6 +10,8 @@ public class Task {
     private int id;
     private String name;
     private Date date;
+    private String dateString;
+    private String timeString;
     private String category;
     private String priority;
     private String location;
@@ -23,21 +25,37 @@ public class Task {
     private String managerUid;
     private String assigneeUid;
 
-    public Task() {
+    public Task(){}
 
+    public Task(int id, String name, Date date, String category, String priority, String location, String acceptStatus, String status, String firebaseId, String assignee, String picture, String timeStamp, String userId, String managerUid, String assigneeUid) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.category = category;
+        this.priority = priority;
+        this.location = location;
+        this.acceptStatus = acceptStatus;
+        this.status = status;
+        this.firebaseId = firebaseId;
+        this.assignee = assignee;
+        this.picture = picture;
+        this.timeStamp = timeStamp;
+        this.userId = userId;
+        this.managerUid = managerUid;
+        this.assigneeUid = assigneeUid;
     }
 
-    public String getTimeString(){
+    public String convertTimeString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
         return simpleDateFormat.format(date);
     }
 
-    public String getDateString(){
+    public String convertDateString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return simpleDateFormat.format(date);
     }
 
-    public void setDateFromString(String time, String date){
+    public void convertDateFromString(String time, String date){
         String fullDate = date + " " + time;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
         try{
@@ -69,6 +87,22 @@ public class Task {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public String getTimeString() {
+        return timeString;
+    }
+
+    public void setTimeString(String timeString) {
+        this.timeString = timeString;
     }
 
     public String getCategory() {
@@ -169,20 +203,25 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{ 'name':'" + name + "' "
-                    + "'date':'" + date + "' "
-                + "'category':'" + category + "' "
-                + "'priority':'" + priority + "' "
-                + "'location':'" + location + "' "
-                + "'acceptStatus':'" + acceptStatus + "' "
-                + "'status':'" + status + "' "
-                + "'firebaseId':'" + firebaseId + "' "
-                + "'assignee':'" + assignee + "' "
-                + "'picture':'" + picture + "' "
-                + "'timeStamp':'" + timeStamp + "' "
-                + "'userId':'" + userId + "' "
-                + "'managerUid':'" + managerUid + "'"
-                + "'assigneeUid':'" + assigneeUid + "'}";
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", date=" + date +
+                ", dateString='" + dateString + '\'' +
+                ", timeString='" + timeString + '\'' +
+                ", category='" + category + '\'' +
+                ", priority='" + priority + '\'' +
+                ", location='" + location + '\'' +
+                ", acceptStatus='" + acceptStatus + '\'' +
+                ", status='" + status + '\'' +
+                ", firebaseId='" + firebaseId + '\'' +
+                ", assignee='" + assignee + '\'' +
+                ", picture='" + picture + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", userId='" + userId + '\'' +
+                ", managerUid='" + managerUid + '\'' +
+                ", assigneeUid='" + assigneeUid + '\'' +
+                '}';
     }
 }
 

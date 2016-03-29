@@ -34,7 +34,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         holder.description.setTag(task.getId());
         holder.description.setText(task.getName());
         holder.category.setText(task.getCategory());
-        String date = (task.getDateString() + " " + task.getTimeString());
+        String date = (task.convertDateString() + " " + task.convertTimeString());
         holder.date.setText(date);
         if(isManager){
             holder.icon.setImageResource(R.drawable.ic_action_edit);

@@ -32,8 +32,8 @@ public class TaskDAO implements ITaskDAO {
             db = DBHelper.getReadableDatabase();
             ContentValues taskValues = new ContentValues();
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_NAME, task.getName());
-            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DATE, task.getDateString());
-            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, task.getTimeString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DATE, task.convertDateString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, task.convertTimeString());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
@@ -62,8 +62,8 @@ public class TaskDAO implements ITaskDAO {
             db = DBHelper.getReadableDatabase();
             ContentValues taskValues = new ContentValues();
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_NAME, task.getName());
-            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DATE, task.getDateString());
-            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, task.getTimeString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DATE, task.convertDateString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, task.convertTimeString());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, task.getCategory());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY, task.getPriority());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, task.getLocation());
@@ -110,7 +110,7 @@ public class TaskDAO implements ITaskDAO {
             if(cursor != null) {
                 task.setId(Integer.parseInt(cursor.getString(0)));
                 task.setName(cursor.getString(1));
-                task.setDateFromString(cursor.getString(2), cursor.getString(3));
+                task.convertDateFromString(cursor.getString(2), cursor.getString(3));
                 task.setCategory(cursor.getString(4));
                 task.setPriority(cursor.getString(5));
                 task.setLocation(cursor.getString(6));
@@ -148,7 +148,7 @@ public class TaskDAO implements ITaskDAO {
                     Task task = new Task();
                     task.setId(Integer.parseInt(cursor.getString(0)));
                     task.setName(cursor.getString(1));
-                    task.setDateFromString(cursor.getString(2), cursor.getString(3));
+                    task.convertDateFromString(cursor.getString(2), cursor.getString(3));
                     task.setCategory(cursor.getString(4));
                     task.setPriority(cursor.getString(5));
                     task.setStatus(cursor.getString(6));

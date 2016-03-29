@@ -35,6 +35,8 @@ import com.firebase.client.Firebase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -126,8 +128,8 @@ public class AddTaskActivity extends AppCompatActivity {
             TextView date = (TextView) findViewById(R.id.edit_date);
             TextView time = (TextView) findViewById(R.id.edit_time);
             name.setText(taskToUpdate.getName());
-            date.setText(taskToUpdate.getDateString());
-            time.setText(taskToUpdate.getTimeString());
+            date.setText(taskToUpdate.convertDateString());
+            time.setText(taskToUpdate.convertTimeString());
         }
     }
 
@@ -151,45 +153,66 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         Task task = new Task();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
+            final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+            String managerUid;
+            if(userParams.getBoolean("isManager")){
+                managerUid = userParams.getString("uid");
+            }
+            else {
+                Employee member = TaskDAO.getInstance(this).getMember(userParams.getString("uid"));//TODO: we dont have employees table for members..........
+                managerUid = member.getManagerId();//TODO: we dont have employees table for members..........
+            }
+            Firebase postRef = null;
+            if (managerUid != null) {
+                postRef = firebase.child("managers").child(managerUid).child("tasks").push();
+            }
+            String postId = null;
+            if (postRef != null) {
+                postId = postRef.getKey();
+            }
             if(isUpdate){
                 taskToUpdate.setName(taskName);
-                taskToUpdate.setDateFromString(taskTime, taskDate);
+                taskToUpdate.convertDateFromString(taskTime, taskDate);
                 taskToUpdate.setCategory(taskCategory);
                 taskToUpdate.setPriority(selectedRadio);
                 if(userParams.getBoolean("isManger")){
                     taskToUpdate.setAssignee(employeeName);
+                    taskToUpdate.setManagerUid(userParams.getString("uid"));
+                    taskToUpdate.setAssigneeUid(employee.getUid());
                 }
                 else{
-                    taskToUpdate.setAssignee("Self");
+                    taskToUpdate.setAssignee("self");
+                    taskToUpdate.setManagerUid(employee.getManagerId());//TODO: we dont have employees table for members..........
+                    taskToUpdate.setAssigneeUid(userParams.getString("uid"));
                 }
                 taskToUpdate.setLocation(taskLocation);
-                taskToUpdate.setAssigneeUid(employee.getUid());
                 taskToUpdate.setTimeStamp(new Date().toString());
+                taskToUpdate.setUserId(userParams.getString("uid"));
                 TaskDAO.getInstance(this).updateTask(taskToUpdate);
                 isUpdate = false;
                 userParams.remove("taskId");
+                Map<String, Object> update = new HashMap<>();
+                update.put("name", taskName);
+                update.put("date", taskToUpdate.getDate());
+                update.put("category", taskCategory);
+                update.put("priority", selectedRadio);
+                update.put("assignee", employeeName);
+                if(employee != null) {
+                    update.put("assigneeUid", employee.getUid());
+                }
+                update.put("location", taskLocation);
+                update.put("timeStamp", new Date().toString());
+                if (managerUid != null && postId != null) {
+                    //TODO: check callback
+                    firebase.child("managers").child(managerUid).child("tasks").child(postId).updateChildren(update);
+                    //TODO: check if working
+                    Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
+                }
                 //TODO: update task in fireDB
             }
             else {
-                final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-                String managerUid;
-                if(userParams.getBoolean("isManager")){
-                    managerUid = userParams.getString("uid");
-                }
-                else {
-                    Employee member = TaskDAO.getInstance(this).getMember(userParams.getString("uid"));
-                    managerUid = member.getManagerId();
-                }
-                Firebase postRef = null;
-                if (managerUid != null) {
-                    postRef = firebase.child("managers").child(managerUid).child("tasks").push();
-                }
-                String postId = null;
-                if (postRef != null) {
-                    postId = postRef.getKey();
-                }
                 task.setName(taskName);
-                task.setDateFromString(taskTime, taskDate);
+                task.convertDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);
                 task.setPriority(selectedRadio);
                 task.setAcceptStatus("Waiting");
