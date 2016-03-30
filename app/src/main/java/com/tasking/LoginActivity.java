@@ -139,12 +139,14 @@ public class LoginActivity extends Activity {
                                                         ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
                                                         Date localDate = null;
                                                         Date firebaseDate = null;
+                                                        boolean addFlag = false;
                                                         for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
                                                             Task taskToAdd = task.getValue(Task.class);
                                                             for (Task localTask : localTasks) {
                                                                 if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);//TODO: this is wrong( :-0 )
+                                                                    addFlag = true;
                                                                 } else {
+                                                                    addFlag = false;
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
                                                                         firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
@@ -157,6 +159,9 @@ public class LoginActivity extends Activity {
                                                                         }
                                                                     }
                                                                 }
+                                                            }
+                                                            if(addFlag){
+                                                                TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
                                                             }
                                                         }
                                                         userParams.putString("uid", uid);
@@ -175,14 +180,16 @@ public class LoginActivity extends Activity {
                                                     ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid);
                                                     Date localDate = null;
                                                     Date firebaseDate = null;
+                                                    boolean addFlag = false;
                                                     String managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
                                                     for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
                                                         Task taskToAdd = task.getValue(Task.class);
                                                         if (taskToAdd.getAssigneeUid().equals(uid)) {
                                                             for (Task localTask : localTasks) {
                                                                 if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);//TODO: this is wrong( :-0 )
+                                                                    addFlag = true;
                                                                 } else {
+                                                                    addFlag = false;
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
                                                                         firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
@@ -196,6 +203,9 @@ public class LoginActivity extends Activity {
                                                                     }
                                                                 }
                                                             }
+                                                            if(addFlag){
+                                                                TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
+                                                            }
                                                         }
                                                     }
                                                     //TODO: why do we have two of the same????????? (4 in the morning question :( )
@@ -205,9 +215,10 @@ public class LoginActivity extends Activity {
                                                     for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
                                                         Task taskToAdd = task.getValue(Task.class);
                                                         for (Task localTask : localMemberTasks) {
-                                                            if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {//TODO: this is wrong( :-0 )
-                                                                TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
+                                                            if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
+                                                                addFlag = true;
                                                             } else {
+                                                                addFlag = false;
                                                                 try {
                                                                     localTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
                                                                     firebaseTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
@@ -220,6 +231,9 @@ public class LoginActivity extends Activity {
                                                                     }
                                                                 }
                                                             }
+                                                        }
+                                                        if(addFlag){
+                                                            TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
                                                         }
                                                     }
                                                     userParams.putString("managerUid", managerUid);
