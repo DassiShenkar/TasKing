@@ -159,8 +159,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 managerUid = userParams.getString("uid");
             }
             else {
-                Employee member = TaskDAO.getInstance(this).getMember(userParams.getString("uid"));//TODO: we dont have employees table for members..........
-                managerUid = member.getManagerId();//TODO: we dont have employees table for members..........
+                managerUid = userParams.getString("managerUid");
             }
             Firebase postRef = null;
             if (managerUid != null) {
@@ -182,7 +181,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 else{
                     taskToUpdate.setAssignee("self");
-                    taskToUpdate.setManagerUid(employee.getManagerId());//TODO: we dont have employees table for members..........
+                    taskToUpdate.setManagerUid(managerUid);
                     taskToUpdate.setAssigneeUid(userParams.getString("uid"));
                 }
                 taskToUpdate.setLocation(taskLocation);
@@ -220,15 +219,18 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setTimeStamp(new Date().toString());
                 if(userParams.getBoolean("isManager")){
                     task.setAssignee(employeeName);
+                    task.setAssigneeUid(employee.getUid());
+
                 }
                 else{
                     task.setAssignee("Self");//TODO: check later
+                    task.setAssigneeUid(userParams.getString("uid"));
+
                 }
                 task.setLocation(taskLocation);
                 task.setFirebaseId(postId);
                 task.setUserId(userParams.getString("uid"));
                 task.setManagerUid(managerUid);
-                task.setAssigneeUid(employee.getUid());
                 task.setPicture(null);
                 TaskDAO.getInstance(this).addTask(task);
                 if (managerUid != null && postId != null) {

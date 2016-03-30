@@ -143,7 +143,7 @@ public class LoginActivity extends Activity {
                                                             Task taskToAdd = task.getValue(Task.class);
                                                             for (Task localTask : localTasks) {
                                                                 if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
+                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);//TODO: this is wrong( :-0 )
                                                                 } else {
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
@@ -175,9 +175,7 @@ public class LoginActivity extends Activity {
                                                     ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid);
                                                     Date localDate = null;
                                                     Date firebaseDate = null;
-                                                    Employee member = TaskDAO.getInstance(getApplicationContext()).getMember(uid);
-                                                    String managerUid = member.getManagerId();//TODO: we dont have employees table for members..........
-                                                    //TODO: get manager ID from member-manager in fireDB
+                                                    String managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
                                                     for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
                                                         Task taskToAdd = task.getValue(Task.class);
                                                         if (taskToAdd.getAssigneeUid().equals(uid)) {
