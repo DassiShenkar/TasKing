@@ -168,10 +168,10 @@ public class TasksActivity extends AppCompatActivity
                 intent.putExtras(userParams);
                 startActivity(intent);
             } else if (id == R.id.nav_logout) {
+                //TODO: doesnt do actual logout
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             } else if (id == R.id.nav_about) {
-                //TODO: implement this
             }
         }
         else{
@@ -180,10 +180,10 @@ public class TasksActivity extends AppCompatActivity
                 intent.putExtras(userParams);
                 startActivity(intent);
             } else if (id == R.id.nav_logout) {
+                //TODO: doesnt do actual logout
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             } else if (id == R.id.nav_about) {
-                //TODO: implement this
             }
         }
 
