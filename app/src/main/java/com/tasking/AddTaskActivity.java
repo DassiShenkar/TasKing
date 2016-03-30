@@ -161,20 +161,12 @@ public class AddTaskActivity extends AppCompatActivity {
             else {
                 managerUid = userParams.getString("managerUid");
             }
-            Firebase postRef = null;
-            if (managerUid != null) {
-                postRef = firebase.child("managers").child(managerUid).child("tasks").push();
-            }
-            String postId = null;
-            if (postRef != null) {
-                postId = postRef.getKey();
-            }
             if(isUpdate){
                 taskToUpdate.setName(taskName);
                 taskToUpdate.convertDateFromString(taskTime, taskDate);
                 taskToUpdate.setCategory(taskCategory);
                 taskToUpdate.setPriority(selectedRadio);
-                if(userParams.getBoolean("isManger")){
+                if(userParams.getBoolean("isManager")){
                     taskToUpdate.setAssignee(employeeName);
                     taskToUpdate.setManagerUid(userParams.getString("uid"));
                     taskToUpdate.setAssigneeUid(employee.getUid());
@@ -192,7 +184,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 userParams.remove("taskId");
                 Map<String, Object> update = new HashMap<>();
                 update.put("name", taskName);
-                update.put("date", taskToUpdate.getDate());
+                update.put("date", taskToUpdate.getDate().getTime());
                 update.put("category", taskCategory);
                 update.put("priority", selectedRadio);
                 update.put("assignee", employeeName);
@@ -201,15 +193,24 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 update.put("location", taskLocation);
                 update.put("timeStamp", new Date().toString());
-                if (managerUid != null && postId != null) {
+                //TODO: check why task is duplicated when updating task???
+                if (managerUid != null) {
                     //TODO: check callback
-                    firebase.child("managers").child(managerUid).child("tasks").child(postId).updateChildren(update);
+                    firebase.child("managers").child(managerUid).child("tasks").child(taskToUpdate.getFirebaseId()).updateChildren(update);
                     //TODO: check if working
                     Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
                 }
                 //TODO: update task in fireDB
             }
             else {
+                Firebase postRef = null;
+                if (managerUid != null) {
+                    postRef = firebase.child("managers").child(managerUid).child("tasks").push();
+                }
+                String postId = null;
+                if (postRef != null) {
+                    postId = postRef.getKey();
+                }
                 task.setName(taskName);
                 task.convertDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);

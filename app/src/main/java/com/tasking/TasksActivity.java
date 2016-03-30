@@ -44,7 +44,6 @@ public class TasksActivity extends AppCompatActivity
             arrow.setScaleX(-1f);
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_member_main_drawer);
-
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -107,7 +106,6 @@ public class TasksActivity extends AppCompatActivity
         createTask.setTypeface(typeFace);
         ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("uid"));
         if (tasks.size() > 0) {
-            //TODO: create task for team member self assignee
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
         }

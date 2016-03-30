@@ -139,13 +139,11 @@ public class LoginActivity extends Activity {
                                                         ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
                                                         Date localDate = null;
                                                         Date firebaseDate = null;
-                                                        boolean addFlag = false;
+                                                        boolean addFlag = true;
                                                         for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
                                                             Task taskToAdd = task.getValue(Task.class);
                                                             for (Task localTask : localTasks) {
                                                                 if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    addFlag = true;
-                                                                } else {
                                                                     addFlag = false;
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
@@ -161,6 +159,7 @@ public class LoginActivity extends Activity {
                                                                 }
                                                             }
                                                             if(addFlag){
+                                                                taskToAdd.setUserId(uid);
                                                                 TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
                                                             }
                                                         }
@@ -180,15 +179,13 @@ public class LoginActivity extends Activity {
                                                     ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid);
                                                     Date localDate = null;
                                                     Date firebaseDate = null;
-                                                    boolean addFlag = false;
+                                                    boolean addFlag = true;
                                                     String managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
                                                     for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
                                                         Task taskToAdd = task.getValue(Task.class);
                                                         if (taskToAdd.getAssigneeUid().equals(uid)) {
                                                             for (Task localTask : localTasks) {
-                                                                if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    addFlag = true;
-                                                                } else {
+                                                                if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
                                                                     addFlag = false;
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
@@ -204,38 +201,39 @@ public class LoginActivity extends Activity {
                                                                 }
                                                             }
                                                             if(addFlag){
+                                                                taskToAdd.setUserId(uid);
                                                                 TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
                                                             }
                                                         }
                                                     }
                                                     //TODO: why do we have two of the same????????? (4 in the morning question :( )
-                                                    ArrayList<Task> localMemberTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
-                                                    Date localTaskDate = null;
-                                                    Date firebaseTaskDate = null;
-                                                    for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
-                                                        Task taskToAdd = task.getValue(Task.class);
-                                                        for (Task localTask : localMemberTasks) {
-                                                            if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                addFlag = true;
-                                                            } else {
-                                                                addFlag = false;
-                                                                try {
-                                                                    localTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
-                                                                    firebaseTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
-                                                                } catch (ParseException e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                                if (localTaskDate != null && firebaseTaskDate != null) {
-                                                                    if (localTaskDate.before(firebaseTaskDate)) {
-                                                                        TaskDAO.getInstance(getApplicationContext()).updateTask(taskToAdd);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        if(addFlag){
-                                                            TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
-                                                        }
-                                                    }
+//                                                    ArrayList<Task> localMemberTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
+//                                                    Date localTaskDate = null;
+//                                                    Date firebaseTaskDate = null;
+//                                                    for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
+//                                                        Task taskToAdd = task.getValue(Task.class);
+//                                                        for (Task localTask : localMemberTasks) {
+//                                                            if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
+//                                                                addFlag = true;
+//                                                            } else {
+//                                                                addFlag = false;
+//                                                                try {
+//                                                                    localTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
+//                                                                    firebaseTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
+//                                                                } catch (ParseException e) {
+//                                                                    e.printStackTrace();
+//                                                                }
+//                                                                if (localTaskDate != null && firebaseTaskDate != null) {
+//                                                                    if (localTaskDate.before(firebaseTaskDate)) {
+//                                                                        TaskDAO.getInstance(getApplicationContext()).updateTask(taskToAdd);
+//                                                                    }
+//                                                                }
+//                                                            }
+//                                                        }
+//                                                        if(addFlag){
+//                                                            TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
+//                                                        }
+//                                                    }
                                                     userParams.putString("managerUid", managerUid);
                                                     userParams.putString("uid", uid);
                                                     userParams.putBoolean("isManager", false);

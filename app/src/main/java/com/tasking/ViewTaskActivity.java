@@ -14,21 +14,27 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.Firebase;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewTaskActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
-
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
         Bundle userParams = getIntent().getExtras();
-        Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+        task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
         TextView category = (TextView) findViewById(R.id.txt_view_curr_category);
         TextView priority = (TextView) findViewById(R.id.txt_view_curr_priority);
         TextView location = (TextView) findViewById(R.id.txt_view_curr_location);
@@ -50,23 +56,18 @@ public class ViewTaskActivity extends AppCompatActivity {
         acceptWaiting.setTypeface(typeFace);
         acceptRad.setTypeface(typeFace);
         reject.setTypeface(typeFace);
-        RadioButton toCheck;
         if (task.getAcceptStatus() == null || !task.getAcceptStatus().equals(getResources().getString(R.string.accept))) {
             taskStatus.setVisibility(View.GONE);
-            toCheck = (RadioButton) findViewById(R.id.radio_waiting);
-            toCheck.setChecked(true);
+            acceptWaiting.setChecked(true);
         } else {
             accept.check(R.id.radio_accept);
-            toCheck = (RadioButton) findViewById(R.id.radio_accept);
-            toCheck.setChecked(true);
+            acceptRad.setChecked(true);
         }
         if (task.getStatus() == null || !task.getStatus().equals(getResources().getString(R.string.status_done))) {
             addPhoto.setVisibility(View.GONE);
-            toCheck = (RadioButton) findViewById(R.id.radio_status_waiting);
-            toCheck.setChecked(true);
+            waiting.setChecked(true);
         } else {
-            toCheck = (RadioButton) findViewById(R.id.radio_done);
-            toCheck.setChecked(true);
+            done.setChecked(true);
         }
         ImageView imageView = (ImageView) findViewById(R.id.btn_img_save);
         if (task.getPicture() != null) {
@@ -90,7 +91,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Bundle userParams = getIntent().getExtras();
                 int taskId = userParams.getInt("taskId");
-                Task task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
+                task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
                 RadioButton selected = (RadioButton) findViewById(checkedId);
                 if (selected.getText().toString().equals(getResources().getString(R.string.accept))) {
                     RelativeLayout status = (RelativeLayout) findViewById(R.id.view_status_layout);
@@ -105,7 +106,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Bundle userParams = getIntent().getExtras();
                 int taskId = userParams.getInt("taskId");
-                Task task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
+                task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
                 RadioButton selected = (RadioButton) findViewById(checkedId);
                 if (selected.getText().toString().equals(getResources().getString(R.string.status_done))) {
                     RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
@@ -121,7 +122,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bundle userParams = getIntent().getExtras();
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Task task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+            task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
             ImageView imageView = (ImageView) findViewById(R.id.btn_img_save);
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -154,10 +155,23 @@ public class ViewTaskActivity extends AppCompatActivity {
     }
 
     public void done(View view){
-        //TODO: update backend
-
-        //TODO: If Error / Time Out: TOAST: “Error Saving Task Status: Please try again”
         Bundle userParams = getIntent().getExtras();
+        task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+        final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        String managerUid = userParams.getString("managerUid");
+        Map<String, Object> update = new HashMap<>();
+        update.put("acceptStatus", task.getAcceptStatus());
+        update.put("status", task.getStatus());
+        update.put("picture", task.getPicture());
+        update.put("timeStamp", new Date().toString());
+        if (managerUid != null) {
+            //TODO: check callback
+            firebase.child("managers").child(managerUid).child("tasks").child(task.getFirebaseId()).updateChildren(update);
+            //TODO: check if working
+            Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
+        }
+        //TODO: update backend
+        //TODO: If Error / Time Out: TOAST: “Error Saving Task Status: Please try again”
         userParams.remove("taskId");
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);
