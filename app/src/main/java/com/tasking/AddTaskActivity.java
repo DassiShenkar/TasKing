@@ -79,7 +79,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 selectedRadio = selected.getText().toString();
             }
         });
-        int taskId = userParams.getInt("taskId");
+        String taskUid = userParams.getString("taskUid");
         final Spinner categorySpinner = (Spinner) findViewById(R.id.spn_category);
         final Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
         String[] categoryItems = getResources().getStringArray(R.array.category_array);
@@ -108,9 +108,9 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
             });
         }
-        if(taskId != 0){
+        if(taskUid != null){
             isUpdate = true;
-            taskToUpdate = TaskDAO.getInstance(this).getTask(taskId);
+            taskToUpdate = TaskDAO.getInstance(this).getTask(taskUid);
             if(taskToUpdate.getPicture() != null){
                 photo.setVisibility(View.VISIBLE);
                 ImageView imageview = (ImageView) findViewById(R.id.img_show_photo);
@@ -181,7 +181,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 taskToUpdate.setUserId(userParams.getString("uid"));
                 TaskDAO.getInstance(this).updateTask(taskToUpdate);
                 isUpdate = false;
-                userParams.remove("taskId");
+                userParams.remove("taskUid");
                 Map<String, Object> update = new HashMap<>();
                 update.put("name", taskName);
                 update.put("date", taskToUpdate.getDate().getTime());

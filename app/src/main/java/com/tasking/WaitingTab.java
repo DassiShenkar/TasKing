@@ -41,7 +41,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
             createTask.setText(getResources().getString(R.string.refresh_waiting_task));
             arrow.setScaleX(-1f);
         }
-        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("uid"));
+        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("uid"), userParams.getBoolean("isManager"));
         if(tasks.size() == 0){
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
@@ -67,14 +67,14 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                                 @Override
                                 public void onItemClick(View view, int position) {
                                     if (userParams.getBoolean("isManager")) {
-                                        int taskId = tasks.get(position).getId();
-                                        userParams.putInt("taskId", taskId);
+                                        String taskUid = tasks.get(position).getFirebaseId();
+                                        userParams.putString("taskUid", taskUid);
                                         Intent intent = new Intent(getContext(), AddTaskActivity.class);
                                         intent.putExtras(userParams);
                                         startActivity(intent);
                                     } else {
-                                        int taskId = tasks.get(position).getId();
-                                        userParams.putInt("taskId", taskId);
+                                        String taskUid = tasks.get(position).getFirebaseId();
+                                        userParams.putString("taskUid", taskUid);
                                         Intent intent = new Intent(getContext(), ViewTaskActivity.class);
                                         intent.putExtras(userParams);
                                         startActivity(intent);

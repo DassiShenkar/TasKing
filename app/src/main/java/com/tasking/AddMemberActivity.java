@@ -64,7 +64,6 @@ public class AddMemberActivity extends Activity {
                     EditText phone = (EditText) findViewById(R.id.edit_member_phone);
                     String emailStr = email.getText().toString();
                     String phoneStr = phone.getText().toString();
-                    Bundle userParams = getIntent().getExtras();
                     if (!emailStr.equals("") || !phoneStr.equals("")){
                         Employee employee;
                         email.setText("");

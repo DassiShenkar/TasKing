@@ -61,6 +61,7 @@ public class TaskDAO implements ITaskDAO {
         try {
             db = DBHelper.getReadableDatabase();
             ContentValues taskValues = new ContentValues();
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ID, task.getId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_NAME, task.getName());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_DATE, task.convertDateString());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, task.convertTimeString());
@@ -77,8 +78,8 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, task.getManagerUid());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID, task.getAssigneeUid());
             db.update(TasKingDBNames.TaskEntry.TABLE_NAME,
-                    taskValues, TasKingDBNames.TaskEntry.COLUMN_TASK_ID + " = ?",
-                    new String[]{String.valueOf(task.getId())});
+                    taskValues, TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID + " = ?",
+                    new String[]{task.getFirebaseId()});
 
         } finally {
             if (db != null) {
@@ -88,7 +89,7 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public Task getTask(int id) {
+    public Task getTask(String uid) {
         SQLiteDatabase db = null;
         try {
             db = DBHelper.getReadableDatabase();
@@ -101,13 +102,10 @@ public class TaskDAO implements ITaskDAO {
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS,
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, TasKingDBNames.TaskEntry.COLUMN_TASK_USER_ID,
                                         TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID},
-                                        TasKingDBNames.TaskEntry.COLUMN_TASK_ID + "=?",
-                                        new String[]{ String.valueOf(id) }, null, null, null, null);
-            if(cursor != null){
-                cursor.moveToFirst();
-            }
+                                        TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID + "=?",
+                                        new String[]{ uid }, null, null, null, null);
             Task task = new Task();
-            if(cursor != null) {
+            if(cursor.moveToFirst()) {
                 task.setId(Integer.parseInt(cursor.getString(0)));
                 task.setName(cursor.getString(1));
                 task.convertDateFromString(cursor.getString(2), cursor.getString(3));
@@ -124,9 +122,7 @@ public class TaskDAO implements ITaskDAO {
                 task.setManagerUid(cursor.getString(14));
                 task.setAssigneeUid(cursor.getString(15));
             }
-            if(cursor != null) {
-                cursor.close();
-            }
+            cursor.close();
             return task;
         } finally {
             if (db != null) {
@@ -136,13 +132,28 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-    public ArrayList<Task> getTasks(String uid) {
+    public ArrayList<Task> getTasks(String uid, boolean isManager) {
         SQLiteDatabase db = null;
         ArrayList<Task> tasks = new ArrayList<>();
-        String query = "SELECT * FROM " + TasKingDBNames.TaskEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
+        String where;
+        if(isManager){
+            where = TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID;
+        }
+        else{
+            where = TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID;
+        }
         try {
             db = DBHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.query(TasKingDBNames.TaskEntry.TABLE_NAME,
+                            new String[]{TasKingDBNames.TaskEntry.COLUMN_TASK_ID, TasKingDBNames.TaskEntry.COLUMN_TASK_NAME,
+                                    TasKingDBNames.TaskEntry.COLUMN_TASK_TIME, TasKingDBNames.TaskEntry.COLUMN_TASK_DATE,
+                                    TasKingDBNames.TaskEntry.COLUMN_TASK_CATEGORY, TasKingDBNames.TaskEntry.COLUMN_TASK_PRIORITY,
+                                    TasKingDBNames.TaskEntry.COLUMN_TASK_LOCATION, TasKingDBNames.TaskEntry.COLUMN_TASK_STATUS,
+                                    TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE, TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID,
+                                    TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS,
+                                    TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, TasKingDBNames.TaskEntry.COLUMN_TASK_USER_ID,
+                                    TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID},
+                                    where + "=?", new String[]{ uid }, null, null, null, null);
             if(cursor.moveToFirst()){
                 do{
                     Task task = new Task();
@@ -172,6 +183,22 @@ public class TaskDAO implements ITaskDAO {
             }
         }
     }
+
+    @Override
+    public void removeTask(String taskUid) {
+        SQLiteDatabase db = null;
+        try {
+            db = DBHelper.getReadableDatabase();
+            db.delete(TasKingDBNames.TaskEntry.TABLE_NAME, TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID + " = ?",
+                    new String[]{taskUid});
+        }
+        finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
 
     @Override
     public void addMember(Employee employee, String uid, String mUid) {

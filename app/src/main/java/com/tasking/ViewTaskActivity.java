@@ -34,7 +34,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
         Bundle userParams = getIntent().getExtras();
-        task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+        task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
         TextView category = (TextView) findViewById(R.id.txt_view_curr_category);
         TextView priority = (TextView) findViewById(R.id.txt_view_curr_priority);
         TextView location = (TextView) findViewById(R.id.txt_view_curr_location);
@@ -90,8 +90,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Bundle userParams = getIntent().getExtras();
-                int taskId = userParams.getInt("taskId");
-                task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
+                String taskUid = userParams.getString("taskUid");
+                task = TaskDAO.getInstance(getApplicationContext()).getTask(taskUid);
                 RadioButton selected = (RadioButton) findViewById(checkedId);
                 if (selected.getText().toString().equals(getResources().getString(R.string.accept))) {
                     RelativeLayout status = (RelativeLayout) findViewById(R.id.view_status_layout);
@@ -105,8 +105,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Bundle userParams = getIntent().getExtras();
-                int taskId = userParams.getInt("taskId");
-                task = TaskDAO.getInstance(getApplicationContext()).getTask(taskId);
+                String taskUid = userParams.getString("taskUid");
+                task = TaskDAO.getInstance(getApplicationContext()).getTask(taskUid);
                 RadioButton selected = (RadioButton) findViewById(checkedId);
                 if (selected.getText().toString().equals(getResources().getString(R.string.status_done))) {
                     RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
@@ -122,7 +122,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bundle userParams = getIntent().getExtras();
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+            task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
             ImageView imageView = (ImageView) findViewById(R.id.btn_img_save);
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -156,7 +156,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     public void done(View view){
         Bundle userParams = getIntent().getExtras();
-        task = TaskDAO.getInstance(this).getTask(userParams.getInt("taskId"));
+        task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
         String managerUid = userParams.getString("managerUid");
         Map<String, Object> update = new HashMap<>();

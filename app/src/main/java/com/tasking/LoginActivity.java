@@ -24,6 +24,7 @@ import com.firebase.client.ValueEventListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -87,6 +88,9 @@ public class LoginActivity extends Activity {
                             String uid = result.get("uid").toString();
                             firebase.child("managers").child(uid).child("username").setValue(username);
                             Bundle userParams = getIntent().getExtras();
+                            if(userParams == null){
+                                userParams = new Bundle();
+                            }
                             userParams.putString("uid", uid);
                             userParams.putBoolean("isManager", true);
                             Intent intent = new Intent(getApplication(), TeamActivity.class);
@@ -122,13 +126,16 @@ public class LoginActivity extends Activity {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
                                                 Bundle userParams = getIntent().getExtras();
+                                                if(userParams == null){
+                                                    userParams = new Bundle();
+                                                }
                                                 if (snapshot.child("managers").child(uid).child("username").getValue() != null) {
                                                     SharedPreferences settings = getSharedPreferences("user_pref", MODE_PRIVATE);
                                                     SharedPreferences.Editor prefEditor = settings.edit();
                                                     prefEditor.putBoolean("isManager", true);
                                                     prefEditor.apply();
                                                     if (snapshot.child("managers").child(uid).getChildrenCount() > 1) {
-                                                        ArrayList<Employee> localTeam = TaskDAO.getInstance(getApplicationContext()).getMembers(userParams.getString("uid"));
+                                                        ArrayList<Employee> localTeam = TaskDAO.getInstance(getApplicationContext()).getMembers(uid);
                                                         if (localTeam.size() == 0) {
                                                             for (DataSnapshot teamMember : snapshot.child("managers").child(uid).child("team").getChildren()) {
                                                                 String memberUid = teamMember.getKey();
@@ -136,15 +143,15 @@ public class LoginActivity extends Activity {
                                                                 TaskDAO.getInstance(getApplicationContext()).addMember(employee, memberUid, uid);
                                                             }
                                                         }
-                                                        ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
+                                                        ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid, true);
+                                                        ArrayList<Task> remoteTasks = new ArrayList<>();
                                                         Date localDate = null;
                                                         Date firebaseDate = null;
-                                                        boolean addFlag = true;
                                                         for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
                                                             Task taskToAdd = task.getValue(Task.class);
+                                                            remoteTasks.add(taskToAdd);
                                                             for (Task localTask : localTasks) {
-                                                                if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    addFlag = false;
+                                                                if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
                                                                         firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
@@ -158,9 +165,25 @@ public class LoginActivity extends Activity {
                                                                     }
                                                                 }
                                                             }
-                                                            if(addFlag){
-                                                                taskToAdd.setUserId(uid);
-                                                                TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
+                                                        }
+                                                        Collection<Task> remote = new ArrayList<>(remoteTasks);
+                                                        Collection<Task> local = new ArrayList<>(localTasks);
+                                                        ArrayList<Task> addList = new ArrayList<>(remote);
+                                                        ArrayList<Task> removeList = new ArrayList<>(local);
+                                                        if (addList.size() > 0) {
+                                                            addList.removeAll(local);
+                                                            for (Task t : addList) {
+                                                                if(t.getManagerUid().equals(uid)) {
+                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(t);
+                                                                }
+                                                            }
+                                                        }
+                                                        if (removeList.size() > 0) {
+                                                            removeList.removeAll(remote);
+                                                            for (Task t : removeList) {
+                                                                if(t.getManagerUid().equals(uid)) {
+                                                                    TaskDAO.getInstance(getApplicationContext()).removeTask(t.getFirebaseId());
+                                                                }
                                                             }
                                                         }
                                                         userParams.putString("uid", uid);
@@ -176,17 +199,17 @@ public class LoginActivity extends Activity {
                                                         startActivity(intent);
                                                     }
                                                 } else {
-                                                    ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid);
+                                                    ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid, false);
+                                                    ArrayList<Task> remoteTasks = new ArrayList<>();
                                                     Date localDate = null;
                                                     Date firebaseDate = null;
-                                                    boolean addFlag = true;
                                                     String managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
                                                     for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
                                                         Task taskToAdd = task.getValue(Task.class);
+                                                        remoteTasks.add(taskToAdd);
                                                         if (taskToAdd.getAssigneeUid().equals(uid)) {
                                                             for (Task localTask : localTasks) {
                                                                 if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    addFlag = false;
                                                                     try {
                                                                         localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
                                                                         firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
@@ -200,40 +223,28 @@ public class LoginActivity extends Activity {
                                                                     }
                                                                 }
                                                             }
-                                                            if(addFlag){
-                                                                taskToAdd.setUserId(uid);
-                                                                TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
+                                                        }
+                                                    }
+                                                    Collection<Task> remote = new ArrayList<>(remoteTasks);
+                                                    Collection<Task> local = new ArrayList<>(localTasks);
+                                                    ArrayList<Task> addList = new ArrayList<>(remote);
+                                                    ArrayList<Task> removeList = new ArrayList<>(local);
+                                                    if (addList.size() > 0) {
+                                                        addList.removeAll(local);
+                                                        for (Task task : addList) {
+                                                            if(task.getAssigneeUid().equals(uid)) {
+                                                                TaskDAO.getInstance(getApplicationContext()).addTask(task);
                                                             }
                                                         }
                                                     }
-                                                    //TODO: why do we have two of the same????????? (4 in the morning question :( )
-//                                                    ArrayList<Task> localMemberTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(userParams.getString("uid"));
-//                                                    Date localTaskDate = null;
-//                                                    Date firebaseTaskDate = null;
-//                                                    for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
-//                                                        Task taskToAdd = task.getValue(Task.class);
-//                                                        for (Task localTask : localMemberTasks) {
-//                                                            if (!localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-//                                                                addFlag = true;
-//                                                            } else {
-//                                                                addFlag = false;
-//                                                                try {
-//                                                                    localTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
-//                                                                    firebaseTaskDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
-//                                                                } catch (ParseException e) {
-//                                                                    e.printStackTrace();
-//                                                                }
-//                                                                if (localTaskDate != null && firebaseTaskDate != null) {
-//                                                                    if (localTaskDate.before(firebaseTaskDate)) {
-//                                                                        TaskDAO.getInstance(getApplicationContext()).updateTask(taskToAdd);
-//                                                                    }
-//                                                                }
-//                                                            }
-//                                                        }
-//                                                        if(addFlag){
-//                                                            TaskDAO.getInstance(getApplicationContext()).addTask(taskToAdd);
-//                                                        }
-//                                                    }
+                                                    if (removeList.size() > 0) {
+                                                        removeList.removeAll(remote);
+                                                        for (Task task : removeList) {
+                                                            if(task.getAssigneeUid().equals(uid)) {
+                                                                TaskDAO.getInstance(getApplicationContext()).removeTask(task.getFirebaseId());
+                                                            }
+                                                        }
+                                                    }
                                                     userParams.putString("managerUid", managerUid);
                                                     userParams.putString("uid", uid);
                                                     userParams.putBoolean("isManager", false);
@@ -249,8 +260,10 @@ public class LoginActivity extends Activity {
                                             }
                                         });
                                     }
+
                                     prefEditor.apply();
                                 }
+
                                 @Override
                                 public void onAuthenticationError(FirebaseError error) {
                                     Toast.makeText(getApplication(), error.getMessage(), Toast.LENGTH_SHORT).show();

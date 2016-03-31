@@ -36,7 +36,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
         View rootView = inflater.inflate(R.layout.fragment_all_tasks_tab, container,
                 false);
         final Bundle userParams = getActivity().getIntent().getExtras();
-        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("uid"));
+        final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("uid"), userParams.getBoolean("isManager"));
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.all_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -69,14 +69,14 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                                 @Override
                                 public void onItemClick(View view, int position) {
                                     if (userParams.getBoolean("isManager")) {
-                                        int taskId = tasks.get(position).getId();
-                                        userParams.putInt("taskId", taskId);
+                                        String taskUid = tasks.get(position).getFirebaseId();
+                                        userParams.putString("taskUid", taskUid);
                                         Intent intent = new Intent(getContext(), AddTaskActivity.class);
                                         intent.putExtras(userParams);
                                         startActivity(intent);
                                     } else {
-                                        int taskId = tasks.get(position).getId();
-                                        userParams.putInt("taskId", taskId);
+                                        String taskUid = tasks.get(position).getFirebaseId();
+                                        userParams.putString("taskUid", taskUid);
                                         Intent intent = new Intent(getContext(), ViewTaskActivity.class);
                                         intent.putExtras(userParams);
                                         startActivity(intent);
@@ -168,7 +168,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
         } else {
             newTasks.clear();
         }
-        Task compareTask = TaskDAO.getInstance(getContext()).getTask(task.getId());
+        Task compareTask = TaskDAO.getInstance(getContext()).getTask(task.getFirebaseId());
         if (compareTask == null) {
             //TODO: add task
         } else if (task.getTimeStamp().equals(compareTask.getTimeStamp())) {//TODO: compare dates

@@ -33,8 +33,8 @@ public class TasksActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         Bundle userParams = getIntent().getExtras();
-        if(userParams.getString("taskId") != null) {
-            userParams.remove("taskId");
+        if(userParams.getString("taskUid") != null) {
+            userParams.remove("taskUid");
         }
         TextView createTask = (TextView) findViewById(R.id.task_text);
         ImageView arrow = (ImageView) findViewById(R.id.task_img_arrow);
@@ -104,7 +104,7 @@ public class TasksActivity extends AppCompatActivity
         //TODO: add number of waiting tasks
         navigationView.setNavigationItemSelectedListener(this);
         createTask.setTypeface(typeFace);
-        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("uid"));
+        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("uid"), userParams.getBoolean("isManager"));
         if (tasks.size() > 0) {
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
