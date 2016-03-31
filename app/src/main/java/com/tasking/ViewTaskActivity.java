@@ -167,6 +167,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         userParams.remove("taskId");
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
     }

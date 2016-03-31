@@ -162,6 +162,7 @@ public class AddMemberActivity extends Activity {
             Intent intent = new Intent(this, TasksActivity.class);
             Bundle userParams = getIntent().getExtras();
             intent.putExtras(userParams);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
     }

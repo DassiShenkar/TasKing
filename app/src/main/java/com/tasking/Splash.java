@@ -12,13 +12,12 @@ import android.view.WindowManager;
 
 public class Splash extends Activity {
 
-    private static final int SPLASH_TIMEOUT = 2000;
+    private static final int SPLASH_TIMEOUT = 1000;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash);
-        final Bundle userParams = new Bundle();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -31,13 +30,16 @@ public class Splash extends Activity {
                 boolean isAuthenticated = preferences.getBoolean("isAuthenticated", false);
                 boolean isManager = preferences.getBoolean("isManager", false);
                 if(isAuthenticated) {
+                    Bundle userParams = new Bundle();
                     userParams.putBoolean("isManager", isManager);
                     Intent intent = new Intent(getApplication(), TasksActivity.class);
                     intent.putExtras(userParams);
                     startActivity(intent);
                 }
+                Bundle activityCheck = new Bundle();
+                activityCheck.putBoolean("isLoginActivity", true);
                 Intent mainIntent = new Intent(Splash.this, LoginActivity.class);
-                mainIntent.putExtras(userParams);
+                mainIntent.putExtras(activityCheck);
                 startActivity(mainIntent);
                 finish();
             }

@@ -193,6 +193,20 @@ public class Task {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return !(getFirebaseId() != null ? !getFirebaseId().equals(task.getFirebaseId()) : task.getFirebaseId() != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getFirebaseId() != null ? getFirebaseId().hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "Task{" +
                 ", name='" + name + '\'' +

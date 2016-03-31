@@ -166,7 +166,11 @@ public class TasksActivity extends AppCompatActivity
                 intent.putExtras(userParams);
                 startActivity(intent);
             } else if (id == R.id.nav_logout) {
+                Bundle activityCheck = new Bundle();
+                activityCheck.putBoolean("isLoginActivity", true);
                 Intent intent = new Intent(this, LoginActivity.class);
+                intent.putExtras(activityCheck);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             } else if (id == R.id.nav_about) {
@@ -178,7 +182,11 @@ public class TasksActivity extends AppCompatActivity
                 intent.putExtras(userParams);
                 startActivity(intent);
             } else if (id == R.id.nav_logout) {
+                Bundle activityCheck = new Bundle();
+                activityCheck.putBoolean("isLoginActivity", true);
                 Intent intent = new Intent(this, LoginActivity.class);
+                intent.putExtras(activityCheck);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             } else if (id == R.id.nav_about) {

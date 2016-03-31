@@ -90,10 +90,11 @@ public class AddTaskActivity extends AppCompatActivity {
         MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, locationItems);
         locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(locationSpinnerAdapter);
+        MyEmployeeArrayAdapter assigneeSpinnerAdapter = null;
         if(userParams.getBoolean("isManager")) {
             final Spinner assigneeSpinner = (Spinner) findViewById(R.id.spn_add_member);
             ArrayList<Employee> employees = TaskDAO.getInstance(this).getMembers(userParams.getString("uid"));
-            MyEmployeeArrayAdapter assigneeSpinnerAdapter = new MyEmployeeArrayAdapter(this, R.layout.spinner_item, employees);
+            assigneeSpinnerAdapter = new MyEmployeeArrayAdapter(this, R.layout.spinner_item, employees);
             assigneeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             assigneeSpinner.setAdapter(assigneeSpinnerAdapter);
             assigneeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -130,6 +131,24 @@ public class AddTaskActivity extends AppCompatActivity {
             name.setText(taskToUpdate.getName());
             date.setText(taskToUpdate.convertDateString());
             time.setText(taskToUpdate.convertTimeString());
+            String categoryValue = taskToUpdate.getCategory();
+            String locationValue = taskToUpdate.getLocation();
+            Spinner assigneeSpinner = (Spinner) findViewById(R.id.spn_add_member);
+            if (employee != null) {
+                int spinnerPosition = 0;
+                if (assigneeSpinnerAdapter != null) {
+                    spinnerPosition = assigneeSpinnerAdapter.getPosition(employee);
+                }
+                assigneeSpinner.setSelection(spinnerPosition);
+            }
+            if (categoryValue != null) {
+                int spinnerPosition = categorySpinnerAdapter.getPosition(categoryValue);
+                categorySpinner.setSelection(spinnerPosition);
+            }
+            if (locationValue != null) {
+                int spinnerPosition = locationSpinnerAdapter.getPosition(locationValue);
+                locationSpinner.setSelection(spinnerPosition);
+            }
         }
     }
 
@@ -240,6 +259,7 @@ public class AddTaskActivity extends AppCompatActivity {
             }
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
         else{

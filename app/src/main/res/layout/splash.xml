@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -21,7 +20,10 @@
         android:gravity="center"
         android:layout_gravity="right|bottom">
 
-        <com.github.lzyzsd.circleprogress.DonutProgress
+    </RelativeLayout>
+
+</FrameLayout>
+<!-- <com.github.lzyzsd.circleprogress.DonutProgress
             android:layout_marginBottom="50dp"
             android:id="@+id/donut_progress"
             android:layout_width="wrap_content"
@@ -30,6 +32,5 @@
             custom:donut_text_color="@color/white"
             custom:donut_finished_color="@color/yellow"
             custom:donut_unfinished_color="@color/white"/>
-    </RelativeLayout>
 
-</FrameLayout>
+                xmlns:custom="http://schemas.android.com/apk/res-auto" -->

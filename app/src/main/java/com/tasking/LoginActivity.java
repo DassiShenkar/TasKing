@@ -87,10 +87,7 @@ public class LoginActivity extends Activity {
                         public void onSuccess(Map<String, Object> result) {
                             String uid = result.get("uid").toString();
                             firebase.child("managers").child(uid).child("username").setValue(username);
-                            Bundle userParams = getIntent().getExtras();
-                            if(userParams == null){
-                                userParams = new Bundle();
-                            }
+                            Bundle userParams = new Bundle();
                             userParams.putString("uid", uid);
                             userParams.putBoolean("isManager", true);
                             Intent intent = new Intent(getApplication(), TeamActivity.class);
@@ -125,135 +122,137 @@ public class LoginActivity extends Activity {
                                         firebase.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
-                                                Bundle userParams = getIntent().getExtras();
-                                                if(userParams == null){
-                                                    userParams = new Bundle();
-                                                }
-                                                if (snapshot.child("managers").child(uid).child("username").getValue() != null) {
-                                                    SharedPreferences settings = getSharedPreferences("user_pref", MODE_PRIVATE);
-                                                    SharedPreferences.Editor prefEditor = settings.edit();
-                                                    prefEditor.putBoolean("isManager", true);
-                                                    prefEditor.apply();
-                                                    if (snapshot.child("managers").child(uid).getChildrenCount() > 1) {
-                                                        ArrayList<Employee> localTeam = TaskDAO.getInstance(getApplicationContext()).getMembers(uid);
-                                                        if (localTeam.size() == 0) {
-                                                            for (DataSnapshot teamMember : snapshot.child("managers").child(uid).child("team").getChildren()) {
-                                                                String memberUid = teamMember.getKey();
-                                                                Employee employee = teamMember.getValue(Employee.class);
-                                                                TaskDAO.getInstance(getApplicationContext()).addMember(employee, memberUid, uid);
-                                                            }
-                                                        }
-                                                        ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid, true);
-                                                        ArrayList<Task> remoteTasks = new ArrayList<>();
-                                                        Date localDate = null;
-                                                        Date firebaseDate = null;
-                                                        for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
-                                                            Task taskToAdd = task.getValue(Task.class);
-                                                            remoteTasks.add(taskToAdd);
-                                                            for (Task localTask : localTasks) {
-                                                                if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    try {
-                                                                        localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
-                                                                        firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
-                                                                    } catch (ParseException e) {
-                                                                        e.printStackTrace();
+                                                Bundle activityCheck = getIntent().getExtras();
+                                                if(activityCheck != null) {
+                                                    if (activityCheck.getBoolean("isLoginActivity")) {
+                                                        Bundle userParams = new Bundle();
+                                                        if (snapshot.child("managers").child(uid).child("username").getValue() != null) {
+                                                            SharedPreferences settings = getSharedPreferences("user_pref", MODE_PRIVATE);
+                                                            SharedPreferences.Editor prefEditor = settings.edit();
+                                                            prefEditor.putBoolean("isManager", true);
+                                                            prefEditor.putBoolean("isAuthenticated", true);
+                                                            prefEditor.apply();
+                                                            if (snapshot.child("managers").child(uid).getChildrenCount() > 1) {
+                                                                ArrayList<Employee> localTeam = TaskDAO.getInstance(getApplicationContext()).getMembers(uid);
+                                                                if (localTeam.size() == 0) {
+                                                                    for (DataSnapshot teamMember : snapshot.child("managers").child(uid).child("team").getChildren()) {
+                                                                        String memberUid = teamMember.getKey();
+                                                                        Employee employee = teamMember.getValue(Employee.class);
+                                                                        TaskDAO.getInstance(getApplicationContext()).addMember(employee, memberUid, uid);
                                                                     }
-                                                                    if (localDate != null && firebaseDate != null) {
-                                                                        if (localDate.before(firebaseDate)) {
-                                                                            TaskDAO.getInstance(getApplicationContext()).updateTask(taskToAdd);
+                                                                }
+                                                                ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid, true);
+                                                                ArrayList<Task> remoteTasks = new ArrayList<>();
+                                                                Date localDate = null;
+                                                                Date firebaseDate = null;
+                                                                for (DataSnapshot task : snapshot.child("managers").child(uid).child("tasks").getChildren()) {
+                                                                    Task taskToAdd = task.getValue(Task.class);
+                                                                    remoteTasks.add(taskToAdd);
+                                                                    for (Task localTask : localTasks) {
+                                                                        if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
+                                                                            try {
+                                                                                localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
+                                                                                firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
+                                                                            } catch (ParseException e) {
+                                                                                e.printStackTrace();
+                                                                            }
+                                                                            if (localDate != null && firebaseDate != null) {
+                                                                                if (localDate.before(firebaseDate)) {
+                                                                                    TaskDAO.getInstance(getApplicationContext()).updateTask(taskToAdd);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                Collection<Task> remote = new ArrayList<>(remoteTasks);
+                                                                Collection<Task> local = new ArrayList<>(localTasks);
+                                                                ArrayList<Task> addList = new ArrayList<>(remote);
+                                                                ArrayList<Task> removeList = new ArrayList<>(local);
+                                                                if (addList.size() > 0) {
+                                                                    addList.removeAll(local);
+                                                                    for (Task t : addList) {
+                                                                        if(t.getManagerUid().equals(uid)) {
+                                                                            TaskDAO.getInstance(getApplicationContext()).addTask(t);
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if (removeList.size() > 0) {
+                                                                    removeList.removeAll(remote);
+                                                                    for (Task t : removeList) {
+                                                                        if(t.getManagerUid().equals(uid)) {
+                                                                            TaskDAO.getInstance(getApplicationContext()).removeTask(t.getFirebaseId());
+                                                                        }
+                                                                    }
+                                                                }
+                                                                userParams.putString("uid", uid);
+                                                                userParams.putBoolean("isManager", true);
+                                                                Intent intent = new Intent(getApplication(), TasksActivity.class);
+                                                                intent.putExtras(userParams);
+                                                                startActivity(intent);
+                                                            } else {
+                                                                userParams.putString("uid", uid);
+                                                                userParams.putBoolean("isManager", true);
+                                                                Intent intent = new Intent(getApplication(), TeamActivity.class);
+                                                                intent.putExtras(userParams);
+                                                                startActivity(intent);
+                                                            }
+                                                        } else {
+                                                            ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid, false);
+                                                            ArrayList<Task> remoteTasks = new ArrayList<>();
+                                                            Date localDate = null;
+                                                            Date firebaseDate = null;
+                                                            String managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
+                                                            for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
+                                                                Task taskToAdd = task.getValue(Task.class);
+                                                                remoteTasks.add(taskToAdd);
+                                                                if (taskToAdd.getAssigneeUid().equals(uid)) {
+                                                                    for (Task localTask : localTasks) {
+                                                                        if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
+                                                                            try {
+                                                                                localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
+                                                                                firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
+                                                                            } catch (ParseException e) {
+                                                                                e.printStackTrace();
+                                                                            }
+                                                                            if (localDate != null && firebaseDate != null) {
+                                                                                if (localDate.before(firebaseDate)) {
+                                                                                    TaskDAO.getInstance(getApplicationContext()).updateTask(taskToAdd);
+                                                                                }
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
                                                             }
-                                                        }
-                                                        Collection<Task> remote = new ArrayList<>(remoteTasks);
-                                                        Collection<Task> local = new ArrayList<>(localTasks);
-                                                        ArrayList<Task> addList = new ArrayList<>(remote);
-                                                        ArrayList<Task> removeList = new ArrayList<>(local);
-                                                        if (addList.size() > 0) {
-                                                            addList.removeAll(local);
-                                                            for (Task t : addList) {
-                                                                if(t.getManagerUid().equals(uid)) {
-                                                                    TaskDAO.getInstance(getApplicationContext()).addTask(t);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (removeList.size() > 0) {
-                                                            removeList.removeAll(remote);
-                                                            for (Task t : removeList) {
-                                                                if(t.getManagerUid().equals(uid)) {
-                                                                    TaskDAO.getInstance(getApplicationContext()).removeTask(t.getFirebaseId());
-                                                                }
-                                                            }
-                                                        }
-                                                        userParams.putString("uid", uid);
-                                                        userParams.putBoolean("isManager", true);
-                                                        Intent intent = new Intent(getApplication(), TasksActivity.class);
-                                                        intent.putExtras(userParams);
-                                                        startActivity(intent);
-                                                    } else {
-                                                        userParams.putString("uid", uid);
-                                                        userParams.putBoolean("isManager", true);
-                                                        Intent intent = new Intent(getApplication(), TeamActivity.class);
-                                                        intent.putExtras(userParams);
-                                                        startActivity(intent);
-                                                    }
-                                                } else {
-                                                    ArrayList<Task> localTasks = TaskDAO.getInstance(getApplicationContext()).getTasks(uid, false);
-                                                    ArrayList<Task> remoteTasks = new ArrayList<>();
-                                                    Date localDate = null;
-                                                    Date firebaseDate = null;
-                                                    String managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
-                                                    for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
-                                                        Task taskToAdd = task.getValue(Task.class);
-                                                        remoteTasks.add(taskToAdd);
-                                                        if (taskToAdd.getAssigneeUid().equals(uid)) {
-                                                            for (Task localTask : localTasks) {
-                                                                if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
-                                                                    try {
-                                                                        localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
-                                                                        firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
-                                                                    } catch (ParseException e) {
-                                                                        e.printStackTrace();
-                                                                    }
-                                                                    if (localDate != null && firebaseDate != null) {
-                                                                        if (localDate.before(firebaseDate)) {
-                                                                            TaskDAO.getInstance(getApplicationContext()).updateTask(taskToAdd);
-                                                                        }
+                                                            Collection<Task> remote = new ArrayList<>(remoteTasks);
+                                                            Collection<Task> local = new ArrayList<>(localTasks);
+                                                            ArrayList<Task> addList = new ArrayList<>(remote);
+                                                            ArrayList<Task> removeList = new ArrayList<>(local);
+                                                            if (addList.size() > 0) {
+                                                                addList.removeAll(local);
+                                                                for (Task task : addList) {
+                                                                    if(task.getAssigneeUid().equals(uid)) {
+                                                                        TaskDAO.getInstance(getApplicationContext()).addTask(task);
                                                                     }
                                                                 }
                                                             }
-                                                        }
-                                                    }
-                                                    Collection<Task> remote = new ArrayList<>(remoteTasks);
-                                                    Collection<Task> local = new ArrayList<>(localTasks);
-                                                    ArrayList<Task> addList = new ArrayList<>(remote);
-                                                    ArrayList<Task> removeList = new ArrayList<>(local);
-                                                    if (addList.size() > 0) {
-                                                        addList.removeAll(local);
-                                                        for (Task task : addList) {
-                                                            if(task.getAssigneeUid().equals(uid)) {
-                                                                TaskDAO.getInstance(getApplicationContext()).addTask(task);
+                                                            if (removeList.size() > 0) {
+                                                                removeList.removeAll(remote);
+                                                                for (Task task : removeList) {
+                                                                    if(task.getAssigneeUid().equals(uid)) {
+                                                                        TaskDAO.getInstance(getApplicationContext()).removeTask(task.getFirebaseId());
+                                                                    }
+                                                                }
                                                             }
+                                                            userParams.putString("managerUid", managerUid);
+                                                            userParams.putString("uid", uid);
+                                                            userParams.putBoolean("isManager", false);
+                                                            Intent intent = new Intent(getApplication(), TasksActivity.class);
+                                                            intent.putExtras(userParams);
+                                                            startActivity(intent);
                                                         }
                                                     }
-                                                    if (removeList.size() > 0) {
-                                                        removeList.removeAll(remote);
-                                                        for (Task task : removeList) {
-                                                            if(task.getAssigneeUid().equals(uid)) {
-                                                                TaskDAO.getInstance(getApplicationContext()).removeTask(task.getFirebaseId());
-                                                            }
-                                                        }
-                                                    }
-                                                    userParams.putString("managerUid", managerUid);
-                                                    userParams.putString("uid", uid);
-                                                    userParams.putBoolean("isManager", false);
-                                                    Intent intent = new Intent(getApplication(), TasksActivity.class);
-                                                    intent.putExtras(userParams);
-                                                    startActivity(intent);
                                                 }
                                             }
-
                                             @Override
                                             public void onCancelled(FirebaseError firebaseError) {
                                                 Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
