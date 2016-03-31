@@ -178,7 +178,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 taskToUpdate.setLocation(taskLocation);
                 taskToUpdate.setTimeStamp(new Date().toString());
-                taskToUpdate.setUserId(userParams.getString("uid"));
                 TaskDAO.getInstance(this).updateTask(taskToUpdate);
                 isUpdate = false;
                 userParams.remove("taskUid");
@@ -230,7 +229,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 task.setLocation(taskLocation);
                 task.setFirebaseId(postId);
-                task.setUserId(userParams.getString("uid"));
                 task.setManagerUid(managerUid);
                 task.setPicture(null);
                 TaskDAO.getInstance(this).addTask(task);
@@ -247,13 +245,6 @@ public class AddTaskActivity extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void cancel(View view) {
-        Bundle userParams = getIntent().getExtras();
-        Intent intent = new Intent(this, TasksActivity.class);
-        intent.putExtras(userParams);
-        startActivity(intent);
     }
 
     public static class TimePickerFragment extends DialogFragment

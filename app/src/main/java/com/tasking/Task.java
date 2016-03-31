@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Task {
-    private int id;
     private String name;
     private Date date;
     private String dateString;
@@ -21,14 +20,12 @@ public class Task {
     private String assignee;
     private String picture;
     private String timeStamp;
-    private String userId;
     private String managerUid;
     private String assigneeUid;
 
     public Task(){}
 
-    public Task(int id, String name, Date date, String category, String priority, String location, String acceptStatus, String status, String firebaseId, String assignee, String picture, String timeStamp, String userId, String managerUid, String assigneeUid) {
-        this.id = id;
+    public Task(String name, Date date, String category, String priority, String location, String acceptStatus, String status, String firebaseId, String assignee, String picture, String timeStamp, String managerUid, String assigneeUid) {
         this.name = name;
         this.date = date;
         this.category = category;
@@ -40,7 +37,6 @@ public class Task {
         this.assignee = assignee;
         this.picture = picture;
         this.timeStamp = timeStamp;
-        this.userId = userId;
         this.managerUid = managerUid;
         this.assigneeUid = assigneeUid;
     }
@@ -65,14 +61,6 @@ public class Task {
         }
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -90,20 +78,31 @@ public class Task {
     }
 
     public String getDateString() {
-        return dateString;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        return simpleDateFormat.format(date);
     }
 
     public void setDateString(String dateString) {
-        this.dateString = dateString;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try{
+            this.date = dateFormat.parse(dateString);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     public String getTimeString() {
-        return timeString;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
+        return simpleDateFormat.format(date);
     }
 
     public void setTimeString(String timeString) {
-        this.timeString = timeString;
-    }
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.US);
+        try{
+            this.date = dateFormat.parse(timeString);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }    }
 
     public String getCategory() {
         return category;
@@ -177,14 +176,6 @@ public class Task {
         this.timeStamp = timeStamp;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getManagerUid() {
         return managerUid;
     }
@@ -204,7 +195,6 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", date=" + date +
                 ", dateString='" + dateString + '\'' +
@@ -218,7 +208,6 @@ public class Task {
                 ", assignee='" + assignee + '\'' +
                 ", picture='" + picture + '\'' +
                 ", timeStamp='" + timeStamp + '\'' +
-                ", userId='" + userId + '\'' +
                 ", managerUid='" + managerUid + '\'' +
                 ", assigneeUid='" + assigneeUid + '\'' +
                 '}';

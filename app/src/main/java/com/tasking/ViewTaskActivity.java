@@ -146,14 +146,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         }
     }
 
-    public void cancel(View view){
-        Bundle userParams = getIntent().getExtras();
-        userParams.remove("taskId");
-        Intent intent = new Intent(this, TasksActivity.class);
-        intent.putExtras(userParams);
-        startActivity(intent);
-    }
-
     public void done(View view){
         Bundle userParams = getIntent().getExtras();
         task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));

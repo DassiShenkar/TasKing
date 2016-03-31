@@ -166,9 +166,9 @@ public class TasksActivity extends AppCompatActivity
                 intent.putExtras(userParams);
                 startActivity(intent);
             } else if (id == R.id.nav_logout) {
-                //TODO: doesnt do actual logout
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             } else if (id == R.id.nav_about) {
             }
         }
@@ -178,9 +178,9 @@ public class TasksActivity extends AppCompatActivity
                 intent.putExtras(userParams);
                 startActivity(intent);
             } else if (id == R.id.nav_logout) {
-                //TODO: doesnt do actual logout
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             } else if (id == R.id.nav_about) {
             }
         }

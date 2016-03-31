@@ -31,7 +31,6 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
     @Override
     public void onBindViewHolder(TasksRecyclerAdapter.ViewHolder holder, int position) {
         Task task = tasks.get(position);
-        holder.description.setTag(task.getId());
         holder.description.setText(task.getName());
         holder.category.setText(task.getCategory());
         String date = (task.convertDateString() + " " + task.convertTimeString());
