@@ -7,6 +7,9 @@
         <item name="windowActionBar">false</item>
         <item name="colorPrimaryDark">@color/darkBlue</item>
     </style>
+    <style name="myDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
