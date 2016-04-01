@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
@@ -38,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("ALL")
 public class AddTaskActivity extends AppCompatActivity {
 
     private boolean isUpdate;
@@ -211,14 +211,10 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 update.put("location", taskLocation);
                 update.put("timeStamp", new Date().toString());
-                //TODO: check why task is duplicated when updating task???
                 if (managerUid != null) {
-                    //TODO: check callback
                     firebase.child("managers").child(managerUid).child("tasks").child(taskToUpdate.getFirebaseId()).updateChildren(update);
-                    //TODO: check if working
                     Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
                 }
-                //TODO: update task in fireDB
             }
             else {
                 Firebase postRef = null;
@@ -242,7 +238,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 }
                 else{
-                    task.setAssignee("Self");//TODO: check later
+                    task.setAssignee("Self");
                     task.setAssigneeUid(userParams.getString("uid"));
 
                 }
@@ -252,7 +248,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setPicture(null);
                 TaskDAO.getInstance(this).addTask(task);
                 if (managerUid != null && postId != null) {
-                    //TODO: check callback
                     firebase.child("managers").child(managerUid).child("tasks").child(postId).setValue(task);
                 }
                 Toast.makeText(getApplication(), "New Task created and sent", Toast.LENGTH_SHORT).show();
@@ -270,7 +265,6 @@ public class AddTaskActivity extends AppCompatActivity {
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
 
-        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();
@@ -295,7 +289,6 @@ public class AddTaskActivity extends AppCompatActivity {
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
-        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();
