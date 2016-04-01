@@ -142,8 +142,8 @@ public class TasksActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_refresh) {
-            //TODO: implement refresh logic
+        if (id == R.id.home) {
+            //TODO: remove this
             return true;
         }
 
@@ -212,12 +212,11 @@ public class TasksActivity extends AppCompatActivity
 
     public void refresh(View view){
         Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        final Firebase ref = firebase.child("managers");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Bundle userParams = getIntent().getExtras();
-                new AsyncUpdateTasks(getApplicationContext(), null, userParams, snapshot).execute();
+                new AsyncUpdateTasks(TasksActivity.this, userParams, snapshot).execute();
             }
 
             @Override

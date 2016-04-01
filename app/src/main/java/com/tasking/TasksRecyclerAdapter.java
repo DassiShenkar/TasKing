@@ -14,10 +14,13 @@ import java.util.ArrayList;
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.ViewHolder> {
 
     private ArrayList<Task> tasks;
+    private ArrayList<String> boldNames;
     private boolean isManager;
+    private Typeface boldTypeFace;
 
-    public TasksRecyclerAdapter(ArrayList<Task> tasks, boolean isManager){
+    public TasksRecyclerAdapter(ArrayList<Task> tasks, ArrayList<String> boldNames, boolean isManager){
         this.isManager = isManager;
+        this.boldNames = boldNames;
         this.tasks = tasks;
     }
 
@@ -25,12 +28,20 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.tasks_list_item, parent, false);
+        boldTypeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Raleway-Bold.ttf");
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(TasksRecyclerAdapter.ViewHolder holder, int position) {
         Task task = tasks.get(position);
+        if(boldNames != null) {
+            if (boldNames.contains(task.getFirebaseId())) {
+                holder.category.setTypeface(boldTypeFace);
+                holder.description.setTypeface(boldTypeFace);
+                holder.date.setTypeface(boldTypeFace);
+            }
+        }
         holder.description.setText(task.getName());
         holder.category.setText(task.getCategory());
         String date = (task.convertDateString() + " " + task.convertTimeString());

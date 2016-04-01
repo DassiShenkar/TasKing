@@ -30,7 +30,6 @@ import java.util.Map;
 
 public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private RecyclerView.Adapter adapter;
     private SwipeRefreshLayout swipeLayout;
 
     @Override
@@ -45,7 +44,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>(), userParams.getBoolean("isManager"));
+        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>(), null, userParams.getBoolean("isManager"));
         recyclerView.setAdapter(emptyAdapter);
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.spn_all_sort_by);
         TextView spinnerText = (TextView) rootView.findViewById(R.id.txt_all_sort_by);
@@ -66,7 +65,11 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                     return task1.getDate().compareTo(task2.getDate());
                 }
             });
-            adapter = new TasksRecyclerAdapter(tasks, userParams.getBoolean("isManager"));
+            ArrayList<String> boldNames = null;
+            if(userParams.getStringArrayList("taskUids") != null){
+                boldNames = userParams.getStringArrayList("taskUids");
+            }
+            final RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks, boldNames, userParams.getBoolean("isManager"));
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
                             new RecyclerItemClickListener.OnItemClickListener() {
@@ -146,12 +149,11 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
     @Override
     public void onRefresh() {
         Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        final Firebase ref = firebase.child("managers");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Bundle userParams = getActivity().getIntent().getExtras();
-                new AsyncUpdateTasks(getContext(), adapter, userParams, snapshot).execute();
+                new AsyncUpdateTasks(getContext(), userParams, snapshot).execute();
                 swipeLayout.setRefreshing(false);
             }
 

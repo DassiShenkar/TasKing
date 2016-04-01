@@ -87,6 +87,7 @@ public class LoginActivity extends Activity {
                 if (!password.equals("")) {
                     progress = ProgressDialog.show(this, "Authentication",
                             "Creating new TasKing Manager", true);
+                    //TODO: design this?
                     firebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
                         @Override
                         public void onSuccess(Map<String, Object> result) {
@@ -116,6 +117,7 @@ public class LoginActivity extends Activity {
                 if (!password.equals("")) {
                     progress = ProgressDialog.show(this, "Authentication",
                             "Checking User name & Password", true);
+                    //TODO: design this?
                     firebase.authWithPassword(username, password,
                             new Firebase.AuthResultHandler() {
                                 @Override

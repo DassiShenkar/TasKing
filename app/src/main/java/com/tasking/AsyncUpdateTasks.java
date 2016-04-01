@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.view.ContextThemeWrapper;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -20,16 +20,14 @@ import java.util.Date;
 public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
 
     private Context context;
-    private RecyclerView.Adapter adapter;
     private boolean isManager;
     private String uid;
     private ArrayList<String> uids;
     private Bundle userParams;
     private DataSnapshot snapshot;
 
-    public AsyncUpdateTasks(Context context, RecyclerView.Adapter adapter, Bundle userParams, DataSnapshot snapshot) {
+    public AsyncUpdateTasks(Context context, Bundle userParams, DataSnapshot snapshot) {
         this.context = context;
-        this.adapter = adapter;
         this.userParams = userParams;
         this.isManager = this.userParams.getBoolean("isManager");
         this.uid = this.userParams.getString("uid");
@@ -39,7 +37,6 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
 
     @Override
     protected ArrayList<String> doInBackground(Void... params) {
-                uids.add("Data");
                 ArrayList<Task> localTasks = TaskDAO.getInstance(context).getTasks(uid, isManager);
                 ArrayList<Task> remoteTasks = new ArrayList<>();
                 Date localDate = null;
@@ -51,7 +48,7 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                 else{
                     managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
                 }
-                for (DataSnapshot task : snapshot.child(managerUid).child("tasks").getChildren()) {
+                for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
                     Task taskToAdd = task.getValue(Task.class);
                     remoteTasks.add(taskToAdd);
                     if (taskToAdd.getAssigneeUid().equals(uid)) {
@@ -66,6 +63,7 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                                 if (localDate != null && firebaseDate != null) {
                                     if (localDate.before(firebaseDate)) {
                                         TaskDAO.getInstance(context).updateTask(taskToAdd);
+                                        uids.add(taskToAdd.getFirebaseId());
                                     }
                                 }
                             }
@@ -82,6 +80,7 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                         for (Task t : addList) {
                             if (t.getManagerUid().equals(uid)) {
                                 TaskDAO.getInstance(context).addTask(t);
+                                uids.add(t.getFirebaseId());
                             }
                         }
                     }
@@ -100,6 +99,7 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                         for (Task t : addList) {
                             if (t.getAssigneeUid().equals(uid)) {
                                 TaskDAO.getInstance(context).addTask(t);
+                                uids.add(t.getFirebaseId());
                             }
                         }
                     }
@@ -112,23 +112,35 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                         }
                     }
                 }
-                if(adapter != null) {
-                    adapter.notifyDataSetChanged();
-                }
         return uids;
     }
 
     @Override
     protected void onPostExecute(ArrayList<String> result){
         if(uids.size() > 0){
-            String msg = "You have " + uids.size() + "New Tasks\nView/Cancel";
-            new AlertDialog.Builder(context)
+            String msg = "You have " + uids.size() + " New Tasks\nView/Cancel";
+            //TODO: design this?
+            new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.myDialog))
                     .setTitle("New Task/s found")
                     .setMessage(msg)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Intent intent = new Intent(context, TasksActivity.class);
+                            Intent intent;
+                            if(uids.size() == 1){
+                                if(isManager){
+                                    userParams.putString("taskUid", uids.get(0));
+                                    intent = new Intent(context, AddTaskActivity.class);
+                                }
+                                else {
+                                    userParams.putString("taskUid", uids.get(0));
+                                    intent = new Intent(context, ViewTaskActivity.class);
+                                }
+                            }
+                            else {
+                                userParams.putStringArrayList("taskUids", uids);
+                                intent = new Intent(context, TasksActivity.class);
+                            }
                             intent.putExtras(userParams);
                             context.startActivity(intent);
                         }})

@@ -27,12 +27,7 @@ import java.util.Iterator;
 
 public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
-    private RecyclerView.Adapter adapter;
     private SwipeRefreshLayout swipeLayout;
-
-    public RecyclerView.Adapter getAdapter() {
-        return adapter;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,9 +39,13 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>(), false);
+        RecyclerView.Adapter emptyAdapter = new TasksRecyclerAdapter(new ArrayList<Task>(), null, false);
         recyclerView.setAdapter(emptyAdapter);
         final Bundle userParams = getActivity().getIntent().getExtras();
+        ArrayList<String> boldNames = null;
+        if(userParams.getStringArrayList("taskUids") != null){
+            boldNames = userParams.getStringArrayList("taskUids");
+        }
         Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Raleway-Regular.ttf");
         TextView createTask = (TextView) rootView.findViewById(R.id.waiting_task_text);
         createTask.setText(getResources().getString(R.string.create_waiting_task));
@@ -75,7 +74,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                     return task1.getDate().compareTo(task2.getDate());
                 }
             });
-            adapter = new TasksRecyclerAdapter(tasks, userParams.getBoolean("isManager"));
+            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks, boldNames, userParams.getBoolean("isManager"));
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
                             new RecyclerItemClickListener.OnItemClickListener() {
@@ -103,12 +102,11 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     @Override
     public void onRefresh() {
         Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        final Firebase ref = firebase.child("managers");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Bundle userParams = getActivity().getIntent().getExtras();
-                new AsyncUpdateTasks(getContext(), adapter, userParams, snapshot).execute();
+                new AsyncUpdateTasks(getContext(), userParams, snapshot).execute();
                 swipeLayout.setRefreshing(false);
             }
 
@@ -117,17 +115,5 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                 Toast.makeText(getContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        //TODO: implement refresh logic
-        //TODO: NEW TASK NOTIFICATION  (Via GCM - OPTIONAL - Extra Credit)
-        //TODO: When a New task is sent to TeamMember, they see a GCM Floating Notification.
-//TODO:        When the client checks for a new task, and finds one:
-//TODO:        NOTIFICATION: “You have received a new Task”. [View Task],[Cancel]
-//TODO:        If more than 1 new task:
-//TODO:        NOTIFICATION: “You have received some new Tasks”. [View],[Cancel]
-//TODO:        On [View] Open WAITING Tab in Main View.
-//TODO:        HIGHLIGHT the NEW TASKS (options: Bold Text, Background Color)
-//TODO:        VIEW TASK
-//TODO:        Open REPORT TASK STATUS View for this Task
-
     }
 }
