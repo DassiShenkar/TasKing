@@ -15,11 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,12 +24,15 @@ import java.util.Map;
 
 public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private ArrayList<Task> newTasks;
+    private RecyclerView.Adapter adapter;
+    private SwipeRefreshLayout swipeLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_tasks_tab, container,
                 false);
+        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.all_swipe_refresh);
+        swipeLayout.setOnRefreshListener(this);
         final Bundle userParams = getActivity().getIntent().getExtras();
         final ArrayList<Task> tasks = TaskDAO.getInstance(getContext()).getTasks(userParams.getString("uid"), userParams.getBoolean("isManager"));
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.all_recycler_view);
@@ -62,7 +60,7 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
                     return task1.getDate().compareTo(task2.getDate());
                 }
             });
-            final RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks, userParams.getBoolean("isManager"));
+            adapter = new TasksRecyclerAdapter(tasks, userParams.getBoolean("isManager"));
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
                             new RecyclerItemClickListener.OnItemClickListener() {
@@ -141,38 +139,8 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
 
     @Override
     public void onRefresh() {
-        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        firebase.addValueEventListener(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot: dataSnapshot.child("Managers").child("Tasks").getChildren()){
-                    Task task = snapshot.getValue(Task.class);
-                    addToTasks(task);
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
-    public void addToTasks(Task task){
         Bundle userParams = getActivity().getIntent().getExtras();
-        if(userParams.getBoolean("isManager")) {
-            //TODO: get employees
-        }
-        if (newTasks == null) {
-            newTasks = new ArrayList<>();
-        } else {
-            newTasks.clear();
-        }
-        Task compareTask = TaskDAO.getInstance(getContext()).getTask(task.getFirebaseId());
-        if (compareTask == null) {
-            //TODO: add task
-        } else if (task.getTimeStamp().equals(compareTask.getTimeStamp())) {//TODO: compare dates
-            //TODO: update task
-        }
+        new AsyncUpdateTasks(getContext(), adapter, userParams).execute();
+        swipeLayout.setRefreshing(false);
     }
 }

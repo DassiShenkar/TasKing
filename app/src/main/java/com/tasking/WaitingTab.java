@@ -21,10 +21,15 @@ import java.util.Iterator;
 
 public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
+    private RecyclerView.Adapter adapter;
+    private SwipeRefreshLayout swipeLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_waiting_tab, container,
                 false);
+        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.waiting_swipe_refresh);
+        swipeLayout.setOnRefreshListener(this);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.tasks_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -60,7 +65,7 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
                     return task1.getDate().compareTo(task2.getDate());
                 }
             });
-            RecyclerView.Adapter adapter = new TasksRecyclerAdapter(tasks, userParams.getBoolean("isManager"));
+            adapter = new TasksRecyclerAdapter(tasks, userParams.getBoolean("isManager"));
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
                             new RecyclerItemClickListener.OnItemClickListener() {
@@ -87,6 +92,9 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     }
     @Override
     public void onRefresh() {
+        Bundle userParams = getActivity().getIntent().getExtras();
+        new AsyncUpdateTasks(getContext(), adapter, userParams).execute();
+        swipeLayout.setRefreshing(false);
         //TODO: implement refresh logic
         //TODO: NEW TASK NOTIFICATION  (Via GCM - OPTIONAL - Extra Credit)
         //TODO: When a New task is sent to TeamMember, they see a GCM Floating Notification.
