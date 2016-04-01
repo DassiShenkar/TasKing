@@ -1,6 +1,7 @@
 package com.tasking;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -29,6 +30,8 @@ import java.util.Date;
 import java.util.Map;
 
 public class LoginActivity extends Activity {
+
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,8 @@ public class LoginActivity extends Activity {
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
                 if (!password.equals("")) {
+                    progress = ProgressDialog.show(this, "Authentication",
+                            "Creating new TasKing Manager", true);
                     firebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
                         @Override
                         public void onSuccess(Map<String, Object> result) {
@@ -92,6 +97,7 @@ public class LoginActivity extends Activity {
                             userParams.putBoolean("isManager", true);
                             Intent intent = new Intent(getApplication(), TeamActivity.class);
                             intent.putExtras(userParams);
+                            progress.dismiss();
                             startActivity(intent);
                         }
                         @Override
@@ -108,6 +114,8 @@ public class LoginActivity extends Activity {
         } else {
             if (!username.equals("")) {
                 if (!password.equals("")) {
+                    progress = ProgressDialog.show(this, "Authentication",
+                            "Checking User name & Password", true);
                     firebase.authWithPassword(username, password,
                             new Firebase.AuthResultHandler() {
                                 @Override
@@ -188,12 +196,14 @@ public class LoginActivity extends Activity {
                                                                 userParams.putBoolean("isManager", true);
                                                                 Intent intent = new Intent(getApplication(), TasksActivity.class);
                                                                 intent.putExtras(userParams);
+                                                                progress.dismiss();
                                                                 startActivity(intent);
                                                             } else {
                                                                 userParams.putString("uid", uid);
                                                                 userParams.putBoolean("isManager", true);
                                                                 Intent intent = new Intent(getApplication(), TeamActivity.class);
                                                                 intent.putExtras(userParams);
+                                                                progress.dismiss();
                                                                 startActivity(intent);
                                                             }
                                                         } else {
@@ -248,6 +258,7 @@ public class LoginActivity extends Activity {
                                                             userParams.putBoolean("isManager", false);
                                                             Intent intent = new Intent(getApplication(), TasksActivity.class);
                                                             intent.putExtras(userParams);
+                                                            progress.dismiss();
                                                             startActivity(intent);
                                                         }
                                                     }

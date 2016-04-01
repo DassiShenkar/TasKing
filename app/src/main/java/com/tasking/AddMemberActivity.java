@@ -1,6 +1,7 @@
 package com.tasking;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -26,6 +27,8 @@ public class AddMemberActivity extends Activity {
 
     private ArrayList<Employee> teamMembers;
     private String teamName;
+    private ProgressDialog progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,8 @@ public class AddMemberActivity extends Activity {
                         final Employee employeeAdd = employee;
                         final Bundle managerParams = getIntent().getExtras();
                         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+                        progress = ProgressDialog.show(AddMemberActivity.this, "Authentication",
+                                "Creating new TasKing Member", true);
                         firebase.createUser(employee.getUsername(), employee.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                             @Override
                             public void onSuccess(Map<String, Object> result) {
@@ -83,6 +88,7 @@ public class AddMemberActivity extends Activity {
                                 }
                                 firebase.child("member-manager").child(uid).setValue(managerUid);
                                 TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, uid, managerUid);
+                                progress.dismiss();
                                 Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
                                 teamMembers = TaskDAO.getInstance(getApplicationContext()).getMembers(managerUid);
                                 if (teamMembers.size() > 0){
