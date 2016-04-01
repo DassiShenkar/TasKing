@@ -23,6 +23,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -205,6 +211,19 @@ public class TasksActivity extends AppCompatActivity
     }
 
     public void refresh(View view){
-        //TODO: after BackEnd support
+        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        final Firebase ref = firebase.child("managers");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Bundle userParams = getIntent().getExtras();
+                new AsyncUpdateTasks(getApplicationContext(), null, userParams, snapshot).execute();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Toast.makeText(getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -10,9 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,29 +20,25 @@ import java.util.Date;
 public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
 
     private Context context;
-    private Firebase firebase;
     private RecyclerView.Adapter adapter;
     private boolean isManager;
     private String uid;
     private ArrayList<String> uids;
     private Bundle userParams;
+    private DataSnapshot snapshot;
 
-    public AsyncUpdateTasks(Context context, RecyclerView.Adapter adapter, Bundle userParams) {
+    public AsyncUpdateTasks(Context context, RecyclerView.Adapter adapter, Bundle userParams, DataSnapshot snapshot) {
         this.context = context;
-        firebase = new Firebase("https://tasking-android.firebaseio.com/");
         this.adapter = adapter;
         this.userParams = userParams;
         this.isManager = this.userParams.getBoolean("isManager");
         this.uid = this.userParams.getString("uid");
+        this.snapshot = snapshot;
         uids = new ArrayList<>();
     }
 
     @Override
     protected ArrayList<String> doInBackground(Void... params) {
-        final Firebase ref = firebase.child("managers");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
                 uids.add("Data");
                 ArrayList<Task> localTasks = TaskDAO.getInstance(context).getTasks(uid, isManager);
                 ArrayList<Task> remoteTasks = new ArrayList<>();
@@ -119,40 +112,31 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                         }
                     }
                 }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                uids.add("Error msg");
-                uids.add(firebaseError.getMessage());
-            }
-        });
+                if(adapter != null) {
+                    adapter.notifyDataSetChanged();
+                }
         return uids;
     }
 
     @Override
     protected void onPostExecute(ArrayList<String> result){
         if(uids.size() > 0){
-            if(uids.get(0).equals("Data")){
-                int size = uids.size() - 1;
-                String msg = "You have " + size + "New Tasks\nView/Cancel";
-                new AlertDialog.Builder(context)
-                        .setTitle("New Task/s found")
-                        .setMessage(msg)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Intent intent = new Intent(context, TasksActivity.class);
-                                intent.putExtras(userParams);
-                                context.startActivity(intent);
-                            }})
-                        .setNegativeButton(android.R.string.no, null).show();
-            }
-            else{
-                Toast.makeText(context, uids.get(1), Toast.LENGTH_SHORT).show();
+            String msg = "You have " + uids.size() + "New Tasks\nView/Cancel";
+            new AlertDialog.Builder(context)
+                    .setTitle("New Task/s found")
+                    .setMessage(msg)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            Intent intent = new Intent(context, TasksActivity.class);
+                            intent.putExtras(userParams);
+                            context.startActivity(intent);
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
+        }
+        else{
+            Toast.makeText(context, "No new Tasks", Toast.LENGTH_SHORT).show();
 
-            }
         }
     }
 }

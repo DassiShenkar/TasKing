@@ -12,6 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +29,10 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
 
     private RecyclerView.Adapter adapter;
     private SwipeRefreshLayout swipeLayout;
+
+    public RecyclerView.Adapter getAdapter() {
+        return adapter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,9 +102,21 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     }
     @Override
     public void onRefresh() {
-        Bundle userParams = getActivity().getIntent().getExtras();
-        new AsyncUpdateTasks(getContext(), adapter, userParams).execute();
-        swipeLayout.setRefreshing(false);
+        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        final Firebase ref = firebase.child("managers");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Bundle userParams = getActivity().getIntent().getExtras();
+                new AsyncUpdateTasks(getContext(), adapter, userParams, snapshot).execute();
+                swipeLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Toast.makeText(getContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
         //TODO: implement refresh logic
         //TODO: NEW TASK NOTIFICATION  (Via GCM - OPTIONAL - Extra Credit)
         //TODO: When a New task is sent to TeamMember, they see a GCM Floating Notification.

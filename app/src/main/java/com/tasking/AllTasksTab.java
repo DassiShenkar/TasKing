@@ -14,6 +14,12 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -139,8 +145,20 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
 
     @Override
     public void onRefresh() {
-        Bundle userParams = getActivity().getIntent().getExtras();
-        new AsyncUpdateTasks(getContext(), adapter, userParams).execute();
-        swipeLayout.setRefreshing(false);
+        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        final Firebase ref = firebase.child("managers");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Bundle userParams = getActivity().getIntent().getExtras();
+                new AsyncUpdateTasks(getContext(), adapter, userParams, snapshot).execute();
+                swipeLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Toast.makeText(getContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
