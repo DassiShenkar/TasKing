@@ -75,7 +75,6 @@ public class AddMemberActivity extends Activity {
                         final Employee employeeAdd = employee;
                         final Bundle managerParams = getIntent().getExtras();
                         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-                        Firebase.getDefaultConfig().setPersistenceEnabled(true);
                         progress = ProgressDialog.show(AddMemberActivity.this, "Authentication",
                                 "Creating new TasKing Member", true);
                         firebase.createUser(employee.getUsername(), employee.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {

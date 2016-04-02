@@ -16,6 +16,7 @@ public class FireBaseDB {
 
     public static FireBaseDB getInstance() {
         if(instance == null) {
+            Firebase.getDefaultConfig().setPersistenceEnabled(true);
             instance = new FireBaseDB();
         }
         return instance;
@@ -39,7 +40,7 @@ public class FireBaseDB {
 
             @Override
             public synchronized void onError(FirebaseError firebaseError) {
-                System.out.println(firebaseError.getMessage());//TODO: if create is failed need to toast a msg
+                System.out.println(firebaseError.getMessage());
             }
         });
     }
@@ -59,7 +60,7 @@ public class FireBaseDB {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                System.out.println(firebaseError.getMessage()); //TODO: if auth failed need to toast a msg
+                System.out.println(firebaseError.getMessage());
             }
         });
     }
@@ -68,12 +69,10 @@ public class FireBaseDB {
         firebaseConnection.resetPassword(employee.getUsername(), new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
-                //TODO: toast - email sent
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                //TODO: error encountered
             }
         });
     }
@@ -82,12 +81,10 @@ public class FireBaseDB {
         firebaseConnection.removeUser(employee.getUsername(), employee.getPassword(), new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
-                //TODO: toast-user removed
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                //TODO: error encountered
             }
         });
     }

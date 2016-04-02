@@ -102,7 +102,6 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     @Override
     public void onRefresh() {
         Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

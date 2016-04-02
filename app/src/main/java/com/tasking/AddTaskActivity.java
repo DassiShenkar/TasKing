@@ -174,7 +174,6 @@ public class AddTaskActivity extends AppCompatActivity {
         Task task = new Task();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
             final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-            Firebase.getDefaultConfig().setPersistenceEnabled(true);
             String managerUid;
             if(userParams.getBoolean("isManager")){
                 managerUid = userParams.getString("uid");

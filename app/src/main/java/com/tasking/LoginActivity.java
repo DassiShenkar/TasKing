@@ -99,7 +99,6 @@ public class LoginActivity extends Activity {
 
     public void submit(View view) {
         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
         Button signUp = (Button) findViewById(R.id.btn_sign);
         EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
         EditText editPassword = (EditText) findViewById(R.id.txt_password);

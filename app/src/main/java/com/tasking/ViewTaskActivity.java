@@ -154,7 +154,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         Bundle userParams = getIntent().getExtras();
         task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
         String managerUid = userParams.getString("managerUid");
         Map<String, Object> update = new HashMap<>();
         update.put("acceptStatus", task.getAcceptStatus());
