@@ -39,6 +39,7 @@ public class TasksActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         Bundle userParams = getIntent().getExtras();
+        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("uid"), userParams.getBoolean("isManager"));
         if(userParams.getString("taskUid") != null) {
             userParams.remove("taskUid");
         }
@@ -61,10 +62,17 @@ public class TasksActivity extends AppCompatActivity
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.BLACK);
         }
+        int numOfTasks = tasks.size();
+        for(Task task: tasks){
+            if(!task.getStatus().equals("Waiting")){
+                numOfTasks--;
+            }
+        }
+        String waitingTab = "WAITING     " + String.valueOf(numOfTasks);
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("WAITING"));
+        tabLayout.addTab(tabLayout.newTab().setText(waitingTab));
         tabLayout.addTab(tabLayout.newTab().setText("ALL TASKS"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
@@ -105,12 +113,10 @@ public class TasksActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
-        //TODO: add number of waiting tasks
         navigationView.setNavigationItemSelectedListener(this);
         createTask.setTypeface(typeFace);
-        ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("uid"), userParams.getBoolean("isManager"));
         if (tasks.size() > 0) {
             createTask.setVisibility(View.GONE);
             arrow.setVisibility(View.GONE);
