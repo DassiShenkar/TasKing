@@ -1,54 +1,42 @@
 package com.tasking;
 
-/**
- * Created by Arel on 27/02/2016.
- */
-
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.AuthData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 
 public class FireBaseDB {
+
     private static FireBaseDB instance = null;
-    private Firebase fireBaseConnection;
-    private Manager manager;
-    private  String managerUid;
+    private Firebase firebaseConnection;
 
 
-    public static FireBaseDB getInstance() {  // singleton connection
+    public static FireBaseDB getInstance() {
         if(instance == null) {
-            System.out.println("new connection");
             instance = new FireBaseDB();
         }
         return instance;
     }
 
     private FireBaseDB() {
-        fireBaseConnection = new Firebase("https://tasking-android.firebaseio.com/");
+        firebaseConnection = new Firebase("https://tasking-android.firebaseio.com/");
     }
 
-    public  String getManagerUid() {
-        return managerUid;
-    }
 
-    public void setManagerUid(String managerUid) {
-        this.managerUid = managerUid;
-    }
-
-    public  void createNewManager(String username, String password){
-        fireBaseConnection.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+    public  void createUssr(final String username, String password, final MyCallback<String> callback){
+        firebaseConnection.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public synchronized void onSuccess(Map<String, Object> result) {
-                System.out.println("Successfully created user account with uid: " + result.get("uid"));
-                Firebase temp = fireBaseConnection.child("Managers").child(result.get("uid").toString());
-                temp.setValue(0);
-                setManagerUid(result.get("uid").toString());
+                String uid = result.get("uid").toString();
+                firebaseConnection.child("managers").child(uid).child("username").setValue(username);
+                if(callback != null){
+
+                }
             }
+
             @Override
             public synchronized void onError(FirebaseError firebaseError) {
                 System.out.println(firebaseError.getMessage());//TODO: if create is failed need to toast a msg
@@ -57,74 +45,16 @@ public class FireBaseDB {
     }
 
     public void createTeam(Employee manager,ArrayList <TeamMember> TM,String teamName){
-        Firebase temp =  fireBaseConnection.child("Managers").child("f38a77a6-2817-4d2b-8a4d-b7ddea9472cf");
-
-        //Team - name of the team
-        //arraylist of TM
-    }
-
-
-/*
-    public String getUIDByEmail(Employee employee){
-        fireBaseConnection.getAuth().getUid();
-
-    }
-/*
-    public void setManager(Employee manager){//managers
-     //   set UID ,set username ->email
-    }
-
-    public void setTeamMember(TeamMember tm){
-       // set UID ,set username ->email
-    }
-
-
-
-    public Arraylist<TeamMember> getTeamMembers(UID Manager){
-
-    }
-//end of managers//
-
-//************************************/
-/*
-    public void createTask (string ManagerUID,Task task){
-        //generate Task UID by push();
-    }
-
-
-    public Arraylist <Task> void getAllTasks(string ManagerUID){
+        Firebase temp =  firebaseConnection.child("Managers").child("f38a77a6-2817-4d2b-8a4d-b7ddea9472cf");
 
     }
 
-    public Task getTaskDetails(string taskUID){
+    public void authentication(Employee employee){
 
-    }
-
-    public void updateTaskStatus(string UID){
-        //change status of task
-    }
-
-    public void acceptTask(string taskUID,TeamMember tm){
-        change status of UIDMEMBER
-    }
-*/
-
-/*
-
-    in local DB -
-            1. set employee UID
-    2. set task UID
-
-*/
-//**********old db*************//
-
-    public void authenticationEmployee(Employee employee){
-
-        fireBaseConnection.authWithPassword(employee.getUsername(), employee.getPassword(), new Firebase.AuthResultHandler() {
+        firebaseConnection.authWithPassword(employee.getUsername(), employee.getPassword(), new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 //System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
-                managerUid = authData.getUid();
             }
 
             @Override
@@ -134,34 +64,8 @@ public class FireBaseDB {
         });
     }
 
-    public void changeEmployeeEmail(Employee employee,String newEmail){
-        fireBaseConnection.changeEmail(employee.getUsername(), employee.getPassword(), newEmail, new Firebase.ResultHandler() {
-            @Override
-            public void onSuccess() {
-                //TODO: Email changed toast
-            }
-
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                //TODO: email didnt change
-            }
-        });
-    }
-    public void changeEmployeePassword(Employee employee,String newPassword){
-        fireBaseConnection.changePassword(employee.getUsername(), employee.getPassword(), newPassword, new Firebase.ResultHandler() {
-            @Override
-            public void onSuccess() {
-                //TODO: toast password changed
-            }
-
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                //TODO: error in changing password
-            }
-        });
-    }
     public void sendResetEmail(Employee employee){
-        fireBaseConnection.resetPassword(employee.getUsername(), new Firebase.ResultHandler() {
+        firebaseConnection.resetPassword(employee.getUsername(), new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
                 //TODO: toast - email sent
@@ -175,7 +79,7 @@ public class FireBaseDB {
     }
 
     public void deleteEmployeeFromDB(Employee employee){
-        fireBaseConnection.removeUser(employee.getUsername(), employee.getPassword(), new Firebase.ResultHandler() {
+        firebaseConnection.removeUser(employee.getUsername(), employee.getPassword(), new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
                 //TODO: toast-user removed
@@ -189,50 +93,16 @@ public class FireBaseDB {
     }
 
     public void addNewTask(Task task){
-        Firebase newTask = fireBaseConnection.child("tasks").child(task.getName());
-        newTask.setValue(task);
 
-        // fireBaseConnection.child("tasks").child(task.getName())//setValue("Do you have data? You'll love Firebase.");myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
-/*
-        private String name;
-        private String dueDate;
-        private String category;
-        private String priority;
-        private String location;
-        private String status;
-        private ArrayList<TeamMember> assignees;
-        */
     }
 
     public void updateTaskDetails(Task task){
 
     }
     public void setTaskAssignees(Task task, Employee employee){
-        Firebase temp = fireBaseConnection.child("tasks_assignees").child(task.getName());
-      //  temp.setValue(task.getId());
-        temp.setValue(employee.getUsername());
-
 
     }
     public void setManagerEmployees(Employee manager,ArrayList<TeamMember> tms){
-      //  String str = manager.getUserName();
-       // str.replace("@","A");
-        Firebase temp = fireBaseConnection.child("manager_employees");
-        Map<String, String> members = new HashMap<String, String>();
-        Map<String, Map<String, String>> users = new HashMap<String, Map<String, String>>();
-        for (TeamMember tm : tms) {
-            members.put("name",tm.getUsername());
-        }
-        users.put("new manager",members);
-        temp.setValue(users);
-/*
-           // Firebase usersRef = ref.child("users");
-            Map<String, String> alanisawesomeMap = new HashMap<String, String>();
-            alanisawesomeMap.put("birthYear", "1912");
-            alanisawesomeMap.put("fullName", "Alan Turing");
-            Map<String, Map<String, String>> users = new HashMap<String, Map<String, String>>();
-            users.put("alanisawesome", alanisawesomeMap);
-            usersRef.setValue(users);*/
 
     }
 

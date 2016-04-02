@@ -83,7 +83,8 @@
         android:textSize="20sp"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/btn_sign"
-        android:layout_alignStart="@+id/btn_sign" />
+        android:layout_alignStart="@+id/btn_sign"
+        android:onClick="forgotPass" />
 
     <TextView
         android:layout_width="wrap_content"

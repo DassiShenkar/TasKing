@@ -75,8 +75,31 @@ public class LoginActivity extends Activity {
         }
     }
 
+    public void forgotPass(View view){
+        EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
+        final String username = editUsername.getText().toString();
+        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        if(!username.equals("")) {
+            firebase.resetPassword(username, new Firebase.ResultHandler() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(), "New password was sent to your e-mail", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onError(FirebaseError firebaseError) {
+                    Toast.makeText(getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            Toast.makeText(this, "Please enter username", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void submit(View view) {
         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
         Button signUp = (Button) findViewById(R.id.btn_sign);
         EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
         EditText editPassword = (EditText) findViewById(R.id.txt_password);

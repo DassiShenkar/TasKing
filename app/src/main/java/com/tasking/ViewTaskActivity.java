@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -83,8 +84,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         location.setText(task.getLocation());
         String date = task.convertDateString() + " " + task.convertTimeString();
         dueDate.setText(date);
-        //TODO: If ReportAcceptStatus == “ACCEPT” Then TOAST: “Task <ReportAcceptStatus> && Task is <TaskStatus>”
-        //TODO: If ReportAcceptStatus == “REJECT” Then TOAST: “Task <ReportAcceptStatus>
 
         accept.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -96,9 +95,14 @@ public class ViewTaskActivity extends AppCompatActivity {
                 if (selected.getText().toString().equals(getResources().getString(R.string.accept))) {
                     RelativeLayout status = (RelativeLayout) findViewById(R.id.view_status_layout);
                     status.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplication(), "Task Accepted", Toast.LENGTH_SHORT).show();
                 }
                 task.setAcceptStatus(selected.getText().toString());
                 TaskDAO.getInstance(getApplicationContext()).updateTask(task);
+                if (selected.getText().toString().equals(getResources().getString(R.string.reject))) {
+                    Toast.makeText(getApplication(), "Task Rejected", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         status.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -150,6 +154,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         Bundle userParams = getIntent().getExtras();
         task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
         final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
         String managerUid = userParams.getString("managerUid");
         Map<String, Object> update = new HashMap<>();
         update.put("acceptStatus", task.getAcceptStatus());
@@ -157,13 +162,17 @@ public class ViewTaskActivity extends AppCompatActivity {
         update.put("picture", task.getPicture());
         update.put("timeStamp", new Date().toString());
         if (managerUid != null) {
-            //TODO: check callback
-            firebase.child("managers").child(managerUid).child("tasks").child(task.getFirebaseId()).updateChildren(update);
-            //TODO: check if working
-            Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
+            firebase.child("managers").child(managerUid).child("tasks").child(task.getFirebaseId()).updateChildren(update, new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if (firebaseError != null) {
+                        Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
-        //TODO: update backend
-        //TODO: If Error / Time Out: TOAST: “Error Saving Task Status: Please try again”
         userParams.remove("taskId");
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);

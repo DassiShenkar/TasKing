@@ -30,6 +30,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -173,6 +174,7 @@ public class AddTaskActivity extends AppCompatActivity {
         Task task = new Task();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
             final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+            Firebase.getDefaultConfig().setPersistenceEnabled(true);
             String managerUid;
             if(userParams.getBoolean("isManager")){
                 managerUid = userParams.getString("uid");
@@ -212,8 +214,17 @@ public class AddTaskActivity extends AppCompatActivity {
                 update.put("location", taskLocation);
                 update.put("timeStamp", new Date().toString());
                 if (managerUid != null) {
-                    firebase.child("managers").child(managerUid).child("tasks").child(taskToUpdate.getFirebaseId()).updateChildren(update);
-                    Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
+                    firebase.child("managers").child(managerUid).child("tasks").child(taskToUpdate.getFirebaseId()).updateChildren(update, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            if (firebaseError != null) {
+                                Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
             }
             else {
@@ -248,9 +259,18 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setPicture(null);
                 TaskDAO.getInstance(this).addTask(task);
                 if (managerUid != null && postId != null) {
-                    firebase.child("managers").child(managerUid).child("tasks").child(postId).setValue(task);
+                    firebase.child("managers").child(managerUid).child("tasks").child(postId).setValue(task, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            if(firebaseError != null){
+                                Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplication(), "New Task created and sent", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
-                Toast.makeText(getApplication(), "New Task created and sent", Toast.LENGTH_SHORT).show();
             }
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);

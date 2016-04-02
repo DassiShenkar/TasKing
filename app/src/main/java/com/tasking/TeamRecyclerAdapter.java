@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 
@@ -43,9 +47,21 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     }
 
     public void delete(int position) {
-        TaskDAO.getInstance(context).removeMember(employees.get(position));
-        //TODO: remove in firebase
-        employees.remove(position);
+        final Employee employee = employees.get(position);
+        TaskDAO.getInstance(context).removeMember(employee);
+        Firebase ref = new Firebase("https://tasking-android.firebaseio.com");
+        ref.removeUser(employee.getUsername(), employee.getPassword(), new Firebase.ResultHandler() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(context, "User removed", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                Toast.makeText(context, firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });        employees.remove(position);
         notifyItemRemoved(position);
     }
 
