@@ -61,7 +61,8 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
             public void onError(FirebaseError firebaseError) {
                 Toast.makeText(context, firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });        employees.remove(position);
+        });
+        employees.remove(position);
         notifyItemRemoved(position);
     }
 
