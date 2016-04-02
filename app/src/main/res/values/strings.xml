@@ -105,8 +105,4 @@
     <string name="nav_names">Gregory K / Dassi R / Arel G</string>
     <string name="nav_show_member">Show Memebers List</string>
     <string name="nav_add_member">Add Member</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>

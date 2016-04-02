@@ -64,7 +64,7 @@ public class AddTaskActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.BLACK);
         }
-        Bundle userParams = getIntent().getExtras();
+        final Bundle userParams = getIntent().getExtras();
         if(!userParams.getBoolean("isManager")){
             RelativeLayout assigne = (RelativeLayout) findViewById(R.id.assign_layout);
             assigne.setVisibility(View.GONE);
@@ -117,12 +117,15 @@ public class AddTaskActivity extends AppCompatActivity {
                 photo.setVisibility(View.VISIBLE);
                 ImageView imageview = (ImageView) findViewById(R.id.img_show_photo);
                 byte[] encodeByte= Base64.decode(taskToUpdate.getPicture(), Base64.DEFAULT);
-                Bitmap imageBitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+                final Bitmap imageBitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
                 imageview.setImageBitmap(imageBitmap);
                 imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO: show image on screen
+                        Intent intent = new Intent(getApplicationContext(), ShowImageActivity.class);
+                        userParams.putParcelable("bitmap", imageBitmap);
+                        intent.putExtras(userParams);
+                        startActivity(intent);
                     }
                 });
             }
