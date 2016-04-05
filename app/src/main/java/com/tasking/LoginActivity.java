@@ -46,6 +46,9 @@ public class LoginActivity extends Activity {
         signUpMsg.setTypeface(typeFace);
         button.setTypeface(boldTypeFace);
         button.setTransformationMethod(null);
+        progress = new ProgressDialog(this, R.style.ProgressCustomTheme);
+        progress.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
+
     }
 
     public void signUp(View view) {
@@ -93,8 +96,7 @@ public class LoginActivity extends Activity {
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
                 if (!password.equals("")) {
-                    progress = ProgressDialog.show(this, "Authentication",
-                            "Creating new TasKing Manager", true);
+                    progress.show();
                     //TODO: design this?
                     FireBaseDB.getInstance(this).createManager(username, password, new MyCallback<String>() {
                         @Override
@@ -112,9 +114,7 @@ public class LoginActivity extends Activity {
         } else {
             if (!username.equals("")) {
                 if (!password.equals("")) {
-                    progress = ProgressDialog.show(this, "Authentication",
-                            "Checking User name & Password", true);
-                    //TODO: design this?
+                    progress.show();
                     FireBaseDB.getInstance(this).authenticate(username, password, new MyCallback<String>() {
                         @Override
                         public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
