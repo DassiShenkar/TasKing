@@ -46,6 +46,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         holder.category.setText(task.getCategory());
         String date = (task.convertDateString() + " " + task.convertTimeString());
         holder.date.setText(date);
+        holder.status.setText(task.getStatus());
         if(isManager){
             holder.icon.setImageResource(R.drawable.ic_action_edit);
         }
@@ -65,12 +66,14 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         private TextView description;
         private TextView category;
         private TextView date;
+        private TextView status;
 
         public ViewHolder(View parentView) {
             super(parentView);
             description = (TextView) parentView.findViewById(R.id.list_item_description);
             category = (TextView) parentView.findViewById(R.id.list_item_category);
             date = (TextView) parentView.findViewById(R.id.list_item_dueDate);
+            status = (TextView) parentView.findViewById(R.id.list_item_status);
             icon = (ImageView) parentView.findViewById(R.id.edit_task_icon);
             Typeface regularTypeFace = Typeface.createFromAsset(parentView.getContext().getAssets(), "fonts/Raleway-Regular.ttf");
             description.setTypeface(regularTypeFace);
