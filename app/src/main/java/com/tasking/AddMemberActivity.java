@@ -40,6 +40,8 @@ public class AddMemberActivity extends Activity {
         TextView title = (TextView)findViewById(R.id.title);
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         title.setTypeface(boldTypeFace);
+        progress = new ProgressDialog(this, R.style.ProgressCustomTheme);
+        progress.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
     }
 
     public void editMember(View view) {
@@ -71,8 +73,7 @@ public class AddMemberActivity extends Activity {
                         final Employee employeeAdd = employee;
                         final Bundle managerParams = getIntent().getExtras();
                         String managerUid = managerParams.getString("uid");
-                        progress = ProgressDialog.show(AddMemberActivity.this, "Authentication",
-                                "Creating new TasKing Member", true);
+                        progress.show();
                         FireBaseDB.getInstance(AddMemberActivity.this).createMember(employee.getUsername(), employee.getPassword(), managerUid, teamName, new MyCallback<String>() {
                             @Override
                             public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {

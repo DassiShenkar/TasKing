@@ -18,6 +18,7 @@ import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -166,7 +167,20 @@ public class AddTaskActivity extends AppCompatActivity {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
+//            String scanFormat = scanningResult.getFormatName();
+            String[] locationItems = getResources().getStringArray(R.array.location_array);
+            Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
+
+            String[] newLocationItems = new String[locationItems.length+1];
+            for(int i=0;i<newLocationItems.length-1;i++){
+                newLocationItems[i] = locationItems[i];
+            }
+            newLocationItems[newLocationItems.length-1] = scanContent;
+            MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, newLocationItems);
+            locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            locationSpinner.setAdapter(locationSpinnerAdapter);
+            int spinnerPosition = locationSpinnerAdapter.getPosition(scanContent);
+            locationSpinner.setSelection(spinnerPosition);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No scan data received!", Toast.LENGTH_SHORT);
@@ -175,7 +189,17 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
-
+    public ArrayList<String> changeSpinner( Spinner spinner, String itemToAdd){
+        Adapter adapter = spinner.getAdapter();
+        int n = adapter.getCount();
+        ArrayList<String> items = new ArrayList<String>(n);
+        for (int i = 0; i < n; i++) {
+            String item = (String) adapter.getItem(i);
+            items.add(item);
+        }
+        items.add(itemToAdd);
+        return items;
+    }
 
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
