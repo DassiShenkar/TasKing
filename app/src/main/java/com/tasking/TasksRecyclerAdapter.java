@@ -40,6 +40,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
                 holder.category.setTypeface(boldTypeFace);
                 holder.description.setTypeface(boldTypeFace);
                 holder.date.setTypeface(boldTypeFace);
+                holder.status.setTypeface(boldTypeFace);
             }
         }
         holder.description.setText(task.getName());
