@@ -47,14 +47,16 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         holder.category.setText(task.getCategory());
         String date = (task.convertDateString() + " " + task.convertTimeString());
         holder.date.setText(date);
-        if (task.getAcceptStatus().equals("Accept")) {
-            holder.status.setText(R.string.accepted);
-        }
-        else if(task.getAcceptStatus().equals("Reject")){
-            holder.status.setText(R.string.rejected);
-        }
-        else {
-            holder.status.setText(task.getAcceptStatus());
+        switch (task.getAcceptStatus()) {
+            case "Accept":
+                holder.status.setText(R.string.accepted);
+                break;
+            case "Reject":
+                holder.status.setText(R.string.rejected);
+                break;
+            default:
+                holder.status.setText(task.getAcceptStatus());
+                break;
         }
         if(isManager){
             holder.icon.setImageResource(R.drawable.ic_action_edit);
