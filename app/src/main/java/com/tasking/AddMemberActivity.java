@@ -67,7 +67,7 @@ public class AddMemberActivity extends Activity {
                         Employee employee;
                         email.setText("");
                         phone.setText("");
-                        employee = new TeamMember(emailStr, phoneStr);
+                        employee = new Employee(emailStr, phoneStr);
                         final Employee employeeAdd = employee;
                         final Bundle managerParams = getIntent().getExtras();
                         String managerUid = managerParams.getString("uid");
@@ -79,7 +79,7 @@ public class AddMemberActivity extends Activity {
                                 if (error != null) {
                                     Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                                 } else {
-                                    TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, result, managerUid);
+                                    TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, result,  managerUid);
                                     progress.dismiss();
                                     Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
                                     teamMembers = TaskDAO.getInstance(getApplicationContext()).getMembers(managerUid);

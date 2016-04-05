@@ -70,7 +70,7 @@ public class FireBaseDB implements IFireBaseDB {
                 firebaseConnection.child("member-manager").child(uid).setValue(managerUid);
                 firebaseConnection.child("managers").child(uid).child("username").setValue(username);
                 if (callback != null) {
-                    callback.done(uid, null, null, true, false);
+                    callback.done(uid, null, managerUid, true, false);
                 }
             }
 

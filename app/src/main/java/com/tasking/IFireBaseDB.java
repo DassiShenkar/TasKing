@@ -4,9 +4,6 @@ import android.os.Bundle;
 
 import java.util.Map;
 
-/**
- * Created by user on 05/04/2016.
- */
 public interface IFireBaseDB {
     void createManager(final String username, String password, final MyCallback<String> callback);
     void createMember(final String username, String password, final String managerUid, final String teamName, final MyCallback<String> callback);

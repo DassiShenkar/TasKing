@@ -98,10 +98,10 @@ public class TaskDAO implements ITaskDAO {
                     TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS,
                     TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID,
                     TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID};
-            String[] selectionargs = new String[]{ uid };
+            String[] selectionArgs = new String[]{ uid };
             Cursor cursor = db.query(TasKingDBNames.TaskEntry.TABLE_NAME, columns,
                                 TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID + "=?",
-                                selectionargs , null, null, null, null);
+                                selectionArgs , null, null, null, null);
             Task task = new Task();
             if(cursor.moveToFirst()) {
                 task.setName(cursor.getString(0));
@@ -247,30 +247,6 @@ public class TaskDAO implements ITaskDAO {
                 cursor.close();
             }
             return employees;
-        } finally {
-            if (db != null) {
-                db.close();
-            }
-        }
-    }
-
-    @Override
-    public Employee getMember(String uid) {
-        SQLiteDatabase db = null;
-        String query = "SELECT * FROM " + TasKingDBNames.MemberEntry.TABLE_NAME + " WHERE uid='" + uid + "'";
-        Employee employee = new Employee();
-        try {
-            db = DBHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
-            if(cursor.moveToFirst()){
-                do{
-                    employee.setUsername(cursor.getString(0));
-                    employee.setUid(cursor.getString(1));
-                    employee.setManagerId(cursor.getString(2));
-                } while(cursor.moveToNext());
-                cursor.close();
-            }
-            return employee;
         } finally {
             if (db != null) {
                 db.close();

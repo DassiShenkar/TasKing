@@ -11,6 +11,7 @@ public class TasKingDBNames {
         public static final String COLUMN_EMPLOYEE_UID = "uid";
         public static final String COLUMN_MANAGER_ID = "manager_id";
     }
+
     public static final class TaskEntry implements BaseColumns{
         public static final String TABLE_NAME = "tasks";
         public static final String COLUMN_TASK_NAME = "name";

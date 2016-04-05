@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-/**
- * Created by Grisha on 3/26/2016.
- */
 public class MyArrayAdapter<String> extends ArrayAdapter<String> {
 
     public MyArrayAdapter(Context context, int resource, String[] objects) {

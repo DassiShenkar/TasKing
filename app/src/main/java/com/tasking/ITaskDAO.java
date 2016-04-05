@@ -11,7 +11,6 @@ public interface ITaskDAO {
     ArrayList<Task> getTasks(String uid, boolean isManager);
     void addMember(Employee employee, String uid, String mUid);
     void removeMember(Employee employee);
-    Employee getMember(String uid);
     ArrayList<Employee> getMembers(String uid);
     void removeTask(String taskUid);
 }

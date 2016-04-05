@@ -1,8 +1,0 @@
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".TaskActivity">
-    <item
-        android:id="@+id/menu_refresh"
-        android:title="@string/menu_refresh"/>
-</menu>

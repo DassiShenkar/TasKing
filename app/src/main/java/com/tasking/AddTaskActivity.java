@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
@@ -35,14 +36,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 public class AddTaskActivity extends AppCompatActivity {
 
     private boolean isUpdate;
     private Task taskToUpdate;
-    private Task task;
     private String selectedRadio;
     private Employee employee;
 
@@ -157,10 +155,8 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public void scanQR(View view){
-
+        //TODO: put gindos code
     }
-
-
 
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
@@ -180,7 +176,7 @@ public class AddTaskActivity extends AppCompatActivity {
             Employee employee = (Employee)spinner.getSelectedItem();
             employeeName = employee.getUsername();
         }
-        task = new Task();
+        Task task = new Task();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
             String managerUid;
             if(userParams.getBoolean("isManager")){
@@ -284,6 +280,7 @@ public class AddTaskActivity extends AppCompatActivity {
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();
@@ -308,6 +305,7 @@ public class AddTaskActivity extends AppCompatActivity {
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();

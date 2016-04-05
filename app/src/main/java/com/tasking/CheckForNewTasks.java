@@ -2,25 +2,15 @@ package com.tasking;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.NumberPicker;
 import android.widget.Toast;
-
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by Arel on 02/04/2016.
- */
 public class CheckForNewTasks {
 
     private static CheckForNewTasks instance = null;
     private int time;
-    private NumberPicker np;
     private Timer timer;
     private Context context;
     private Bundle userParams;

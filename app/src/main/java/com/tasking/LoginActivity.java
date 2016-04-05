@@ -66,7 +66,6 @@ public class LoginActivity extends Activity {
     public void forgotPass(View view){
         EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
         final String username = editUsername.getText().toString();
-        //Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
         if(!username.equals("")) {
             FireBaseDB.getInstance(this).resetPassword(username, new MyCallback<String>() {
                 @Override
@@ -86,12 +85,11 @@ public class LoginActivity extends Activity {
     }
 
     public void submit(View view) {
-        //final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
         Button signUp = (Button) findViewById(R.id.btn_sign);
         EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
         EditText editPassword = (EditText) findViewById(R.id.txt_password);
         final String username = editUsername.getText().toString();
-        String password = editPassword.getText().toString();
+        final String password = editPassword.getText().toString();
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
                 if (!password.equals("")) {

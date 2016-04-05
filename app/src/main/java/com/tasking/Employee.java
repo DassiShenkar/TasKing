@@ -30,20 +30,12 @@ public class Employee {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getUid() {
         return uid;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-    public String getManagerId() {
-        return managerId;
     }
 
     public void setManagerId(String managerId) {

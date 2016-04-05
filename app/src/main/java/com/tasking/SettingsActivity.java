@@ -1,15 +1,11 @@
 package com.tasking;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class SettingsActivity extends AppCompatActivity {
     private  NumberPicker np;

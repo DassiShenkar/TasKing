@@ -10,9 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
 import java.util.ArrayList;
 
 
@@ -49,6 +46,7 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     public void delete(int position) {
         final Employee employee = employees.get(position);
         TaskDAO.getInstance(context).removeMember(employee);
+        //TODO: we dont have password in local db
         FireBaseDB.getInstance(context).removeUser(employee.getUsername(), employee.getPassword(), new MyCallback<String>() {
             @Override
             public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {

@@ -9,8 +9,8 @@ import java.util.Locale;
 public class Task {
     private String name;
     private Date date;
-    private String dateString;
-    private String timeString;
+//    private String dateString;
+//    private String timeString;
     private String category;
     private String priority;
     private String location;
@@ -77,32 +77,33 @@ public class Task {
         this.date = date;
     }
 
-    public String getDateString() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        return simpleDateFormat.format(date);
-    }
-
-    public void setDateString(String dateString) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        try{
-            this.date = dateFormat.parse(dateString);
-        } catch (ParseException e){
-            e.printStackTrace();
-        }
-    }
-
-    public String getTimeString() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
-        return simpleDateFormat.format(date);
-    }
-
-    public void setTimeString(String timeString) {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.US);
-        try{
-            this.date = dateFormat.parse(timeString);
-        } catch (ParseException e){
-            e.printStackTrace();
-        }    }
+//    public String getDateString() {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+//        return simpleDateFormat.format(date);
+//    }
+//
+//    public void setDateString(String dateString) {
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+//        try{
+//            this.date = dateFormat.parse(dateString);
+//        } catch (ParseException e){
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public String getTimeString() {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
+//        return simpleDateFormat.format(date);
+//    }
+//
+//    public void setTimeString(String timeString) {
+//        DateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.US);
+//        try{
+//            this.date = dateFormat.parse(timeString);
+//        } catch (ParseException e){
+//            e.printStackTrace();
+//        }
+//    }
 
     public String getCategory() {
         return category;
@@ -211,8 +212,8 @@ public class Task {
         return "Task{" +
                 ", name='" + name + '\'' +
                 ", date=" + date +
-                ", dateString='" + dateString + '\'' +
-                ", timeString='" + timeString + '\'' +
+//                ", dateString='" + dateString + '\'' +
+//                ", timeString='" + timeString + '\'' +
                 ", category='" + category + '\'' +
                 ", priority='" + priority + '\'' +
                 ", location='" + location + '\'' +

@@ -150,7 +150,6 @@ public class ViewTaskActivity extends AppCompatActivity {
     public void done(View view){
         Bundle userParams = getIntent().getExtras();
         task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
-        //final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
         String managerUid = userParams.getString("managerUid");
         Map<String, Object> update = new HashMap<>();
         update.put("acceptStatus", task.getAcceptStatus());
@@ -169,16 +168,6 @@ public class ViewTaskActivity extends AppCompatActivity {
                     }
                 }
             });
-//            firebase.child("managers").child(managerUid).child("tasks").child(task.getFirebaseId()).updateChildren(update, new Firebase.CompletionListener() {
-//                @Override
-//                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-//                    if (firebaseError != null) {
-//                        Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
         }
         userParams.remove("taskId");
         Intent intent = new Intent(this, TasksActivity.class);
