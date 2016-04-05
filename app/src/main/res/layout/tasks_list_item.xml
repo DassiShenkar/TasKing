@@ -65,10 +65,10 @@
             android:textSize="14sp"
             android:text="@string/status"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:paddingEnd="70dp"
             android:textAlignment="textEnd"
-            android:layout_below="@+id/list_item_category"
-            android:layout_toEndOf="@+id/list_item_category" />
+            android:layout_alignBottom="@+id/edit_task_icon"
+            android:layout_toStartOf="@+id/edit_task_icon" />
     </RelativeLayout>
 
     <LinearLayout
