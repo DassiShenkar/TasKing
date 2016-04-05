@@ -99,21 +99,18 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
         }
         return rootView;
     }
+
     @Override
     public void onRefresh() {
-        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+        Bundle userParams = getActivity().getIntent().getExtras();
+        FireBaseDB.getInstance(getContext()).refresh(userParams, new MyCallback<String>() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Bundle userParams = getActivity().getIntent().getExtras();
-                new AsyncUpdateTasks(getContext(), userParams, snapshot).execute();
-                swipeLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Toast.makeText(getContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                if(error != null){
+                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
+        swipeLayout.setRefreshing(false);
     }
 }

@@ -352,7 +352,7 @@
         android:id="@+id/assign_layout"
         android:layout_below="@id/time_layout"
         android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:layout_height="122dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:paddingTop="10dp"
@@ -374,11 +374,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/spn_add_member"
             android:spinnerMode="dropdown"
-            android:layout_alignParentTop="false"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/txt_assign_member"
             android:layout_centerVertical="true" />
 
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/qr"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="scanQR" />
 
     </RelativeLayout>
 

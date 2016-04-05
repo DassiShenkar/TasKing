@@ -60,16 +60,12 @@ public class CheckForNewTasks {
     TimerTask checkNewTasks = new TimerTask() {
         @Override
         public void run() {
-            Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-            firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            FireBaseDB.getInstance(context).refresh(userParams, new MyCallback<String>() {
                 @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    new AsyncUpdateTasks(context, userParams, snapshot).execute();
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    Toast.makeText(context, firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                    if(error != null){
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

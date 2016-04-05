@@ -217,18 +217,27 @@ public class TasksActivity extends AppCompatActivity
     }
 
     public void refresh(View view){
-        Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
-        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+        Bundle userParams = getIntent().getExtras();
+        FireBaseDB.getInstance(this).refresh(userParams, new MyCallback<String>() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Bundle userParams = getIntent().getExtras();
-                new AsyncUpdateTasks(TasksActivity.this, userParams, snapshot).execute();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Toast.makeText(getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                if(error != null){
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
+        //Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+//        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                Bundle userParams = getIntent().getExtras();
+//                new AsyncUpdateTasks(TasksActivity.this, userParams, snapshot).execute();
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//                Toast.makeText(getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

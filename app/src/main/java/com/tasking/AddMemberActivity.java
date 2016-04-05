@@ -17,11 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
 import java.util.ArrayList;
-import java.util.Map;
 
 public class AddMemberActivity extends Activity {
 
@@ -74,41 +70,33 @@ public class AddMemberActivity extends Activity {
                         employee = new TeamMember(emailStr, phoneStr);
                         final Employee employeeAdd = employee;
                         final Bundle managerParams = getIntent().getExtras();
-                        final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
+                        String managerUid = managerParams.getString("uid");
                         progress = ProgressDialog.show(AddMemberActivity.this, "Authentication",
                                 "Creating new TasKing Member", true);
-                        firebase.createUser(employee.getUsername(), employee.getPassword(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+                        FireBaseDB.getInstance(AddMemberActivity.this).createMember(employee.getUsername(), employee.getPassword(), managerUid, teamName, new MyCallback<String>() {
                             @Override
-                            public void onSuccess(Map<String, Object> result) {
-                                String uid = result.get("uid").toString();
-                                String managerUid = managerParams.getString("uid");
-                                if (managerUid != null) {
-                                    firebase.child("managers").child(managerUid).child("teamName").setValue(teamName);
-                                    firebase.child("managers").child(managerUid).child("team").child(uid).child("username").setValue(employeeAdd.getUsername());
+                            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                                if (error != null) {
+                                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, result, managerUid);
+                                    progress.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
+                                    teamMembers = TaskDAO.getInstance(getApplicationContext()).getMembers(managerUid);
+                                    if (teamMembers.size() > 0) {
+                                        RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
+                                        RelativeLayout addMember = (RelativeLayout) findViewById(R.id.team_members_wrapper);
+                                        wrapperEdit.setVisibility(View.GONE);
+                                        addMember.setVisibility(View.VISIBLE);
+                                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        recyclerView.setHasFixedSize(true);
+                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                                        recyclerView.setLayoutManager(layoutManager);
+                                        RecyclerView.Adapter adapter = new TeamRecyclerAdapter(teamMembers, getApplicationContext());
+                                        recyclerView.setAdapter(adapter);
+                                    }
                                 }
-                                firebase.child("member-manager").child(uid).setValue(managerUid);
-                                TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, uid, managerUid);
-                                progress.dismiss();
-                                Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
-                                teamMembers = TaskDAO.getInstance(getApplicationContext()).getMembers(managerUid);
-                                if (teamMembers.size() > 0){
-                                    RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
-                                    RelativeLayout addMember = (RelativeLayout) findViewById(R.id.team_members_wrapper);
-                                    wrapperEdit.setVisibility(View.GONE);
-                                    addMember.setVisibility(View.VISIBLE);
-                                    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.team_recycler_view);
-                                    recyclerView.setVisibility(View.VISIBLE);
-                                    recyclerView.setHasFixedSize(true);
-                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                                    recyclerView.setLayoutManager(layoutManager);
-                                    RecyclerView.Adapter adapter = new TeamRecyclerAdapter(teamMembers, getApplicationContext());
-                                    recyclerView.setAdapter(adapter);
-                                }
-                            }
-
-                            @Override
-                            public void onError(FirebaseError firebaseError) {
-                                Toast.makeText(getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

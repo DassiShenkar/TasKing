@@ -49,17 +49,15 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     public void delete(int position) {
         final Employee employee = employees.get(position);
         TaskDAO.getInstance(context).removeMember(employee);
-        Firebase ref = new Firebase("https://tasking-android.firebaseio.com");
-        ref.removeUser(employee.getUsername(), employee.getPassword(), new Firebase.ResultHandler() {
+        FireBaseDB.getInstance(context).removeUser(employee.getUsername(), employee.getPassword(), new MyCallback<String>() {
             @Override
-            public void onSuccess() {
-                Toast.makeText(context, "User removed", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                Toast.makeText(context, firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                if(error != null){
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         employees.remove(position);

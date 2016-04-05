@@ -29,20 +29,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("ALL")
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 public class AddTaskActivity extends AppCompatActivity {
 
     private boolean isUpdate;
     private Task taskToUpdate;
+    private Task task;
     private String selectedRadio;
     private Employee employee;
 
@@ -156,6 +156,12 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
+    public void scanQR(View view){
+
+    }
+
+
+
     public void done(View view){
         EditText name = (EditText) findViewById(R.id.edit_task_name);
         Spinner categorySpinner = (Spinner) findViewById(R.id.spn_category);
@@ -174,9 +180,8 @@ public class AddTaskActivity extends AppCompatActivity {
             Employee employee = (Employee)spinner.getSelectedItem();
             employeeName = employee.getUsername();
         }
-        Task task = new Task();
+        task = new Task();
         if(!taskName.equals("") && !taskCategory.equals("") && !taskDate.equals("") && !taskTime.equals("") && !taskLocation.equals("")) {
-            final Firebase firebase = new Firebase("https://tasking-android.firebaseio.com/");
             String managerUid;
             if(userParams.getBoolean("isManager")){
                 managerUid = userParams.getString("uid");
@@ -216,28 +221,21 @@ public class AddTaskActivity extends AppCompatActivity {
                 update.put("location", taskLocation);
                 update.put("timeStamp", new Date().toString());
                 if (managerUid != null) {
-                    firebase.child("managers").child(managerUid).child("tasks").child(taskToUpdate.getFirebaseId()).updateChildren(update, new Firebase.CompletionListener() {
+                    FireBaseDB.getInstance(this).updateTask(taskToUpdate, update, new MyCallback<String>() {
                         @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if (firebaseError != null) {
-                                Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
-
-                            } else {
-                                Toast.makeText(getApplication(), "Task was updated", Toast.LENGTH_SHORT).show();
+                        public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                            if(error != null){
+                                Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 }
             }
             else {
-                Firebase postRef = null;
-                if (managerUid != null) {
-                    postRef = firebase.child("managers").child(managerUid).child("tasks").push();
-                }
-                String postId = null;
-                if (postRef != null) {
-                    postId = postRef.getKey();
-                }
+                String postId = FireBaseDB.getInstance(this).getTaskKey(managerUid);
                 task.setName(taskName);
                 task.convertDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);
@@ -260,19 +258,18 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setManagerUid(managerUid);
                 task.setPicture(null);
                 TaskDAO.getInstance(this).addTask(task);
-                if (managerUid != null && postId != null) {
-                    firebase.child("managers").child(managerUid).child("tasks").child(postId).setValue(task, new Firebase.CompletionListener() {
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if(firebaseError != null){
-                                Toast.makeText(getApplication(), firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Toast.makeText(getApplication(), "New Task created and sent", Toast.LENGTH_SHORT).show();
-                            }
+                FireBaseDB.getInstance(this).addTask(task, new MyCallback<String>() {
+                    @Override
+                    public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                        if(error != null){
+                            Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
+
                         }
-                    });
-                }
+                        else{
+                            Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
             Intent intent = new Intent(this, TasksActivity.class);
             intent.putExtras(userParams);
