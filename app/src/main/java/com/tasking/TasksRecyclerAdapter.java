@@ -80,6 +80,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
             description.setTypeface(regularTypeFace);
             category.setTypeface(regularTypeFace);
             date.setTypeface(regularTypeFace);
+            status.setTypeface(regularTypeFace);
         }
     }
 }
