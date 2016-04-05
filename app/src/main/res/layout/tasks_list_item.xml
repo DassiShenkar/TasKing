@@ -64,8 +64,8 @@
             android:id="@+id/list_item_status"
             android:textSize="14sp"
             android:text="@string/status"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingStart="60dp"
+            android:paddingEnd="60dp"
             android:textAlignment="textEnd"
             android:layout_below="@+id/list_item_description"
             android:layout_alignStart="@+id/list_item_category" />

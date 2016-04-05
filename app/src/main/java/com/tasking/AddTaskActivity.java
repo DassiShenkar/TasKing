@@ -164,28 +164,33 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanningResult != null) {
-            String scanContent = scanningResult.getContents();
-//            String scanFormat = scanningResult.getFormatName();
-            String[] locationItems = getResources().getStringArray(R.array.location_array);
-            Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
+        if(intent != null) {
+            IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+            if (scanningResult != null) {
+                String scanContent = scanningResult.getContents();
+                String[] locationItems = getResources().getStringArray(R.array.location_array);
+                Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
 
-            String[] newLocationItems = new String[locationItems.length+1];
-            for(int i=0;i<newLocationItems.length-1;i++){
-                newLocationItems[i] = locationItems[i];
+                String[] newLocationItems = new String[locationItems.length + 1];
+                for (int i = 0; i < newLocationItems.length - 1; i++) {
+                    newLocationItems[i] = locationItems[i];
+                }
+                newLocationItems[newLocationItems.length - 1] = scanContent;
+                MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, newLocationItems);
+                locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                locationSpinner.setAdapter(locationSpinnerAdapter);
+                int spinnerPosition = locationSpinnerAdapter.getPosition(scanContent);
+                locationSpinner.setSelection(spinnerPosition);
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "No scan data received!", Toast.LENGTH_SHORT);
+                toast.show();
             }
-            newLocationItems[newLocationItems.length-1] = scanContent;
-            MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, newLocationItems);
-            locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            locationSpinner.setAdapter(locationSpinnerAdapter);
-            int spinnerPosition = locationSpinnerAdapter.getPosition(scanContent);
-            locationSpinner.setSelection(spinnerPosition);
-        } else {
+        }
+        else{
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
-
         }
     }
 
