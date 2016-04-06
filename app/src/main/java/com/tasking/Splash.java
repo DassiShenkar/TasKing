@@ -26,20 +26,7 @@ public class Splash extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-                boolean isAuthenticated = preferences.getBoolean("isAuthenticated", false);
-                boolean isManager = preferences.getBoolean("isManager", false);
-                if(isAuthenticated) {
-                    Bundle userParams = new Bundle();
-                    userParams.putBoolean("isManager", isManager);
-                    Intent intent = new Intent(getApplication(), TasksActivity.class);
-                    intent.putExtras(userParams);
-                    startActivity(intent);
-                }
-                Bundle activityCheck = new Bundle();
-                activityCheck.putBoolean("isLoginActivity", true);
                 Intent mainIntent = new Intent(Splash.this, LoginActivity.class);
-                mainIntent.putExtras(activityCheck);
                 startActivity(mainIntent);
                 finish();
             }

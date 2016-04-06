@@ -39,7 +39,7 @@ public class TeamActivity extends Activity {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employees, this);
+            RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employees, this, userParams);
             recyclerView.setAdapter(adapter);
         }
     }

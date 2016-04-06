@@ -120,7 +120,6 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
         if (snapshot != null) {
             if (uids.size() > 0) {
                 String msg = "You have " + uids.size() + " New Tasks\nView/Cancel";
-                //TODO: design this?
                 new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.myDialog))
                         .setTitle("New Task/s found")
                         .setMessage(msg)

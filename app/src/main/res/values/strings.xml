@@ -105,4 +105,8 @@
     <string name="nav_names">Gregory K / Dassi R / Arel G</string>
     <string name="nav_show_member">Show Memebers List</string>
     <string name="nav_add_member">Add Member</string>
+    <string name="edit">edit</string>
+    <string name="team_name_title">Team Name</string>
+    <string name="rejected">Rejected</string>
+    <string name="accepted">Accepted</string>
 </resources>

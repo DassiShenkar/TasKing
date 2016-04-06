@@ -94,7 +94,7 @@ public class AddMemberActivity extends Activity {
                                         recyclerView.setHasFixedSize(true);
                                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                                         recyclerView.setLayoutManager(layoutManager);
-                                        RecyclerView.Adapter adapter = new TeamRecyclerAdapter(teamMembers, getApplicationContext());
+                                        RecyclerView.Adapter adapter = new TeamRecyclerAdapter(teamMembers, getApplicationContext(), managerParams);
                                         recyclerView.setAdapter(adapter);
                                     }
                                 }

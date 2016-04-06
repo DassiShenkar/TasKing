@@ -2,6 +2,7 @@ package com.tasking;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,12 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
 
     private ArrayList<Employee> employees;
     private Context context;
+    private Bundle userParams;
 
-    public  TeamRecyclerAdapter(ArrayList<Employee> employees, Context context){
+    public  TeamRecyclerAdapter(ArrayList<Employee> employees, Context context, Bundle userParams){
         this.employees = employees;
         this.context = context;
+        this.userParams = userParams;
     }
 
     @Override
@@ -46,8 +49,8 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
     public void delete(int position) {
         final Employee employee = employees.get(position);
         TaskDAO.getInstance(context).removeMember(employee);
-        //TODO: we dont have password in local db
-        FireBaseDB.getInstance(context).removeUser(employee.getUsername(), employee.getPassword(), new MyCallback<String>() {
+        String password = userParams.getString("password");
+        FireBaseDB.getInstance(context).removeUser(employee.getUsername(), password, new MyCallback<String>() {
             @Override
             public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
                 if(error != null){

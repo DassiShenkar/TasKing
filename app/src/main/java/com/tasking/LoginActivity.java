@@ -20,6 +20,7 @@ import com.firebase.client.Firebase;
 public class LoginActivity extends Activity {
 
     private ProgressDialog progress;
+    private Bundle userParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +92,14 @@ public class LoginActivity extends Activity {
         Button signUp = (Button) findViewById(R.id.btn_sign);
         EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
         EditText editPassword = (EditText) findViewById(R.id.txt_password);
+        userParams = new Bundle();
         final String username = editUsername.getText().toString();
         final String password = editPassword.getText().toString();
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
                 if (!password.equals("")) {
+                    userParams.putString("password", password);
                     progress.show();
-                    //TODO: design this?
                     FireBaseDB.getInstance(this).createManager(username, password, new MyCallback<String>() {
                         @Override
                         public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
@@ -133,7 +135,6 @@ public class LoginActivity extends Activity {
 
     private void myStartActivity(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
         if(error == null) {
-            Bundle userParams = new Bundle();
             userParams.putString("uid", result);
             userParams.putBoolean("isManager", isManager);
             Intent intent;
