@@ -17,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewTaskActivity extends AppCompatActivity {
@@ -155,7 +157,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         update.put("acceptStatus", task.getAcceptStatus());
         update.put("status", task.getStatus());
         update.put("picture", task.getPicture());
-        update.put("timeStamp", new Date().toString());
+        update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
         if (managerUid != null) {
             FireBaseDB.getInstance(this).updateTask(task, update, new MyCallback<String>() {
                 @Override

@@ -265,7 +265,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     update.put("assigneeUid", employee.getUid());
                 }
                 update.put("location", taskLocation);
-                update.put("timeStamp", new Date().toString());
+                update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
                 if (managerUid != null) {
                     FireBaseDB.getInstance(this).updateTask(taskToUpdate, update, new MyCallback<String>() {
                         @Override
