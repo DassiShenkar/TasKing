@@ -34,10 +34,12 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -249,7 +251,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     taskToUpdate.setAssigneeUid(userParams.getString("uid"));
                 }
                 taskToUpdate.setLocation(taskLocation);
-                taskToUpdate.setTimeStamp(new Date().toString());
+                taskToUpdate.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
                 TaskDAO.getInstance(this).updateTask(taskToUpdate);
                 isUpdate = false;
                 userParams.remove("taskUid");
@@ -286,7 +288,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setPriority(selectedRadio);
                 task.setAcceptStatus("Waiting");
                 task.setStatus("Waiting");
-                task.setTimeStamp(new Date().toString());
+                task.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
                 if(userParams.getBoolean("isManager")){
                     task.setAssignee(employeeName);
                     task.setAssigneeUid(employee.getUid());
