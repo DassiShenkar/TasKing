@@ -52,7 +52,14 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
             for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
                 Task taskToAdd = task.getValue(Task.class);
                 remoteTasks.add(taskToAdd);
-                if (taskToAdd.getAssigneeUid().equals(uid)) {
+                String uidTocheck;
+                if(isManager){
+                    uidTocheck = taskToAdd.getManagerUid();
+                }
+                else{
+                    uidTocheck = taskToAdd.getAssigneeUid();
+                }
+                if (uidTocheck.equals(uid)) {
                     for (Task localTask : localTasks) {
                         if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
                             try {
