@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 
-import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -56,8 +56,8 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                     for (Task localTask : localTasks) {
                         if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
                             try {
-                                localDate = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US).parse(localTask.getTimeStamp());
-                                firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US).parse(taskToAdd.getTimeStamp());
+                                localDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse(localTask.getTimeStamp());
+                                firebaseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse(taskToAdd.getTimeStamp());
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
