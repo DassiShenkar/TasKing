@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
 
@@ -55,8 +56,8 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
                     for (Task localTask : localTasks) {
                         if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
                             try {
-                                localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
-                                firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
+                                localDate = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US).parse(localTask.getTimeStamp());
+                                firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US).parse(taskToAdd.getTimeStamp());
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
