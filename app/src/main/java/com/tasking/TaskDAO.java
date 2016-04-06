@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class TaskDAO implements ITaskDAO {
@@ -28,6 +30,9 @@ public class TaskDAO implements ITaskDAO {
     @Override
     public void addTask(Task task) {
         SQLiteDatabase db = null;
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+        Date today = new Date();
+        String dateOut = dateFormatter.format(today);
         try {
             db = DBHelper.getReadableDatabase();
             ContentValues taskValues = new ContentValues();
@@ -42,7 +47,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, task.getPicture());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS, task.getAcceptStatus());
-            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, new Date().toString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, dateOut);
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, task.getManagerUid());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID, task.getAssigneeUid());
             db.insert(TasKingDBNames.TaskEntry.TABLE_NAME, null, taskValues);
@@ -57,6 +62,9 @@ public class TaskDAO implements ITaskDAO {
     @Override
     public void updateTask(Task task) {
         SQLiteDatabase db = null;
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+        Date today = new Date();
+        String dateOut = dateFormatter.format(today);
         try {
             db = DBHelper.getReadableDatabase();
             ContentValues taskValues = new ContentValues();
@@ -71,7 +79,7 @@ public class TaskDAO implements ITaskDAO {
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_FIREBASE_ID, task.getFirebaseId());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_PICTURE, task.getPicture());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ACCEPT_STATUS, task.getAcceptStatus());
-            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, new Date().toString());
+            taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_TIME_STAMP, dateOut);
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_MANAGER_ID, task.getManagerUid());
             taskValues.put(TasKingDBNames.TaskEntry.COLUMN_TASK_ASSIGNEE_ID, task.getAssigneeUid());
             db.update(TasKingDBNames.TaskEntry.TABLE_NAME,
