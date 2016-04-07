@@ -25,15 +25,12 @@ public class FireBaseDB implements IFireBaseDB {
     private Context context;
 
     public static FireBaseDB getInstance(Context context) {
-        if(instance == null) {
-            Firebase.getDefaultConfig().setPersistenceEnabled(true);
-            instance = new FireBaseDB(context);
-        }
-        return instance;
+        return new FireBaseDB(context);
     }
 
     private FireBaseDB(Context context) {
         firebaseConnection = new Firebase("https://tasking-android.firebaseio.com/");
+        Firebase.setAndroidContext(context);
         this.context = context;
     }
 
@@ -308,12 +305,12 @@ public class FireBaseDB implements IFireBaseDB {
 
     @Override
     public void refresh(final Bundle userParams, final MyCallback<String> callback) {
-        firebaseConnection.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseConnection.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 firebaseConnection.removeEventListener(this);
                 new AsyncUpdateTasks(context, userParams, snapshot).execute();
-                if(callback != null){
+                if (callback != null) {
                     callback.done(null, null, null, false, false);
                 }
             }
@@ -321,7 +318,7 @@ public class FireBaseDB implements IFireBaseDB {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
-                if(callback != null){
+                if (callback != null) {
                     callback.done(null, firebaseError.getMessage(), null, false, false);
                 }
             }
