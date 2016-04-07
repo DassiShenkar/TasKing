@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -42,12 +43,15 @@ public class TeamActivity extends Activity {
             RecyclerView.Adapter adapter = new TeamRecyclerAdapter(employees, this, userParams);
             recyclerView.setAdapter(adapter);
         }
-    }
-
-    public void addMember(View view){
-        Bundle userParams = getIntent().getExtras();
-        Intent intent = new Intent(this, AddMemberActivity.class);
-        intent.putExtras(userParams);
-        startActivity(intent);
+        FloatingActionButton addMember = (FloatingActionButton) findViewById(R.id.add_btn);
+        addMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle userParams = getIntent().getExtras();
+                Intent intent = new Intent(TeamActivity.this, AddMemberActivity.class);
+                intent.putExtras(userParams);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -9,7 +9,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,9 +90,10 @@ public class FireBaseDB implements IFireBaseDB {
             public void onAuthenticated(AuthData authData) {
                 final String uid = authData.getUid();
                 if (uid != null) {
-                    firebaseConnection.addListenerForSingleValueEvent(new ValueEventListener() {
+                    firebaseConnection.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
+                            firebaseConnection.removeEventListener(this);
                             if (snapshot.child("managers").child(uid).child("username").getValue() != null) {
                                 if (snapshot.child("managers").child(uid).getChildrenCount() > 1) {
                                     ArrayList<Employee> localTeam = TaskDAO.getInstance(context).getMembers(uid);
@@ -114,8 +114,8 @@ public class FireBaseDB implements IFireBaseDB {
                                         for (Task localTask : localTasks) {
                                             if (localTask.getFirebaseId().equals(taskToAdd.getFirebaseId())) {
                                                 try {
-                                                    localDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(localTask.getTimeStamp());
-                                                    firebaseDate = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(taskToAdd.getTimeStamp());
+                                                    localDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse(localTask.getTimeStamp());
+                                                    firebaseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse(taskToAdd.getTimeStamp());
                                                 } catch (ParseException e) {
                                                     e.printStackTrace();
                                                 }
@@ -311,6 +311,7 @@ public class FireBaseDB implements IFireBaseDB {
         firebaseConnection.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                firebaseConnection.removeEventListener(this);
                 new AsyncUpdateTasks(context, userParams, snapshot).execute();
                 if(callback != null){
                     callback.done(null, null, null, false, false);
@@ -319,6 +320,7 @@ public class FireBaseDB implements IFireBaseDB {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
+
                 if(callback != null){
                     callback.done(null, firebaseError.getMessage(), null, false, false);
                 }

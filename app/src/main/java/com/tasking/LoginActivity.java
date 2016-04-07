@@ -137,6 +137,7 @@ public class LoginActivity extends Activity {
         if(error == null) {
             userParams.putString("uid", result);
             userParams.putBoolean("isManager", isManager);
+            userParams.putString("managerUid", managerUid);
             Intent intent;
             if(isManager) {
                 if (hasTeam) {
@@ -147,7 +148,6 @@ public class LoginActivity extends Activity {
             }
             else{
                 intent = new Intent(getApplication(), TasksActivity.class);
-                userParams.putString("managerUid", managerUid);
             }
             intent.putExtras(userParams);
             startActivity(intent);

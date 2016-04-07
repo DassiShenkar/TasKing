@@ -174,9 +174,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 Spinner locationSpinner = (Spinner) findViewById(R.id.spn_location);
 
                 String[] newLocationItems = new String[locationItems.length + 1];
-                for (int i = 0; i < newLocationItems.length - 1; i++) {
-                    newLocationItems[i] = locationItems[i];
-                }
+                System.arraycopy(locationItems, 0, newLocationItems, 0, newLocationItems.length - 1);
                 newLocationItems[newLocationItems.length - 1] = scanContent;
                 MyArrayAdapter<String> locationSpinnerAdapter = new MyArrayAdapter<>(this, R.layout.spinner_item, newLocationItems);
                 locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -194,18 +192,6 @@ public class AddTaskActivity extends AppCompatActivity {
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
         }
-    }
-
-    public ArrayList<String> changeSpinner( Spinner spinner, String itemToAdd){
-        Adapter adapter = spinner.getAdapter();
-        int n = adapter.getCount();
-        ArrayList<String> items = new ArrayList<String>(n);
-        for (int i = 0; i < n; i++) {
-            String item = (String) adapter.getItem(i);
-            items.add(item);
-        }
-        items.add(itemToAdd);
-        return items;
     }
 
     public void done(View view){

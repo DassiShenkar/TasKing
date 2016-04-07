@@ -23,22 +23,21 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
     private Context context;
     private boolean isManager;
     private String uid;
-    private ArrayList<String> uids;
     private Bundle userParams;
-    private DataSnapshot snapshot;
+    private DataSnapshot dataSnapshot;
 
     public AsyncUpdateTasks(Context context, Bundle userParams, DataSnapshot snapshot) {
         this.context = context;
         this.userParams = userParams;
         this.isManager = this.userParams.getBoolean("isManager");
         this.uid = this.userParams.getString("uid");
-        this.snapshot = snapshot;
-        uids = new ArrayList<>();
+        this.dataSnapshot = snapshot;
     }
 
     @Override
     protected ArrayList<String> doInBackground(Void... params) {
-        if(snapshot != null) {
+        ArrayList<String> uids = new ArrayList<>();
+        if(dataSnapshot != null) {
             ArrayList<Task> localTasks = TaskDAO.getInstance(context).getTasks(uid, isManager);
             ArrayList<Task> remoteTasks = new ArrayList<>();
             Date localDate = null;
@@ -47,9 +46,9 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
             if (isManager) {
                 managerUid = uid;
             } else {
-                managerUid = snapshot.child("member-manager").child(uid).getValue().toString();
+                managerUid = dataSnapshot.child("member-manager").child(uid).getValue().toString();
             }
-            for (DataSnapshot task : snapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
+            for (DataSnapshot task : dataSnapshot.child("managers").child(managerUid).child("tasks").getChildren()) {
                 Task taskToAdd = task.getValue(Task.class);
                 remoteTasks.add(taskToAdd);
                 String uidTocheck;
@@ -124,34 +123,34 @@ public class AsyncUpdateTasks extends AsyncTask<Void, Void, ArrayList<String>> {
     }
 
     @Override
-    protected void onPostExecute(ArrayList<String> result) {
-        if (snapshot != null) {
-            if (uids.size() > 0) {
-                String msg = "You have " + uids.size() + " New Tasks\nView/Cancel";
+    protected void onPostExecute(final ArrayList<String> result) {
+        if (dataSnapshot != null) {
+            if (result.size() > 0) {
+                String msg = "You have " + result.size() + " New Tasks\n";
                 new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.myDialog))
                         .setTitle("New Task/s found")
+                        .setIcon(R.drawable.ic_logo)
                         .setMessage(msg)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.show_task, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 Intent intent;
-                                if (uids.size() == 1) {
+                                if (result.size() == 1) {
                                     if (isManager) {
-                                        userParams.putString("taskUid", uids.get(0));
+                                        userParams.putString("taskUid", result.get(0));
                                         intent = new Intent(context, AddTaskActivity.class);
                                     } else {
-                                        userParams.putString("taskUid", uids.get(0));
+                                        userParams.putString("taskUid", result.get(0));
                                         intent = new Intent(context, ViewTaskActivity.class);
                                     }
                                 } else {
-                                    userParams.putStringArrayList("taskUids", uids);
+                                    userParams.putStringArrayList("taskUids", result);
                                     intent = new Intent(context, TasksActivity.class);
                                 }
                                 intent.putExtras(userParams);
                                 context.startActivity(intent);
                             }
                         })
-                        .setNegativeButton(android.R.string.no, null).show();
+                        .setNegativeButton(R.string.cancel, null).show();
             } else {
                 Toast.makeText(context, "No new Tasks", Toast.LENGTH_SHORT).show();
 
