@@ -309,7 +309,7 @@ tools:context="com.tasking.ViewTaskActivity">
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="@string/in_process"
+                    android:text="@string/in_progress"
                     android:textSize="12sp" />
 
                 <RadioButton
