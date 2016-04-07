@@ -25,9 +25,9 @@ public class FireBaseDB implements IFireBaseDB {
 
 
     public FireBaseDB(Context context) {
-        firebaseConnection = new Firebase("https://tasking-android.firebaseio.com/");
-        Firebase.setAndroidContext(context);
         this.context = context;
+        Firebase.setAndroidContext(context);
+        firebaseConnection = new Firebase("https://tasking-android.firebaseio.com/");
     }
 
     @Override
