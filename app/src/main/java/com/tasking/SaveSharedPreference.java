@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 public class SaveSharedPreference {
     static final String PREF_UID= "uid";
     static final String PREF_IS_MANAGER= "isManager";
+    static final String PREF_MANAGER_ID= "mangerUid";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -27,13 +28,13 @@ public class SaveSharedPreference {
     public static void setManagerId(Context ctx, String uid)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
-        editor.putString(PREF_UID, uid);
+        editor.putString(PREF_MANAGER_ID, uid);
         editor.apply();
     }
 
     public static String getManagerId(Context ctx)
     {
-        return getSharedPreferences(ctx).getString(PREF_UID, "");
+        return getSharedPreferences(ctx).getString(PREF_MANAGER_ID, "");
     }
 
     public static void setIsManager(Context ctx, boolean isManager)
