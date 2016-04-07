@@ -227,13 +227,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 current.put("name", taskName);
                 current.put("date", taskToUpdate.getDate().getTime());
                 current.put("category", taskCategory);
-                current.put("priority", selectedRadio);
+                current.put("priority", taskToUpdate.getPriority());
                 current.put("assignee", employeeName);
                 if(employee != null) {
                     current.put("assigneeUid", employee.getUid());
                 }
                 current.put("location", taskLocation);
-                current.put("timeStamp", taskToUpdate.getTimeStamp());
                 taskToUpdate.setName(taskName);
                 taskToUpdate.convertDateFromString(taskTime, taskDate);
                 taskToUpdate.setCategory(taskCategory);
@@ -263,9 +262,9 @@ public class AddTaskActivity extends AppCompatActivity {
                     update.put("assigneeUid", employee.getUid());
                 }
                 update.put("location", taskLocation);
-                update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
                 MapDifference<String, Object> diff = Maps.difference(update, current);
                 if(!diff.entriesDiffering().isEmpty()) {
+                    update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
                     if (managerUid != null) {
                         FireBaseDB remote = new FireBaseDB(AddTaskActivity.this);
                         remote.updateTask(taskToUpdate, update, new MyCallback<String>() {
