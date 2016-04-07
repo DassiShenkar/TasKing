@@ -122,6 +122,7 @@ public class LoginActivity extends Activity {
                     remote.authenticate(username, password, new MyCallback<String>() {
                         @Override
                         public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                            SaveSharedPreference.setPassword(LoginActivity.this, password);
                             myStartActivity(result, error, managerUid, isManager, hasTeam);
                             progress.dismiss();
                         }
