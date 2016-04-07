@@ -36,7 +36,9 @@ public class CheckForNewTasks {
     }
 
     public void startSchedule(int time) {
-        timer.schedule(checkNewTasks, 1, 1000 * 60 * time);
+        if(time > 0) {
+            timer.schedule(checkNewTasks, 1, 1000 * 60 * time);
+        }
     }
 
     public int getTime() {
