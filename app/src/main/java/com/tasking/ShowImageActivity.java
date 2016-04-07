@@ -24,5 +24,6 @@ public class ShowImageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtras(userParams);
         startActivity(intent);
+        finish();
     }
 }

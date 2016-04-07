@@ -144,7 +144,8 @@ public class AllTasksTab extends Fragment implements SwipeRefreshLayout.OnRefres
     @Override
     public void onRefresh() {
         Bundle userParams = getActivity().getIntent().getExtras();
-        FireBaseDB.getInstance(getContext()).refresh(userParams, new MyCallback<String>() {
+        FireBaseDB remote = new FireBaseDB(getContext());
+        remote.refresh(userParams, new MyCallback<String>() {
             @Override
             public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
                 if(error != null){

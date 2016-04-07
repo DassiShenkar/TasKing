@@ -18,7 +18,6 @@ import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -31,6 +30,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.common.collect.MapDifference;
+import com.google.common.collect.Maps;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -222,6 +223,17 @@ public class AddTaskActivity extends AppCompatActivity {
                 managerUid = userParams.getString("managerUid");
             }
             if(isUpdate){
+                Map<String, Object> current = new HashMap<>();
+                current.put("name", taskName);
+                current.put("date", taskToUpdate.getDate().getTime());
+                current.put("category", taskCategory);
+                current.put("priority", selectedRadio);
+                current.put("assignee", employeeName);
+                if(employee != null) {
+                    current.put("assigneeUid", employee.getUid());
+                }
+                current.put("location", taskLocation);
+                current.put("timeStamp", taskToUpdate.getTimeStamp());
                 taskToUpdate.setName(taskName);
                 taskToUpdate.convertDateFromString(taskTime, taskDate);
                 taskToUpdate.setCategory(taskCategory);
@@ -252,22 +264,27 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 update.put("location", taskLocation);
                 update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
-                if (managerUid != null) {
-                    FireBaseDB.getInstance(this).updateTask(taskToUpdate, update, new MyCallback<String>() {
-                        @Override
-                        public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                            if(error != null){
-                                Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
+                MapDifference<String, Object> diff = Maps.difference(update, current);
+                if(!diff.entriesDiffering().isEmpty()) {
+                    if (managerUid != null) {
+                        FireBaseDB remote = new FireBaseDB(AddTaskActivity.this);
+                        remote.updateTask(taskToUpdate, update, new MyCallback<String>() {
+                            @Override
+                            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                                if (error != null) {
+                                    Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            else{
-                                Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                        });
+                    }
                 }
+
             }
             else {
-                String postId = FireBaseDB.getInstance(this).getTaskKey(managerUid);
+                FireBaseDB remote = new FireBaseDB(AddTaskActivity.this);
+                String postId = remote.getTaskKey(managerUid);
                 task.setName(taskName);
                 task.convertDateFromString(taskTime, taskDate);
                 task.setCategory(taskCategory);
@@ -290,14 +307,13 @@ public class AddTaskActivity extends AppCompatActivity {
                 task.setManagerUid(managerUid);
                 task.setPicture(null);
                 TaskDAO.getInstance(this).addTask(task);
-                FireBaseDB.getInstance(this).addTask(task, new MyCallback<String>() {
+                remote.addTask(task, new MyCallback<String>() {
                     @Override
                     public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                        if(error != null){
+                        if (error != null) {
                             Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
 
-                        }
-                        else{
+                        } else {
                             Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
                         }
                     }

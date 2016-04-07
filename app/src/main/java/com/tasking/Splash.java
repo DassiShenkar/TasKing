@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.firebase.client.Firebase;
+
 public class Splash extends Activity {
 
     private static final int SPLASH_TIMEOUT = 1000;
@@ -17,6 +19,7 @@ public class Splash extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash);
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
         if (SaveSharedPreference.getUid(Splash.this).length() == 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();

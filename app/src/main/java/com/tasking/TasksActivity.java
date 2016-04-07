@@ -197,13 +197,14 @@ public class TasksActivity extends AppCompatActivity
 
     public void refresh(View view){
         Bundle userParams = getIntent().getExtras();
-        FireBaseDB.getInstance(this).refresh(userParams, new MyCallback<String>() {
-            @Override
-            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                if(error != null){
-                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+        FireBaseDB remote = new FireBaseDB(TasksActivity.this);
+        remote.refresh(userParams, new MyCallback<String>() {
+                @Override
+                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                    if (error != null) {
+                        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
     }
 }

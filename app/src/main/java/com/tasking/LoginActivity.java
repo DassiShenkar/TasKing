@@ -71,17 +71,17 @@ public class LoginActivity extends Activity {
         EditText editUsername = (EditText) findViewById(R.id.txt_user_name);
         final String username = editUsername.getText().toString();
         if(!username.equals("")) {
-            FireBaseDB.getInstance(this).resetPassword(username, new MyCallback<String>() {
-                @Override
-                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                    if(error == null){
-                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
-                    }
+            FireBaseDB remote = new FireBaseDB(LoginActivity.this);
+            remote.resetPassword(username, new MyCallback<String>() {
+            @Override
+            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                if (error == null) {
+                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
                 }
-            });
+            }
+        });
         }
         else{
             Toast.makeText(this, "Please enter username", Toast.LENGTH_SHORT).show();
@@ -100,7 +100,8 @@ public class LoginActivity extends Activity {
                 if (!password.equals("")) {
                     userParams.putString("password", password);
                     progress.show();
-                    FireBaseDB.getInstance(this).createManager(username, password, new MyCallback<String>() {
+                    FireBaseDB remote = new FireBaseDB(LoginActivity.this);
+                    remote.createManager(username, password, new MyCallback<String>() {
                         @Override
                         public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
                             myStartActivity(result, error, managerUid, isManager, hasTeam);
@@ -117,10 +118,11 @@ public class LoginActivity extends Activity {
             if (!username.equals("")) {
                 if (!password.equals("")) {
                     progress.show();
-                    FireBaseDB.getInstance(this).authenticate(username, password, new MyCallback<String>() {
+                    FireBaseDB remote = new FireBaseDB(LoginActivity.this);
+                    remote.authenticate(username, password, new MyCallback<String>() {
                         @Override
                         public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                            myStartActivity(result, error, managerUid, isManager,  hasTeam);
+                            myStartActivity(result, error, managerUid, isManager, hasTeam);
                             progress.dismiss();
                         }
                     });

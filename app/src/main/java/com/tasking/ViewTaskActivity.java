@@ -159,13 +159,13 @@ public class ViewTaskActivity extends AppCompatActivity {
         update.put("picture", task.getPicture());
         update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
         if (managerUid != null) {
-            FireBaseDB.getInstance(this).updateTask(task, update, new MyCallback<String>() {
+            FireBaseDB remote = new FireBaseDB(ViewTaskActivity.this);
+            remote.updateTask(task, update, new MyCallback<String>() {
                 @Override
                 public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                    if(error != null) {
+                    if (error != null) {
                         Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
                     }
                 }

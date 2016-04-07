@@ -74,7 +74,8 @@ public class AddMemberActivity extends Activity {
                         final Bundle managerParams = getIntent().getExtras();
                         String managerUid = managerParams.getString("uid");
                         progress.show();
-                        FireBaseDB.getInstance(AddMemberActivity.this).createMember(employee.getUsername(), employee.getPassword(), managerUid, teamName, new MyCallback<String>() {
+                        FireBaseDB remote = new FireBaseDB(AddMemberActivity.this);
+                        remote.createMember(employee.getUsername(), employee.getPassword(), managerUid, teamName, new MyCallback<String>() {
                             @Override
                             public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
                                 if (error != null) {

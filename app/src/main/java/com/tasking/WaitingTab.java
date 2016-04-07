@@ -98,14 +98,15 @@ public class WaitingTab extends Fragment implements SwipeRefreshLayout.OnRefresh
     @Override
     public void onRefresh() {
         Bundle userParams = getActivity().getIntent().getExtras();
-        FireBaseDB.getInstance(getContext()).refresh(userParams, new MyCallback<String>() {
-            @Override
-            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                if(error != null){
-                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+        FireBaseDB remote = new FireBaseDB(getContext());
+        remote.refresh(userParams, new MyCallback<String>() {
+                @Override
+                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                    if (error != null) {
+                        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
         swipeLayout.setRefreshing(false);
     }
 }

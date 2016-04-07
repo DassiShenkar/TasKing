@@ -50,17 +50,17 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
         final Employee employee = employees.get(position);
         TaskDAO.getInstance(context).removeMember(employee);
         String password = userParams.getString("password");
-        FireBaseDB.getInstance(context).removeUser(employee.getUsername(), password, new MyCallback<String>() {
-            @Override
-            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                if(error != null){
-                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        FireBaseDB remote = new FireBaseDB(context);
+        remote.removeUser(employee.getUsername(), password, new MyCallback<String>() {
+                @Override
+                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                    if (error != null) {
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else{
-                    Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            });
         employees.remove(position);
         notifyItemRemoved(position);
     }

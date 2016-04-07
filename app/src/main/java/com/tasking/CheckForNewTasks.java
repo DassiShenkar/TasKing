@@ -50,14 +50,15 @@ public class CheckForNewTasks {
     TimerTask checkNewTasks = new TimerTask() {
         @Override
         public void run() {
-            FireBaseDB.getInstance(context).refresh(userParams, new MyCallback<String>() {
-                @Override
-                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                    if(error != null){
-                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
-                    }
+            FireBaseDB remote = new FireBaseDB(context);
+            remote.refresh(userParams, new MyCallback<String>() {
+            @Override
+            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                if (error != null) {
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
         }
     };
 }

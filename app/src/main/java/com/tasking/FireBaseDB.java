@@ -20,15 +20,11 @@ import java.util.Map;
 
 public class FireBaseDB implements IFireBaseDB {
 
-    private static FireBaseDB instance = null;
     private Firebase firebaseConnection;
     private Context context;
 
-    public static FireBaseDB getInstance(Context context) {
-        return new FireBaseDB(context);
-    }
 
-    private FireBaseDB(Context context) {
+    public FireBaseDB(Context context) {
         firebaseConnection = new Firebase("https://tasking-android.firebaseio.com/");
         Firebase.setAndroidContext(context);
         this.context = context;
