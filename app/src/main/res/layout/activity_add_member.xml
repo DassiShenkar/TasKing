@@ -206,18 +206,34 @@
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/send_invites"
-    android:id="@+id/txt_done"
-    android:textSize="18sp"
-    android:textColor="@color/darkBlue"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentStart="false"
-    android:layout_marginBottom="20dp"
-    android:layout_alignParentEnd="true"
-    android:layout_marginEnd="30dp"
-    android:onClick="sendInvites" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_invites"
+            android:id="@+id/txt_done"
+            android:onClick="sendInvites"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="false"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/darkBlue"
+            android:textSize="18sp"
+            android:layout_centerVertical="true" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:background="@color/grey"
+            android:text="" />
+    </RelativeLayout>
 </RelativeLayout>
