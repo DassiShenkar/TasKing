@@ -135,9 +135,12 @@ public class LoginActivity extends Activity {
 
     private void myStartActivity(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
         if(error == null) {
+            SaveSharedPreference.setUid(LoginActivity.this, result);
+            SaveSharedPreference.setIsManager(LoginActivity.this, isManager);
+            SaveSharedPreference.setManagerId(LoginActivity.this, managerUid);
+            userParams.putString("managerUid", managerUid);
             userParams.putString("uid", result);
             userParams.putBoolean("isManager", isManager);
-            userParams.putString("managerUid", managerUid);
             Intent intent;
             if(isManager) {
                 if (hasTeam) {
@@ -146,7 +149,7 @@ public class LoginActivity extends Activity {
                     intent = new Intent(getApplication(), TeamActivity.class);
                 }
             }
-            else{
+            else {
                 intent = new Intent(getApplication(), TasksActivity.class);
             }
             intent.putExtras(userParams);

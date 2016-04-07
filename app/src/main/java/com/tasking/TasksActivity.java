@@ -2,6 +2,7 @@ package com.tasking;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -107,7 +108,8 @@ public class TasksActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        //TODO: version shit. don't push
+        drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         createTask.setTypeface(typeFace);
@@ -154,6 +156,9 @@ public class TasksActivity extends AppCompatActivity
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.putExtras(activityCheck);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(this).edit();
+                editor.clear();
+                editor.apply();
                 startActivity(intent);
                 finish();
             } else if (id == R.id.nav_about) {
@@ -170,6 +175,9 @@ public class TasksActivity extends AppCompatActivity
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.putExtras(activityCheck);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(this).edit();
+                editor.clear();
+                editor.apply();
                 startActivity(intent);
                 finish();
             } else if (id == R.id.nav_about) {
