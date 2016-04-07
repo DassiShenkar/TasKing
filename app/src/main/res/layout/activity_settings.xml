@@ -58,20 +58,38 @@
             android:id="@+id/number_curr_interval"
             android:layout_alignParentTop="false"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
+            android:layout_alignBottom="@+id/txt_update_interval" />
 
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:id="@+id/txt_settings_done"
-        android:textSize="18sp"
-        android:textColor="@color/darkBlue"
-        android:onClick="save"
-        android:layout_marginTop="84dp"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_centerHorizontal="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:id="@+id/txt_settings_done"
+            android:onClick="save"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="false"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/darkBlue"
+            android:textSize="18sp"
+            android:layout_centerVertical="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:background="@color/grey"
+            android:text="" />
+    </RelativeLayout>
 
 </RelativeLayout>
