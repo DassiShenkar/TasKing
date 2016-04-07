@@ -65,8 +65,7 @@
         android:layout_alignParentEnd="true"
         app:backgroundTint="@color/yellow"
         android:tint="@color/white"
-        android:clickable="true"
-        android:onClick="addMember" />
+        android:clickable="true" />
 
     <TextView
         android:id = "@+id/members_title"
