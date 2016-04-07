@@ -47,6 +47,7 @@ public class Splash extends Activity {
                     Bundle userParams = new Bundle();
                     userParams.putString("uid", SaveSharedPreference.getUid(Splash.this));
                     userParams.putString("password", SaveSharedPreference.getPassword(Splash.this));
+                    userParams.putString("username", SaveSharedPreference.getUsername(Splash.this));
                     userParams.putString("managerUid", SaveSharedPreference.getManagerId(Splash.this));
                     userParams.putBoolean("isManager", SaveSharedPreference.getIsManager(Splash.this));
                     Intent mainIntent = new Intent(Splash.this, TasksActivity.class);

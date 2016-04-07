@@ -112,6 +112,9 @@ public class TasksActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        TextView email = (TextView)header.findViewById(R.id.email);
+        email.setText(SaveSharedPreference.getUsername(TasksActivity.this));
         createTask.setTypeface(typeFace);
         if (tasks.size() > 0) {
             createTask.setVisibility(View.GONE);

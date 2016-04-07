@@ -37,11 +37,16 @@ public class AddMemberActivity extends Activity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.BLACK);
         }
-        TextView title = (TextView)findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         title.setTypeface(boldTypeFace);
         progress = new ProgressDialog(this, R.style.ProgressCustomTheme);
         progress.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
+        if (SaveSharedPreference.getTeamName(AddMemberActivity.this).length() > 0) {
+            EditText editTeamName = (EditText) findViewById(R.id.edit_team_name);
+            editTeamName.setText(SaveSharedPreference.getTeamName(AddMemberActivity.this));
+            editTeamName.setEnabled(false);
+        }
     }
 
     public void editMember(View view) {
@@ -53,10 +58,10 @@ public class AddMemberActivity extends Activity {
         editWrapper.setVisibility(View.VISIBLE);
     }
 
-    public void addMember(View view){
+    public void addMember(View view) {
         EditText name = (EditText) findViewById(R.id.edit_team_name);
         teamName = name.getText().toString();
-        if(!teamName.equals("")) {
+        if (!teamName.equals("")) {
             TextView add = (TextView) findViewById(R.id.add_member_btn);
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,7 +70,7 @@ public class AddMemberActivity extends Activity {
                     EditText phone = (EditText) findViewById(R.id.edit_member_phone);
                     String emailStr = email.getText().toString();
                     String phoneStr = phone.getText().toString();
-                    if (!emailStr.equals("") || !phoneStr.equals("")){
+                    if (!emailStr.equals("") || !phoneStr.equals("")) {
                         Employee employee;
                         email.setText("");
                         phone.setText("");
@@ -81,7 +86,7 @@ public class AddMemberActivity extends Activity {
                                 if (error != null) {
                                     Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                                 } else {
-                                    TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, result,  managerUid);
+                                    TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, result, managerUid);
                                     progress.dismiss();
                                     Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
                                     teamMembers = TaskDAO.getInstance(getApplicationContext()).getMembers(managerUid);
@@ -101,26 +106,24 @@ public class AddMemberActivity extends Activity {
                                 }
                             }
                         });
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-        }
-        else{
+        } else {
             Toast.makeText(this, "Please enter Team name", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void sendInvites(View view){
-        if(teamMembers != null){
+    public void sendInvites(View view) {
+        if (teamMembers != null) {
             for (Employee member : teamMembers) {
-                if(member.getUsername().equals("")){
+                if (member.getUsername().equals("")) {
                     teamMembers.remove(member);
                 }
             }
-            if(teamMembers.size() > 0) {
+            if (teamMembers.size() > 0) {
                 Bundle userParams = getIntent().getExtras();
                 Intent sendMail = new Intent(Intent.ACTION_SEND);
                 String[] to = new String[teamMembers.size()];
@@ -141,22 +144,21 @@ public class AddMemberActivity extends Activity {
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(this, "There are no email clients installed", Toast.LENGTH_SHORT).show();
                 }
-            }
-            else{
+            } else {
                 Toast.makeText(this, "There are no email clients installed", Toast.LENGTH_SHORT).show();
             }
-        }
-        else{
+        } else {
             Toast.makeText(this, "Please add memebers or press BACK to return", Toast.LENGTH_LONG).show();
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if(requestCode==1)
-        {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
             Intent intent = new Intent(this, TasksActivity.class);
             Bundle userParams = getIntent().getExtras();
+            if (teamName != null) {
+                SaveSharedPreference.setTeamName(AddMemberActivity.this, teamName);
+            }
             intent.putExtras(userParams);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
