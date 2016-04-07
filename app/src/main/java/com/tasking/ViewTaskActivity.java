@@ -16,6 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.MapDifference;
+import com.google.common.collect.Maps;
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +31,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     private Task task;
+    private Map<String, Object> current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_task);
         Bundle userParams = getIntent().getExtras();
         task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
+        current = new HashMap<>();
+        current.put("acceptStatus", task.getAcceptStatus());
+        current.put("status", task.getStatus());
+        current.put("picture", task.getPicture());
         TextView category = (TextView) findViewById(R.id.txt_view_curr_category);
         TextView priority = (TextView) findViewById(R.id.txt_view_curr_priority);
         TextView location = (TextView) findViewById(R.id.txt_view_curr_location);
@@ -157,19 +165,22 @@ public class ViewTaskActivity extends AppCompatActivity {
         update.put("acceptStatus", task.getAcceptStatus());
         update.put("status", task.getStatus());
         update.put("picture", task.getPicture());
-        update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
-        if (managerUid != null) {
-            FireBaseDB remote = new FireBaseDB(ViewTaskActivity.this);
-            remote.updateTask(task, update, new MyCallback<String>() {
-                @Override
-                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                    if (error != null) {
-                        Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
+        MapDifference<String, Object> diff = Maps.difference(update, current);
+        if(!diff.entriesDiffering().isEmpty()) {
+            update.put("timeStamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date()));
+            if (managerUid != null) {
+                FireBaseDB remote = new FireBaseDB(ViewTaskActivity.this);
+                remote.updateTask(task, update, new MyCallback<String>() {
+                    @Override
+                    public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                        if (error != null) {
+                            Toast.makeText(getApplication(), error, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplication(), result, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
         userParams.remove("taskId");
         Intent intent = new Intent(this, TasksActivity.class);
