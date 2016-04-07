@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_status"
             android:textSize="14sp"
-            android:text="@string/status"
+            android:text="@string/task_status"
             android:paddingStart="10dp"
             android:paddingEnd="70dp"
             android:textAlignment="textEnd"
