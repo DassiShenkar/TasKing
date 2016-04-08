@@ -83,9 +83,10 @@ public class FireBaseDB implements IFireBaseDB {
             public void onAuthenticated(AuthData authData) {
                 final String uid = authData.getUid();
                 if (uid != null) {
-                    firebaseConnection.addListenerForSingleValueEvent(new ValueEventListener() {
+                    firebaseConnection.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
+                            firebaseConnection.removeEventListener(this);
                             if (snapshot.child("managers").child(uid).child("username").getValue() != null) {
                                 if (snapshot.child("managers").child(uid).getChildrenCount() > 1) {
                                     ArrayList<Employee> localTeam = TaskDAO.getInstance(context).getMembers(uid);
@@ -273,7 +274,7 @@ public class FireBaseDB implements IFireBaseDB {
             @Override
             public void onError(FirebaseError firebaseError) {
                 if (callback != null) {
-                    callback.done(null, firebaseError.getMessage(), null,  false, false);
+                    callback.done(null, firebaseError.getMessage(), null, false, false);
                 }
             }
         });
@@ -300,21 +301,10 @@ public class FireBaseDB implements IFireBaseDB {
 
     @Override
     public void refresh(final Bundle userParams, final MyCallback<String> callback) {
-        firebaseConnection.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                new AsyncUpdateTasks(context, userParams, snapshot).execute();
+                firebaseConnection.addValueEventListener(DataChangeListener.getInstance());
+                new AsyncUpdateTasks(context, userParams, DataChangeListener.getInstance().getSnapshot()).execute();
                 if (callback != null) {
                     callback.done(null, null, null, false, false);
                 }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                if (callback != null) {
-                    callback.done(null, firebaseError.getMessage(), null, false, false);
-                }
-            }
-        });
     }
 }

@@ -45,16 +45,17 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
                 holder.date.setTypeface(boldTypeFace);
                 holder.status.setTypeface(boldTypeFace);
             }
+        }else{
+            holder.category.setTypeface(regularTypeFace);
+            holder.description.setTypeface(regularTypeFace);
+            holder.date.setTypeface(regularTypeFace);
+            holder.status.setTypeface(regularTypeFace);
         }
         holder.description.setText(task.getName());
         holder.category.setText(task.getCategory());
         String date = (task.convertDateString() + " " + task.convertTimeString());
         holder.date.setText(date);
         holder.status.setText(task.getStatus());
-        holder.category.setTypeface(regularTypeFace);
-        holder.description.setTypeface(regularTypeFace);
-        holder.date.setTypeface(regularTypeFace);
-        holder.status.setTypeface(regularTypeFace);
         if(isManager){
             holder.icon.setImageResource(R.drawable.ic_action_edit);
         }

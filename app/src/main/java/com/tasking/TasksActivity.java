@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 public class TasksActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,7 @@ public class TasksActivity extends AppCompatActivity
                 numOfTasks--;
             }
         }
-        String waitingTab = "WAITING     " + String.valueOf(numOfTasks);
+        String waitingTab = "   WAITING       " + String.valueOf(numOfTasks);
         Typeface boldTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -108,7 +109,6 @@ public class TasksActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //TODO: version shit. don't push
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -202,12 +202,12 @@ public class TasksActivity extends AppCompatActivity
         Bundle userParams = getIntent().getExtras();
         FireBaseDB remote = new FireBaseDB(TasksActivity.this);
         remote.refresh(userParams, new MyCallback<String>() {
-                @Override
-                public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                    if (error != null) {
-                        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
-                    }
+            @Override
+            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
+                if (error != null) {
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
     }
 }

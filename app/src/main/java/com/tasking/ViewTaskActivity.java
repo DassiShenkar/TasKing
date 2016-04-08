@@ -51,6 +51,32 @@ public class ViewTaskActivity extends AppCompatActivity {
         RelativeLayout addPhoto = (RelativeLayout) findViewById(R.id.view_photo_layout);
         RadioGroup accept = (RadioGroup) findViewById(R.id.radGrp_accept);
         RadioGroup status = (RadioGroup) findViewById(R.id.radGrp_status);
+        switch (task.getAcceptStatus()){
+            case "Accept":
+                accept.check(R.id.radio_accept);
+                break;
+            case "Reject":
+                accept.check(R.id.radio_reject);
+                break;
+            case "Waiting":
+                accept.check(R.id.radio_waiting);
+                break;
+            default:
+                break;
+        }
+        switch (task.getStatus()){
+            case "In Progress":
+                accept.check(R.id.radio_inProgress);
+                break;
+            case "Done":
+                accept.check(R.id.radio_done);
+                break;
+            case "Waiting":
+                accept.check(R.id.radio_waiting);
+                break;
+            default:
+                break;
+        }
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
         RadioButton waiting = (RadioButton) findViewById(R.id.radio_status_waiting);
         RadioButton inProgress = (RadioButton) findViewById(R.id.radio_inProgress);
