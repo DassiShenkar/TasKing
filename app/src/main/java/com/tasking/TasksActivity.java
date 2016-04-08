@@ -35,6 +35,9 @@ public class TasksActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         Bundle userParams = getIntent().getExtras();
+        Typeface coolTypeface = Typeface.createFromAsset(getAssets(), "fonts/Scriptorama-Tradeshow-JF.ttf");
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setTypeface(coolTypeface);
         ArrayList<Task> tasks = TaskDAO.getInstance(this).getTasks(userParams.getString("uid"), userParams.getBoolean("isManager"));
         if(userParams.getString("taskUid") != null) {
             userParams.remove("taskUid");

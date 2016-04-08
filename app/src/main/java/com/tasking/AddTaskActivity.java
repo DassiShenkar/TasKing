@@ -56,6 +56,9 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
+        Typeface coolTypeface = Typeface.createFromAsset(getAssets(), "fonts/Scriptorama-Tradeshow-JF.ttf");
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setTypeface(coolTypeface);
         RadioButton low = (RadioButton) findViewById(R.id.radio_low);
         RadioButton normal = (RadioButton) findViewById(R.id.radio_normal);
         RadioButton urgent = (RadioButton) findViewById(R.id.radio_urgent);

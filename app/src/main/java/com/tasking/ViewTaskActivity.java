@@ -38,6 +38,9 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
         Bundle userParams = getIntent().getExtras();
+        Typeface coolTypeface = Typeface.createFromAsset(getAssets(), "fonts/Scriptorama-Tradeshow-JF.ttf");
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setTypeface(coolTypeface);
         task = TaskDAO.getInstance(this).getTask(userParams.getString("taskUid"));
         current = new HashMap<>();
         current.put("acceptStatus", task.getAcceptStatus());
