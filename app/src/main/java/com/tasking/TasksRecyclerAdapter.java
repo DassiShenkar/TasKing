@@ -17,6 +17,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
     private ArrayList<String> boldNames;
     private boolean isManager;
     private Typeface boldTypeFace;
+    private Typeface regularTypeFace;
 
     public TasksRecyclerAdapter(ArrayList<Task> tasks, ArrayList<String> boldNames, boolean isManager){
         this.isManager = isManager;
@@ -29,12 +30,14 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.tasks_list_item, parent, false);
         boldTypeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Raleway-Bold.ttf");
+        regularTypeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Raleway-Regular.ttf");
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(TasksRecyclerAdapter.ViewHolder holder, int position) {
         Task task = tasks.get(position);
+
         if(boldNames != null) {
             if (boldNames.contains(task.getFirebaseId())) {
                 holder.category.setTypeface(boldTypeFace);
@@ -48,6 +51,10 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         String date = (task.convertDateString() + " " + task.convertTimeString());
         holder.date.setText(date);
         holder.status.setText(task.getStatus());
+        holder.category.setTypeface(regularTypeFace);
+        holder.description.setTypeface(regularTypeFace);
+        holder.date.setTypeface(regularTypeFace);
+        holder.status.setTypeface(regularTypeFace);
         if(isManager){
             holder.icon.setImageResource(R.drawable.ic_action_edit);
         }
