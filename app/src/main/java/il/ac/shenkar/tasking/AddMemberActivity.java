@@ -123,27 +123,19 @@ public class AddMemberActivity extends Activity {
 
     public void sendInvites(View view) {
         if (teamMembers != null) {
-            for (Employee member : teamMembers) {
-                if (member.getUsername().equals("")) {
-                    teamMembers.remove(member);
-                }
-            }
             if (teamMembers.size() > 0) {
-                Bundle userParams = getIntent().getExtras();
                 Intent sendMail = new Intent(Intent.ACTION_SEND);
                 String[] to = new String[teamMembers.size()];
                 int i = 0;
                 for (Employee member : teamMembers) {
                     to[i++] = member.getUsername();
-                    teamMembers.remove(member);
                 }
                 String subject = "Let's go TasKing Together";
                 String managerName = SaveSharedPreference.getUsername(AddMemberActivity.this);
                 String linkToApp = "http://play.google.com/store/apps/details?id=il.ac.shenkar.tasking";
                 String body = "Hello\n" + managerName + " welcomes you to download the TasKing app\nand join the " +
                         teamName + " team. You can get the app at " + linkToApp +
-                        "username: your mail\n" +
-                        "password: your phone number";
+                        "\n Please contact " + SaveSharedPreference.getUsername(AddMemberActivity.this) + "for login information";
                 sendMail.setType("message/rfc822");
                 sendMail.putExtra(Intent.EXTRA_EMAIL, to);
                 sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
@@ -168,6 +160,7 @@ public class AddMemberActivity extends Activity {
             if (teamName != null) {
                 SaveSharedPreference.setTeamName(AddMemberActivity.this, teamName);
             }
+            teamMembers.clear();
             intent.putExtras(userParams);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
