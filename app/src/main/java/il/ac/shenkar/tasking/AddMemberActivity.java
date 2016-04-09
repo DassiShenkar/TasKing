@@ -31,6 +31,7 @@ public class AddMemberActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member);
         RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
+        teamMembers = new ArrayList<>();
         wrapper.setVisibility(View.GONE);
         EditText tName = (EditText) findViewById(R.id.edit_team_name);
         String name = SaveSharedPreference.getTeamName(AddMemberActivity.this);
@@ -93,7 +94,6 @@ public class AddMemberActivity extends Activity {
                                     TaskDAO.getInstance(getApplicationContext()).addMember(employee, result, managerUid);
                                     progress.dismiss();
                                     Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
-                                    teamMembers = new ArrayList<>();
                                     teamMembers.add(employee);
                                     if (teamMembers.size() > 0) {
                                         RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
@@ -141,7 +141,9 @@ public class AddMemberActivity extends Activity {
                 String managerName = SaveSharedPreference.getUsername(AddMemberActivity.this);
                 String linkToApp = "http://play.google.com/store/apps/details?id=il.ac.shenkar.tasking";
                 String body = "Hello\n" + managerName + " welcomes you to download the TasKing app\nand join the " +
-                        teamName + " team\nYou can get the app at " + linkToApp;
+                        teamName + " team. You can get the app at " + linkToApp +
+                        "username: your mail\n" +
+                        "password: your phone number";
                 sendMail.setType("message/rfc822");
                 sendMail.putExtra(Intent.EXTRA_EMAIL, to);
                 sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
