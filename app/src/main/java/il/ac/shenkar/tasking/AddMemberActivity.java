@@ -89,6 +89,7 @@ public class AddMemberActivity extends Activity {
                             public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
                                 if (error != null) {
                                     Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                                    progress.dismiss();
                                 } else {
                                     TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, result, managerUid);
                                     progress.dismiss();
