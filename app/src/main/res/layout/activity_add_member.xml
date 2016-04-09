@@ -201,6 +201,7 @@
             android:text="@string/add_member"
             android:onClick="addMember"
             android:textSize="20sp"
+            android:padding="25dp"
             android:textStyle="bold"
             android:layout_marginTop="50dp"
             android:layout_below="@+id/edit_member_phone_wrapper"

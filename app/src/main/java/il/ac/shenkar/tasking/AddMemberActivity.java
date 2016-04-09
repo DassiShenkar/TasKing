@@ -75,11 +75,10 @@ public class AddMemberActivity extends Activity {
                     String emailStr = email.getText().toString();
                     String phoneStr = phone.getText().toString();
                     if (!emailStr.equals("") || !phoneStr.equals("")) {
-                        Employee employee;
+
                         email.setText("");
                         phone.setText("");
-                        employee = new Employee(emailStr, phoneStr);
-                        final Employee employeeAdd = employee;
+                        final Employee employee = new Employee(emailStr, phoneStr);
                         final Bundle managerParams = getIntent().getExtras();
                         String managerUid = managerParams.getString("uid");
                         progress.show();
@@ -91,10 +90,11 @@ public class AddMemberActivity extends Activity {
                                     Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                                     progress.dismiss();
                                 } else {
-                                    TaskDAO.getInstance(getApplicationContext()).addMember(employeeAdd, result, managerUid);
+                                    TaskDAO.getInstance(getApplicationContext()).addMember(employee, result, managerUid);
                                     progress.dismiss();
                                     Toast.makeText(getApplicationContext(), "Member added", Toast.LENGTH_SHORT).show();
-                                    teamMembers = TaskDAO.getInstance(getApplicationContext()).getMembers(managerUid);
+                                    teamMembers = new ArrayList<>();
+                                    teamMembers.add(employee);
                                     if (teamMembers.size() > 0) {
                                         RelativeLayout wrapperEdit = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
                                         RelativeLayout addMember = (RelativeLayout) findViewById(R.id.team_members_wrapper);
@@ -135,12 +135,13 @@ public class AddMemberActivity extends Activity {
                 int i = 0;
                 for (Employee member : teamMembers) {
                     to[i++] = member.getUsername();
+                    teamMembers.remove(member);
                 }
                 String subject = "Let's go TasKing Together";
+                String managerName = SaveSharedPreference.getUsername(AddMemberActivity.this);
                 String linkToApp = "http://play.google.com/store/apps/details?id=il.ac.shenkar.tasking";
-                String body = "Hello\n" + userParams.getString("userName") + " welcomes you to download the TasKing app\nand join the " +
+                String body = "Hello\n" + managerName + " welcomes you to download the TasKing app\nand join the " +
                         teamName + " team\nYou can get the app at " + linkToApp;
-                //TODO: put google play link in mail body
                 sendMail.setType("message/rfc822");
                 sendMail.putExtra(Intent.EXTRA_EMAIL, to);
                 sendMail.putExtra(Intent.EXTRA_SUBJECT, subject);
