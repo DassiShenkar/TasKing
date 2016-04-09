@@ -26,7 +26,7 @@ public class CheckForNewTasks {
         this.context = context;
         this.userParams = userParams;
         this.time = 5;
-        startSchedule(time);
+        startSchedule();
     }
 
     public void stopSchedule() {
@@ -37,18 +37,9 @@ public class CheckForNewTasks {
 
     }
 
-    public void startSchedule(int time) {
-        int newtime = time>0?time:5;
-        Timer t = new Timer();
-
-        t.schedule(new firstTask(), 1, 1000 * 60 * newtime);
-       // this.timer = new Timer();
-//        if(time > 0) {
-//            this.timer.schedule(checkNewTasks, 1, 1000 * 60 * time);
-//        }
-//        else{
-//            this.timer.schedule(checkNewTasks, 1, 1000 * 60 * this.time);
-//        }
+    public void startSchedule() {
+        timer = new Timer();
+        timer.schedule(new firstTask(), 1, 1000 * 60 * this.time);
     }
 
     public int getTime() {
@@ -56,23 +47,11 @@ public class CheckForNewTasks {
     }
 
     public void setTime(int time) {
-        this.time = time;
+        if(time>0) {
+            this.time = time;
+        }
     }
 
-    TimerTask checkNewTasks = new TimerTask() {
-        @Override
-        public void run() {
-            FireBaseDB remote = new FireBaseDB(context);
-            remote.refresh(userParams, new MyCallback<String>() {
-            @Override
-            public void done(String result, String error, String managerUid, boolean isManager, boolean hasTeam) {
-                if (error != null) {
-                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        }
-    };
     class firstTask extends TimerTask {
 
         @Override

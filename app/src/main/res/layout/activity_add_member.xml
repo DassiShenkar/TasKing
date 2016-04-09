@@ -202,6 +202,7 @@
             android:onClick="addMember"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:layout_marginTop="50dp"
             android:layout_below="@+id/edit_member_phone_wrapper"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>

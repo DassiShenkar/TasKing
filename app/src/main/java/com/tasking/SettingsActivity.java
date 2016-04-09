@@ -29,10 +29,10 @@ public class SettingsActivity extends AppCompatActivity {
         EditText np = (EditText) findViewById(R.id.number_curr_interval);
         if(np.getText() != null) {
             int picked = Integer.valueOf(np.getText().toString());
-            if (picked != checkForNewTasks.getTime()) { // time interval in setting changed
+            if (picked != checkForNewTasks.getTime()) {
                 checkForNewTasks.setTime(picked);
                 checkForNewTasks.stopSchedule();
-                checkForNewTasks.startSchedule(picked);
+                checkForNewTasks.startSchedule();
             }
             Toast.makeText(getApplication(), "Check for new Tasks every " + picked + " minutes.", Toast.LENGTH_SHORT).show();
             Bundle userParams = getIntent().getExtras();

@@ -32,6 +32,12 @@ public class AddMemberActivity extends Activity {
         setContentView(R.layout.activity_add_member);
         RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.edit_members_wrapper);
         wrapper.setVisibility(View.GONE);
+        EditText tName = (EditText) findViewById(R.id.edit_team_name);
+        String name = SaveSharedPreference.getTeamName(AddMemberActivity.this);
+        if (!name.equals("")) {
+            tName.setText(name);
+            tName.setEnabled(false);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -42,11 +48,6 @@ public class AddMemberActivity extends Activity {
         title.setTypeface(boldTypeFace);
         progress = new ProgressDialog(this, R.style.ProgressCustomTheme);
         progress.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
-        if (SaveSharedPreference.getTeamName(AddMemberActivity.this).length() > 0) {
-            EditText editTeamName = (EditText) findViewById(R.id.edit_team_name);
-            editTeamName.setText(SaveSharedPreference.getTeamName(AddMemberActivity.this));
-            editTeamName.setEnabled(false);
-        }
     }
 
     public void editMember(View view) {
