@@ -98,8 +98,10 @@ public class LoginActivity extends Activity {
         if (signUp.getText().toString().equals((getResources().getString(R.string.sign_up)))) {
             if (!username.equals("")) {
                 if (!password.equals("")) {
+                    userParams.putString("username", username);
                     userParams.putString("password", password);
                     SaveSharedPreference.setUsername(LoginActivity.this, username);
+                    SaveSharedPreference.setPassword(LoginActivity.this, password);
                     progress.show();
                     FireBaseDB remote = new FireBaseDB(LoginActivity.this);
                     remote.createManager(username, password, new MyCallback<String>() {
@@ -118,6 +120,8 @@ public class LoginActivity extends Activity {
         } else {
             if (!username.equals("")) {
                 if (!password.equals("")) {
+                    userParams.putString("username", username);
+                    userParams.putString("password", password);
                     SaveSharedPreference.setUsername(LoginActivity.this, username);
                     progress.show();
                     FireBaseDB remote = new FireBaseDB(LoginActivity.this);
