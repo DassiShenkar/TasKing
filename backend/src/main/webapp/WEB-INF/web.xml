@@ -13,7 +13,9 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>il.ac.shenkar.tasking.backend.RegistrationEndpoint, il.ac.shenkar.tasking.backend.MessagingEndpoint</param-value>
+            <param-value>il.ac.shenkar.tasking.backend.RegistrationEndpoint,
+                il.ac.shenkar.tasking.backend.MessagingEndpoint,
+                il.ac.shenkar.tasking.backend.TasKingAPI</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

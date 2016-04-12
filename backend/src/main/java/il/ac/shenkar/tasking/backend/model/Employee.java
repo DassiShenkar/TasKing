@@ -1,4 +1,4 @@
-package il.ac.shenkar.tasking.backend;
+package il.ac.shenkar.tasking.backend.model;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;

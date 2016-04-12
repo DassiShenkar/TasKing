@@ -4,6 +4,9 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
+import il.ac.shenkar.tasking.backend.model.Employee;
+import il.ac.shenkar.tasking.backend.model.Task;
+
 /**
  * Objectify service wrapper so we can statically register our persistence classes
  * More on Objectify here : https://code.google.com/p/objectify-appengine/

@@ -2,7 +2,9 @@ package il.ac.shenkar.tasking.backend;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.googlecode.objectify.Objectify;
+
+import il.ac.shenkar.tasking.backend.model.Employee;
+import il.ac.shenkar.tasking.backend.model.Task;
 
 @Api(
         name = "taskingapi",
@@ -27,7 +29,7 @@ public class TasKingAPI {
         return null;
     }
 
-    public Employee getEmployee(String id){
-        return null;
-    }
+//   public Employee getEmployee(String id){
+//        return null;
+//    }
 }
