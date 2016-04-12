@@ -9,8 +9,6 @@ import java.util.Locale;
 public class Task {
     private String name;
     private Date date;
-//    private String dateString;
-//    private String timeString;
     private String category;
     private String priority;
     private String location;

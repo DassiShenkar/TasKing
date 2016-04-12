@@ -112,4 +112,7 @@
     <string name="show_task">Show task</string>
     <string name="min">min</string>
     <string name="Rejected">Rejected</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 </resources>
